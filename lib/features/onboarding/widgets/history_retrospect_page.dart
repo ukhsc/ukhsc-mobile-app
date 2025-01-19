@@ -1,10 +1,16 @@
-import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
+import 'package:flutter/material.dart' show Scaffold;
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:ukhsc_mobile_app/components/lib.dart';
+
 import 'package:ukhsc_mobile_app/core/style/lib.dart';
-import 'package:ukhsc_mobile_app/features/onboarding/widgets/history_case.dart';
+
+import 'history_case.dart';
 
 class HistoryRetrospectPage extends StatefulHookConsumerWidget {
-  const HistoryRetrospectPage({super.key});
+  final VoidCallback onFinished;
+  const HistoryRetrospectPage({super.key, required this.onFinished});
 
   @override
   ConsumerState<ConsumerStatefulWidget> createState() =>
@@ -15,6 +21,8 @@ class _HistoryRetrospectPageState extends ConsumerState<HistoryRetrospectPage> {
   @override
   Widget build(BuildContext context) {
     final theme = useTheme();
+
+    final buttonColor = theme.colors.primary.withValues(alpha: 0.45);
 
     return Scaffold(
       body: Container(
@@ -49,17 +57,21 @@ class _HistoryRetrospectPageState extends ConsumerState<HistoryRetrospectPage> {
                       year: 2025,
                     ),
                   ],
+                  onFinished: widget.onFinished,
                 ),
               ),
               Align(
                 alignment: Alignment.bottomCenter,
                 child: Padding(
                   padding: EdgeInsets.all(theme.spaces.xs),
-                  child: Placeholder(
-                    child: SizedBox(
-                      width: 300,
-                      height: 50,
-                    ),
+                  child: TextButton.icon(
+                    onPressed: () {
+                      widget.onFinished();
+                    },
+                    alignment: IconAlignment.right,
+                    icon: FontAwesomeIcons.arrowRight,
+                    color: buttonColor,
+                    label: '跳過介紹',
                   ),
                 ),
               ),

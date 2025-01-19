@@ -1,3 +1,5 @@
+import 'dart:ui';
+
 import 'package:flutter/widgets.dart';
 
 const navyColor = Color(0xff34495D);
@@ -10,6 +12,7 @@ class AppColors {
   final Color primaryText;
   final Color secondaryText;
   final Color tertiaryText;
+  final Color accentText;
 
   final Color primaryBackground;
   final Color secondaryBackground;
@@ -21,13 +24,17 @@ class AppColors {
   final Color selectedIconColor;
 
   final Color darkGradient;
+  final Color tintGradient;
   final Color lightGradient;
+
+  final Color overlay;
 
   AppColors({
     required this.primary,
     required this.primaryText,
     required this.secondaryText,
     required this.tertiaryText,
+    required this.accentText,
     required this.primaryBackground,
     required this.secondaryBackground,
     required this.darkButtonText,
@@ -35,7 +42,9 @@ class AppColors {
     required this.iconColor,
     required this.selectedIconColor,
     required this.darkGradient,
+    required this.tintGradient,
     required this.lightGradient,
+    required this.overlay,
   });
 
   static AppColors lerp(AppColors a, AppColors b, double t) {
@@ -46,6 +55,7 @@ class AppColors {
           Color.lerp(a.secondaryText, b.secondaryText, t) ?? b.secondaryText,
       tertiaryText:
           Color.lerp(a.tertiaryText, b.tertiaryText, t) ?? b.tertiaryText,
+      accentText: Color.lerp(a.accentText, b.accentText, t) ?? b.accentText,
       primaryBackground:
           Color.lerp(a.primaryBackground, b.primaryBackground, t) ??
               b.primaryBackground,
@@ -62,8 +72,11 @@ class AppColors {
               b.selectedIconColor,
       darkGradient:
           Color.lerp(a.darkGradient, b.darkGradient, t) ?? b.darkGradient,
+      tintGradient:
+          Color.lerp(a.tintGradient, b.tintGradient, t) ?? b.tintGradient,
       lightGradient:
           Color.lerp(a.lightGradient, b.lightGradient, t) ?? b.lightGradient,
+      overlay: Color.lerp(a.overlay, b.overlay, t) ?? b.overlay,
     );
   }
 
@@ -73,6 +86,13 @@ class AppColors {
       primaryText: blackColor,
       secondaryText: const Color(0xff8B8B8B),
       tertiaryText: const Color(0xff9CACBC),
+      accentText: Color.from(
+        red: 0.6408,
+        green: 0.5204,
+        blue: 0.4085,
+        alpha: 1.0,
+        colorSpace: ColorSpace.displayP3,
+      ),
       primaryBackground: const Color(0xffFADEC4),
       secondaryBackground: const Color(0xffFFE9D4),
       darkButtonText: whiteColor,
@@ -80,7 +100,9 @@ class AppColors {
       iconColor: const Color(0xffB2B2B2),
       selectedIconColor: navyColor,
       darkGradient: const Color(0xffF0C093),
+      tintGradient: const Color(0xffF2E2CF),
       lightGradient: const Color(0xffFEF5EC),
+      overlay: whiteColor,
     );
   }
 }

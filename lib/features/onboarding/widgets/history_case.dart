@@ -6,8 +6,9 @@ import 'package:ukhsc_mobile_app/core/style/lib.dart';
 
 class HistoryCasesViewer extends StatefulHookConsumerWidget {
   final List<HistoryCase> cases;
+  final VoidCallback? onFinished;
 
-  HistoryCasesViewer({super.key, required this.cases})
+  HistoryCasesViewer({super.key, required this.cases, this.onFinished})
       : assert(cases.isNotEmpty, 'Cases must not be empty');
 
   @override
@@ -36,7 +37,9 @@ class _HistoryCasesViewerState extends ConsumerState<HistoryCasesViewer> {
               endYear: item.year,
               onFinished: () {
                 final isLastPage = i + 1 == totalCases;
-                if (!isLastPage) {
+                if (isLastPage) {
+                  widget.onFinished?.call();
+                } else if (mounted) {
                   index.value++;
                 }
               },
@@ -78,6 +81,7 @@ class _HistoryCaseAnimationState extends ConsumerState<HistoryCaseAnimation> {
     final theme = useTheme();
     final startYear = widget.startYear;
     final endYear = widget.endYear;
+    final Duration totalDuration = const Duration(milliseconds: 1500);
 
     final yearDiff = _getYearDiffPosition(widget.startYear, widget.endYear);
     if (yearDiff == 0) {
@@ -103,12 +107,17 @@ class _HistoryCaseAnimationState extends ConsumerState<HistoryCaseAnimation> {
               ),
               if (yearDiff > 0)
                 AnimatedTextKit(
+                  pause: const Duration(milliseconds: 200),
                   animatedTexts: years
                       .map((year) => RotateAnimatedText(
                             year,
                             textAlign: TextAlign.center,
                             textStyle: theme.text.specialNumber,
-                            duration: const Duration(milliseconds: 350),
+                            duration: Duration(
+                              milliseconds: totalDuration.inMilliseconds ~/
+                                  years.length ~/
+                                  1.2,
+                            ),
                             rotateOut: false,
                           ))
                       .toList(),
@@ -122,12 +131,15 @@ class _HistoryCaseAnimationState extends ConsumerState<HistoryCaseAnimation> {
           ),
         ),
         AnimatedTextKit(
+          pause: const Duration(milliseconds: 500),
           animatedTexts: [
             TyperAnimatedText(
               widget.title,
               textAlign: TextAlign.center,
               textStyle: theme.text.title.copyWith(color: theme.colors.primary),
-              speed: const Duration(milliseconds: 180),
+              speed: Duration(
+                  milliseconds:
+                      totalDuration.inMilliseconds ~/ widget.title.length),
             ),
           ],
           isRepeatingAnimation: false,
@@ -140,8 +152,9 @@ class _HistoryCaseAnimationState extends ConsumerState<HistoryCaseAnimation> {
     );
   }
 
-  void _onFinished() {
+  Future<void> _onFinished() async {
     if (titleFinished && yearFinished) {
+      await Future.delayed(const Duration(milliseconds: 500));
       widget.onFinished?.call();
     }
   }

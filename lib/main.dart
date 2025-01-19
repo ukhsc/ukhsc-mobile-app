@@ -34,6 +34,12 @@ class MainApp extends StatelessWidget {
         extensions: <ThemeExtension<AppTheme>>[
           AppTheme.light(),
         ],
+        pageTransitionsTheme: const PageTransitionsTheme(
+          builders: <TargetPlatform, PageTransitionsBuilder>{
+            TargetPlatform.android: PredictiveBackPageTransitionsBuilder(),
+            TargetPlatform.iOS: CupertinoPageTransitionsBuilder(),
+          },
+        ),
       ),
     );
   }
