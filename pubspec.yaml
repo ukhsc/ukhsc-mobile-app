@@ -1,7 +1,7 @@
 name: ukhsc_mobile_app
 description: "A new Flutter project."
-publish_to: 'none'
-version: 0.1.0
+publish_to: "none"
+version: 0.0.1
 
 environment:
   sdk: ^3.6.0
@@ -9,11 +9,41 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
+  flutter_web_plugins:
+    sdk: flutter
+  flutter_hooks: ^0.20.5
+  go_router: ^14.6.3
+  hooks_riverpod: ^2.6.1
+  riverpod_annotation: ^2.6.1
+  animated_text_kit: ^4.2.2
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
   flutter_lints: ^5.0.0
+  riverpod_generator: ^2.6.4
+  build_runner: ^2.4.14
+  custom_lint: ^0.7.1
+  riverpod_lint: ^2.6.4
+  flutter_gen_runner: ^5.8.0
+
+dependency_overrides:
+  # TODO: Flutter Gen Workaround (dart_style)
+  # https://github.com/FlutterGen/flutter_gen/pull/615
+  # https://github.com/FlutterGen/flutter_gen/issues/625
+  flutter_gen_core:
+    git:
+      url: https://github.com/FlutterGen/flutter_gen.git
+      sha: 57ca3a47085977b6c0f07a66661fb769f030aeb6
+      path: packages/core/
 
 flutter:
   uses-material-design: true
+  fonts:
+    - family: Dela Gothic One
+      fonts:
+        - asset: assets/fonts/Dela_Gothic_One/DelaGothicOne-Regular.ttf
+    - family: Noto Sans TC
+      fonts:
+        - asset: assets/fonts/Noto_Sans_TC/NotoSansTC-VariableFont_wght.ttf
+          weight: 700

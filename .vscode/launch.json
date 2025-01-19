@@ -1,0 +1,28 @@
+{
+    // Use IntelliSense to learn about possible attributes.
+    // Hover to view descriptions of existing attributes.
+    // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "UKHSC Mobile (debug mode)",
+            "request": "launch",
+            "type": "dart",
+            "preLaunchTask": "flutter: flutter pub run build_runner watch"
+        },
+        {
+            "name": "UKHSC Mobile (profile mode)",
+            "request": "launch",
+            "type": "dart",
+            "flutterMode": "profile",
+            "preLaunchTask": "flutter: flutter pub run build_runner build"
+        },
+        {
+            "name": "UKHSC Mobile (release mode)",
+            "request": "launch",
+            "type": "dart",
+            "flutterMode": "release",
+            "preLaunchTask": "flutter: flutter pub run build_runner build"
+        }
+    ]
+}
