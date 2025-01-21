@@ -2,59 +2,36 @@ import 'package:flutter/widgets.dart';
 import 'package:ukhsc_mobile_app/gen/fonts.gen.dart';
 
 import 'colors.dart';
+import 'common_text.dart';
 
 class AppTextStyle {
-  final TextStyle basic;
+  final CommonTextStyle common;
 
-  final TextStyle display1;
-
-  final TextStyle title;
   final TextStyle button;
   final TextStyle specialNumber;
 
   AppTextStyle({
-    required this.basic,
-    required this.display1,
-    required this.title,
+    required this.common,
     required this.button,
     required this.specialNumber,
   });
 
   static AppTextStyle lerp(AppTextStyle a, AppTextStyle b, double t) {
     return AppTextStyle(
-      basic: TextStyle.lerp(a.basic, b.basic, t) ?? b.basic,
-      display1: TextStyle.lerp(a.display1, b.display1, t) ?? b.display1,
-      title: TextStyle.lerp(a.title, b.title, t) ?? b.title,
+      common: CommonTextStyle.lerp(a.common, b.common, t),
       button: TextStyle.lerp(a.button, b.button, t) ?? b.button,
       specialNumber: TextStyle.lerp(a.specialNumber, b.specialNumber, t) ??
           b.specialNumber,
     );
   }
 
-  factory AppTextStyle.light(
-    AppColors colors,
-  ) {
-    final basicStyle = TextStyle(
-      fontFamily: FontFamily.notoSansTC,
-      fontVariations: [FontVariation('wght', 550)],
-    );
+  factory AppTextStyle.light(AppColors colors) {
+    final commonStyle = CommonTextStyle.normal(colors);
 
     return AppTextStyle(
-      basic: basicStyle,
-      display1: basicStyle.copyWith(
-        fontVariations: [FontVariation('wght', 650)],
-        fontSize: 64,
-        color: colors.primary,
-      ),
-      title: basicStyle.copyWith(
-        fontVariations: [FontVariation('wght', 700)],
-        fontSize: 24,
-      ),
-      button: basicStyle.copyWith(
-        fontFamily: FontFamily.notoSansTC,
-        fontVariations: [FontVariation('wght', 650)],
-        fontSize: 18,
-        color: colors.primary,
+      common: commonStyle,
+      button: commonStyle.titleSmall.copyWith(
+        fontVariations: AppFontWeight.bold.variations,
       ),
       specialNumber: TextStyle(
         fontFamily: FontFamily.delaGothicOne,
@@ -63,4 +40,21 @@ class AppTextStyle {
       ),
     );
   }
+}
+
+enum AppFontWeight {
+  light(300),
+  regular(400),
+  medium(500),
+  semiBold(600),
+  bold(700),
+  extraBold(800),
+  black(900);
+
+  final double value;
+
+  const AppFontWeight(this.value);
+
+  /// See Also: https://github.com/flutter/flutter/issues/148026
+  List<FontVariation> get variations => [FontVariation('wght', value)];
 }

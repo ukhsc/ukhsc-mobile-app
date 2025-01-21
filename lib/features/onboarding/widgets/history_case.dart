@@ -136,7 +136,7 @@ class _HistoryCaseAnimationState extends ConsumerState<HistoryCaseAnimation> {
             TyperAnimatedText(
               widget.title,
               textAlign: TextAlign.center,
-              textStyle: theme.text.title.copyWith(color: theme.colors.primary),
+              textStyle: theme.text.common.headlineLarge,
               speed: Duration(
                   milliseconds:
                       totalDuration.inMilliseconds ~/ widget.title.length),

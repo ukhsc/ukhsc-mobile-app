@@ -28,12 +28,20 @@ class MainApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final theme = AppTheme.light();
+
     return MaterialApp.router(
       routerConfig: appRouter,
       theme: ThemeData(
-        extensions: <ThemeExtension<AppTheme>>[
-          AppTheme.light(),
-        ],
+        typography: Typography.material2021(),
+        bottomSheetTheme: BottomSheetThemeData(
+          showDragHandle: true,
+          dragHandleColor: theme.colors.secondaryText.withValues(alpha: 0.5),
+          dragHandleSize: Size(34, 7),
+          modalBarrierColor: theme.colors.modalBarrier,
+          backgroundColor: theme.colors.overlay,
+        ),
+        extensions: <ThemeExtension<AppTheme>>[theme],
         pageTransitionsTheme: const PageTransitionsTheme(
           builders: <TargetPlatform, PageTransitionsBuilder>{
             TargetPlatform.android: PredictiveBackPageTransitionsBuilder(),

@@ -1,7 +1,5 @@
 import 'dart:ui';
 
-import 'package:flutter/widgets.dart';
-
 const navyColor = Color(0xff34495D);
 const blackColor = Color(0xff000000);
 const whiteColor = Color(0xffFFFFFF);
@@ -28,6 +26,7 @@ class AppColors {
   final Color lightGradient;
 
   final Color overlay;
+  final Color modalBarrier;
 
   AppColors({
     required this.primary,
@@ -45,6 +44,7 @@ class AppColors {
     required this.tintGradient,
     required this.lightGradient,
     required this.overlay,
+    required this.modalBarrier,
   });
 
   static AppColors lerp(AppColors a, AppColors b, double t) {
@@ -77,6 +77,8 @@ class AppColors {
       lightGradient:
           Color.lerp(a.lightGradient, b.lightGradient, t) ?? b.lightGradient,
       overlay: Color.lerp(a.overlay, b.overlay, t) ?? b.overlay,
+      modalBarrier:
+          Color.lerp(a.modalBarrier, b.modalBarrier, t) ?? b.modalBarrier,
     );
   }
 
@@ -103,6 +105,7 @@ class AppColors {
       tintGradient: const Color(0xffF2E2CF),
       lightGradient: const Color(0xffFEF5EC),
       overlay: whiteColor,
+      modalBarrier: blackColor.withValues(alpha: 0.6),
     );
   }
 }

@@ -39,7 +39,27 @@ class FilledButton extends StatefulHookConsumerWidget {
       backgroundColor: backgroundColor ?? theme.colors.primaryBackground,
       padding: padding,
       overlayColor: theme.colors.primary,
-      child: Text(label, style: theme.text.button),
+      child: Text(label),
+    );
+  }
+
+  factory FilledButton.darkLabel({
+    Key? key,
+    required VoidCallback? onPressed,
+    required String label,
+    Color? backgroundColor,
+    EdgeInsetsGeometry? padding,
+  }) {
+    final theme = useTheme();
+
+    return FilledButton._(
+      key: key,
+      onPressed: onPressed,
+      textColor: theme.colors.darkButtonText,
+      backgroundColor: backgroundColor ?? theme.colors.primary,
+      padding: padding,
+      overlayColor: theme.colors.primaryBackground,
+      child: Text(label),
     );
   }
 }
@@ -47,14 +67,25 @@ class FilledButton extends StatefulHookConsumerWidget {
 class _FilledButtonState extends ConsumerState<FilledButton> {
   @override
   Widget build(BuildContext context) {
+    final theme = useTheme();
+
     return material.FilledButton(
       onPressed: widget.onPressed,
       style: material.FilledButton.styleFrom(
         backgroundColor: widget.backgroundColor,
-        padding: widget.padding,
+        padding: widget.padding ??
+            EdgeInsets.symmetric(
+                vertical: theme.spaces.md, horizontal: theme.spaces.lg),
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(25),
+        ),
         overlayColor: widget.overlayColor,
       ),
-      child: widget.child,
+      child: DefaultTextStyle(
+        style:
+            theme.text.button.copyWith(fontSize: 18, color: widget.textColor),
+        child: widget.child,
+      ),
     );
   }
 }

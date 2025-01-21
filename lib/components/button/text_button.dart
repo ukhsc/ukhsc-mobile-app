@@ -79,7 +79,9 @@ class _TextButtonState extends ConsumerState<TextButton> {
         overlayColor: theme.colors.overlay,
       ),
       child: DefaultTextStyle(
-        style: theme.text.button.copyWith(color: widget.color),
+        style: theme.text.button.copyWith(
+            fontVariations: AppFontWeight.semiBold.variations,
+            color: widget.color),
         child: widget.child,
       ),
     );

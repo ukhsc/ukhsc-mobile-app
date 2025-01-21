@@ -1,13 +1,15 @@
 import 'dart:ui';
 
 import 'package:flutter/gestures.dart';
-import 'package:flutter/material.dart' show Scaffold, Colors;
+import 'package:flutter/material.dart'
+    show Colors, Scaffold, showModalBottomSheet;
 import 'package:flutter/widgets.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 import 'package:ukhsc_mobile_app/components/lib.dart';
 import 'package:ukhsc_mobile_app/core/style/lib.dart';
+import 'package:ukhsc_mobile_app/features/login/lib.dart';
 import 'package:ukhsc_mobile_app/gen/assets.gen.dart';
 
 class GetStartedPage extends StatefulHookConsumerWidget {
@@ -39,7 +41,12 @@ class _GetStartedPageState extends ConsumerState<GetStartedPage> {
               alignment: Alignment.bottomCenter,
               child: _HamburgerMascot(),
             ),
-            SafeArea(child: _buildSafeArea()),
+            SafeArea(
+              child: Padding(
+                padding: EdgeInsets.all(theme.spaces.md),
+                child: _buildSafeArea(),
+              ),
+            ),
           ],
         ),
       ),
@@ -48,13 +55,11 @@ class _GetStartedPageState extends ConsumerState<GetStartedPage> {
 
   Widget _buildSafeArea() {
     final theme = useTheme();
-    final hintTextStyle =
-        theme.text.basic.copyWith(color: theme.colors.primary, fontSize: 12.5);
+    final hintTextStyle = theme.text.common.labelMedium
+        .copyWith(color: theme.colors.primary, fontSize: 12.5);
     final linkTextStyle = hintTextStyle.copyWith(
       decoration: TextDecoration.underline,
-      fontVariations: [
-        FontVariation('wght', 700),
-      ],
+      fontVariations: AppFontWeight.bold.variations,
     );
 
     return Stack(
@@ -63,30 +68,25 @@ class _GetStartedPageState extends ConsumerState<GetStartedPage> {
           alignment: Alignment.topLeft,
           child: Padding(
             padding: EdgeInsets.only(left: theme.spaces.xl),
-            child: Placeholder(
-              child: SizedBox(
-                height: 25,
-                width: 100,
-              ),
-            ),
+            child: AppTitle(),
           ),
         ),
         Align(
             alignment: Alignment.centerLeft,
             child: Padding(
               padding: EdgeInsets.only(
-                  left: theme.spaces.xxxl, bottom: theme.spaces.xxl),
+                  left: theme.spaces.xxl, bottom: theme.spaces.xxl),
               child: Column(
                 mainAxisSize: MainAxisSize.min,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
                     '開啟',
-                    style: theme.text.display1,
+                    style: theme.text.common.displayLarge,
                   ),
                   Text(
                     '新篇章',
-                    style: theme.text.display1.copyWith(
+                    style: theme.text.common.displayLarge.copyWith(
                       color: theme.colors.accentText,
                     ),
                   ),
@@ -95,44 +95,46 @@ class _GetStartedPageState extends ConsumerState<GetStartedPage> {
             )),
         Align(
           alignment: Alignment.bottomCenter,
-          child: Padding(
-            padding: EdgeInsets.only(bottom: theme.spaces.md),
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              spacing: theme.spaces.md,
-              children: [
-                FilledButton.lightLabel(
-                  onPressed: () {},
-                  label: '開始使用',
-                  backgroundColor: Colors.white,
-                  padding: EdgeInsets.symmetric(
-                    horizontal: MediaQuery.of(context).size.width / 2 * 0.55,
-                    vertical: theme.spaces.md,
-                  ),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            spacing: theme.spaces.md,
+            children: [
+              FilledButton.lightLabel(
+                onPressed: () {
+                  showModalBottomSheet(
+                    context: context,
+                    builder: (context) => const LoginOptionsSheets(),
+                  );
+                },
+                label: '開始使用',
+                backgroundColor: Colors.white,
+                padding: EdgeInsets.symmetric(
+                  horizontal: MediaQuery.of(context).size.width / 2 * 0.55,
+                  vertical: theme.spaces.md,
                 ),
-                // TODO: Add a link to the terms of service and privacy policy.
-                RichText(
-                  text: TextSpan(
-                      text: '點擊「開始使用」，即表示您同意我們的',
-                      style: hintTextStyle,
-                      children: [
-                        TextSpan(
-                          text: '服務條款',
-                          style: linkTextStyle,
-                          recognizer: TapGestureRecognizer()..onTap = () {},
-                        ),
-                        TextSpan(
-                          text: '和',
-                        ),
-                        TextSpan(
-                          text: '隱私政策',
-                          style: linkTextStyle,
-                          recognizer: TapGestureRecognizer()..onTap = () {},
-                        ),
-                      ]),
-                ),
-              ],
-            ),
+              ),
+              // TODO: Add a link to the terms of service and privacy policy.
+              RichText(
+                text: TextSpan(
+                    text: '點擊「開始使用」，即表示您同意我們的',
+                    style: hintTextStyle,
+                    children: [
+                      TextSpan(
+                        text: '服務條款',
+                        style: linkTextStyle,
+                        recognizer: TapGestureRecognizer()..onTap = () {},
+                      ),
+                      TextSpan(
+                        text: '和',
+                      ),
+                      TextSpan(
+                        text: '隱私政策',
+                        style: linkTextStyle,
+                        recognizer: TapGestureRecognizer()..onTap = () {},
+                      ),
+                    ]),
+              ),
+            ],
           ),
         )
       ],

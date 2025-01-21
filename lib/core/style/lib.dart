@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:ukhsc_mobile_app/core/style/space.dart';
+
 import 'colors.dart';
 import 'text.dart';
 import 'radius.dart';
+
+export 'text.dart' show AppFontWeight;
 
 AppTheme useTheme() {
   final context = useContext();
