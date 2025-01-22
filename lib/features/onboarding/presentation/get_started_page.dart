@@ -9,7 +9,7 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 import 'package:ukhsc_mobile_app/components/lib.dart';
 import 'package:ukhsc_mobile_app/core/style/lib.dart';
-import 'package:ukhsc_mobile_app/features/login/lib.dart';
+import 'package:ukhsc_mobile_app/features/auth/lib.dart';
 import 'package:ukhsc_mobile_app/gen/assets.gen.dart';
 
 class GetStartedPage extends StatefulHookConsumerWidget {
@@ -107,10 +107,12 @@ class _GetStartedPageState extends ConsumerState<GetStartedPage> {
                   );
                 },
                 label: '開始使用',
-                backgroundColor: Colors.white,
-                padding: EdgeInsets.symmetric(
-                  horizontal: MediaQuery.of(context).size.width / 2 * 0.55,
-                  vertical: theme.spaces.md,
+                options: FilledButtonOptions(
+                  backgroundColor: Colors.white,
+                  padding: EdgeInsets.symmetric(
+                    horizontal: MediaQuery.of(context).size.width / 2 * 0.55,
+                    vertical: theme.spaces.md,
+                  ),
                 ),
               ),
               // TODO: Add a link to the terms of service and privacy policy.

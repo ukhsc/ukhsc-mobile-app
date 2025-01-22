@@ -7,6 +7,7 @@ import 'text.dart';
 import 'radius.dart';
 
 export 'text.dart' show AppFontWeight;
+export 'package:flutter/material.dart' show Colors, Icons;
 
 AppTheme useTheme() {
   final context = useContext();

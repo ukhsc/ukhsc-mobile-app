@@ -41,6 +41,9 @@ class MainApp extends StatelessWidget {
           modalBarrierColor: theme.colors.modalBarrier,
           backgroundColor: theme.colors.overlay,
         ),
+        progressIndicatorTheme: ProgressIndicatorThemeData(
+          color: theme.colors.primary,
+        ),
         extensions: <ThemeExtension<AppTheme>>[theme],
         pageTransitionsTheme: const PageTransitionsTheme(
           builders: <TargetPlatform, PageTransitionsBuilder>{

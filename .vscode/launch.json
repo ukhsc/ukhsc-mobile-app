@@ -8,7 +8,7 @@
             "name": "UKHSC Mobile (debug mode)",
             "request": "launch",
             "type": "dart",
-            "preLaunchTask": "flutter: flutter pub run build_runner watch"
+            "preLaunchTask": "${defaultBuildTask}",
         },
         {
             "name": "UKHSC Mobile (profile mode)",

@@ -1,2 +1,7 @@
-export 'widgets/history_retrospect_page.dart';
-export 'widgets/get_started_page.dart';
+export 'presentation/history_retrospect_page.dart';
+export 'presentation/get_started_page.dart';
+export 'router.dart' hide $appRoutes;
+
+import 'router.dart' show $appRoutes;
+
+final $onboardingRoute = $appRoutes;

@@ -4,6 +4,7 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 import 'package:ukhsc_mobile_app/components/lib.dart';
 import 'package:ukhsc_mobile_app/core/style/lib.dart';
+import 'package:ukhsc_mobile_app/features/auth/lib.dart';
 
 class LoginOptionsSheets extends StatefulHookConsumerWidget {
   const LoginOptionsSheets({super.key});
@@ -26,7 +27,9 @@ class _LoginOptionsSheetsState extends ConsumerState<LoginOptionsSheets> {
         children: [
           Text('高校特約會員登入', style: theme.text.common.headlineLarge),
           FilledButton.darkLabel(
-            onPressed: () {},
+            onPressed: () {
+              SchoolLoginRoute().push(context);
+            },
             options: FilledButtonOptions(
               padding: EdgeInsets.symmetric(
                   horizontal: 105, vertical: theme.spaces.sm),

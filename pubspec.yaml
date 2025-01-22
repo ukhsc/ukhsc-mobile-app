@@ -18,6 +18,10 @@ dependencies:
   animated_text_kit: ^4.2.2
   font_awesome_flutter: ^10.8.0
   flutter_svg: ^2.0.17
+  dio: ^5.7.0
+  freezed_annotation: ^2.4.4
+  json_annotation: ^4.9.0
+  ua_client_hints: ^1.4.1
 
 dev_dependencies:
   flutter_test:
@@ -29,6 +33,9 @@ dev_dependencies:
   riverpod_lint: ^2.6.4
   flutter_gen_runner: ^5.8.0
   go_router_builder: ^2.7.3
+  freezed: ^2.5.8
+  freezed_lint: ^0.0.7
+  json_serializable: ^6.9.3
 
 dependency_overrides:
   # TODO: Flutter Gen Workaround (dart_style)

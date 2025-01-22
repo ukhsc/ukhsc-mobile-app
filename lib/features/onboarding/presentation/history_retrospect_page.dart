@@ -6,7 +6,7 @@ import 'package:ukhsc_mobile_app/components/lib.dart';
 
 import 'package:ukhsc_mobile_app/core/style/lib.dart';
 
-import 'history_case.dart';
+import 'widgets/history_case.dart';
 
 class HistoryRetrospectPage extends StatefulHookConsumerWidget {
   final VoidCallback onFinished;

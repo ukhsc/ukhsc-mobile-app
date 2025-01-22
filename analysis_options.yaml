@@ -3,3 +3,7 @@ include: package:flutter_lints/flutter.yaml
 analyzer:
   plugins:
     - custom_lint
+  errors:
+    # See Also: https://github.com/rrousselGit/freezed?tab=readme-ov-file#disabling-invalid_annotation_target-warning-and-warning-in-generates-files
+    invalid_annotation_target: ignore
+    todo: ignore
