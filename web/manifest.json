@@ -10,13 +10,13 @@
   "prefer_related_applications": false,
   "icons": [
     {
-      "src": "/light/logo-light.svg",
+      "src": "/icons/logo-light.svg",
       "sizes": "144x144",
       "type": "image/svg+xml",
       "media": "(prefers-color-scheme: light)"
     },
     {
-      "src": "/dark/logo-dark.svg",
+      "src": "/icons/logo-dark.svg",
       "sizes": "144x144",
       "type": "image/svg+xml",
       "media": "(prefers-color-scheme: dark)"

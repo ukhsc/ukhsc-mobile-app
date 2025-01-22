@@ -125,7 +125,7 @@ class SchoolAccountHintPage extends HookWidget {
           'scope': 'https://www.googleapis.com/auth/userinfo.email openid',
           'hd': school.googleAccountConfig.domainName,
         });
-        launchUrl(uri);
+        launchUrl(uri, webOnlyWindowName: '_blank');
       },
       label: '使用學校帳號登入',
       options: FilledButtonOptions(
