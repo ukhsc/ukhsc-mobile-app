@@ -2,7 +2,6 @@ import 'package:flutter/widgets.dart';
 import 'package:flutter/material.dart' as material;
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 import 'package:ukhsc_mobile_app/core/style/lib.dart';
 
@@ -109,6 +108,7 @@ class _FilledButtonState extends State<FilledButton> {
         ),
         animationDuration: Duration(milliseconds: 300),
         overlayColor: options.overlayColor,
+        alignment: Alignment.centerLeft,
       ),
       child: AnimatedDefaultTextStyle(
         duration: Duration(milliseconds: 200),
@@ -118,11 +118,11 @@ class _FilledButtonState extends State<FilledButton> {
           if (options.icon == null) return widget.child;
 
           return Row(
-            mainAxisAlignment: MainAxisAlignment.start,
-            spacing: theme.spaces.xs,
+            mainAxisSize: MainAxisSize.min,
             children: [
-              SizedBox(),
+              SizedBox(width: theme.spaces.sm),
               FaIcon(options.icon, color: options.textStyle?.color, size: 24),
+              SizedBox(width: theme.spaces.md),
               widget.child,
             ],
           );

@@ -34,16 +34,11 @@ class _SchoolLoginPageState extends ConsumerState<SchoolLoginPage> {
               Text('請選擇您就讀的學校', style: theme.text.common.displaySmall),
               Expanded(
                 child: switch (schools) {
-                  AsyncData(:final value) => Container(
-                      // decoration: BoxDecoration(
-                      //   color: theme.colors.secondaryBackground.withValues(
-                      //     alpha: 0.5,
-                      //   ),
-                      //   borderRadius: BorderRadius.all(theme.radii.medium),
-                      // ),
+                  AsyncData(:final value) => Padding(
                       padding: EdgeInsets.all(theme.spaces.md),
                       child: SchoolGridView(schools: value),
                     ),
+                  // TODO: Add error handling
                   AsyncError(:final error) => Text('Error' + error.toString()),
                   _ => Center(child: CircularProgressIndicator()),
                 },

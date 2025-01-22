@@ -1,7 +1,11 @@
+import 'dart:async';
+
 import 'package:flutter/widgets.dart';
 import 'package:go_router/go_router.dart';
+import 'package:ukhsc_mobile_app/features/auth/presentation/school_account_hint_page.dart';
 
 import 'presentation/school_login_page.dart';
+import 'models/school.dart';
 
 part 'router.g.dart';
 
@@ -16,31 +20,38 @@ class SchoolLoginRoute extends GoRouteData {
 }
 
 @TypedGoRoute<SchoolAccountHintRoute>(path: '/auth/school/hint')
-class SchoolAccountHintRoute extends GoRouteData{
-  final int schoolId;
+class SchoolAccountHintRoute extends GoRouteData {
+  final PartnerSchool? $extra;
 
-  const SchoolAccountHintRoute({required this.schoolId});
+  const SchoolAccountHintRoute({required this.$extra});
+
+  @override
+  FutureOr<String?> redirect(BuildContext context, GoRouterState state) {
+    if ($extra == null) {
+      return SchoolLoginRoute().location;
+    }
+
+    return null;
+  }
 
   @override
   Widget build(BuildContext context, GoRouterState state) {
-    throw UnimplementedError();
+    return SchoolAccountHintPage(school: $extra!);
   }
 }
 
-@TypedGoRoute<AuthCallbackRoute>(path: '/auth/callback')
+// TODO: Support deep linking
+@TypedGoRoute<AuthCallbackRoute>(path: '/auth/callback/:provider')
 class AuthCallbackRoute extends GoRouteData {
-  final AuthRedirectType redirectType;
-  final String authorizationCode;
-  const AuthCallbackRoute(
-      {required this.redirectType, required this.authorizationCode});
+  final FederatedProvider provider;
+  final String code;
+
+  const AuthCallbackRoute({required this.provider, required this.code});
 
   @override
   Widget build(BuildContext context, GoRouterState state) {
-    throw UnimplementedError();
+    return Text('${provider.toString()} callback not implemented, code: $code');
   }
 }
 
-enum AuthRedirectType {
-  schoolLogin,
-  linkAccount,
-}
+enum FederatedProvider { google, googleWorkspace }

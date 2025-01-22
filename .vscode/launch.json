@@ -15,14 +15,33 @@
             "request": "launch",
             "type": "dart",
             "flutterMode": "profile",
-            "preLaunchTask": "flutter: flutter pub run build_runner build"
+            "preLaunchTask": "${defaultBuildTask}",
         },
         {
             "name": "UKHSC Mobile (release mode)",
             "request": "launch",
             "type": "dart",
             "flutterMode": "release",
-            "preLaunchTask": "flutter: flutter pub run build_runner build"
+            "preLaunchTask": "${defaultBuildTask}",
+        },
+        {
+            "name": "UKHSC Mobile (web)",
+            "type": "dart",
+            "request": "launch",
+            "args": [
+                "-d",
+                "chrome",
+                "--web-port",
+                "3000",
+                // "--wasm",
+                "--dart-define=GOOGLE_OAUTH_CLIENT_ID=1025435960200-t4cj1deguaaeocs0rtp03l9ki4spd58q.apps.googleusercontent.com",
+            ],
+            "preLaunchTask": "${defaultBuildTask}",
+            "osx": {
+                "env": {
+                    "CHROME_EXECUTABLE": "/Applications/Google Chrome.app/Contents/MacOS/Google Chrome"
+                },
+            }
         }
     ]
 }

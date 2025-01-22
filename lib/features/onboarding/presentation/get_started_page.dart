@@ -8,9 +8,11 @@ import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 import 'package:ukhsc_mobile_app/components/lib.dart';
+import 'package:ukhsc_mobile_app/core/links.dart';
 import 'package:ukhsc_mobile_app/core/style/lib.dart';
 import 'package:ukhsc_mobile_app/features/auth/lib.dart';
 import 'package:ukhsc_mobile_app/gen/assets.gen.dart';
+import 'package:url_launcher/url_launcher_string.dart';
 
 class GetStartedPage extends StatefulHookConsumerWidget {
   const GetStartedPage({super.key});
@@ -118,13 +120,16 @@ class _GetStartedPageState extends ConsumerState<GetStartedPage> {
               // TODO: Add a link to the terms of service and privacy policy.
               RichText(
                 text: TextSpan(
-                    text: '點擊「開始使用」，即表示您同意我們的',
+                    text: '點擊「開始使用」，即代表您同意我們的',
                     style: hintTextStyle,
                     children: [
                       TextSpan(
                         text: '服務條款',
                         style: linkTextStyle,
-                        recognizer: TapGestureRecognizer()..onTap = () {},
+                        recognizer: TapGestureRecognizer()
+                          ..onTap = () {
+                            launchUrlString(Links.termsOfService);
+                          },
                       ),
                       TextSpan(
                         text: '和',
@@ -132,7 +137,10 @@ class _GetStartedPageState extends ConsumerState<GetStartedPage> {
                       TextSpan(
                         text: '隱私政策',
                         style: linkTextStyle,
-                        recognizer: TapGestureRecognizer()..onTap = () {},
+                        recognizer: TapGestureRecognizer()
+                          ..onTap = () {
+                            launchUrlString(Links.privacyPolicy);
+                          },
                       ),
                     ]),
               ),

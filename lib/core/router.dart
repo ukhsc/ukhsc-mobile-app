@@ -9,7 +9,7 @@ import '../features/lib.dart';
 
 part 'router.g.dart';
 
-final GoRouter appRouter = GoRouter(
+GoRouter appRouter = GoRouter(
   initialLocation: HomeRoute().location,
   debugLogDiagnostics: true,
   routes: [...$appRoutes, ...$onboardingRoute, ...$authRoute],

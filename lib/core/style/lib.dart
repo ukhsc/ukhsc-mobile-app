@@ -65,4 +65,29 @@ class AppTheme extends ThemeExtension<AppTheme> {
       spaces: AppSpace.normal(),
     );
   }
+
+  static ThemeData initial() {
+        final theme = AppTheme.light();
+
+    return ThemeData(
+      typography: Typography.material2021(),
+      bottomSheetTheme: BottomSheetThemeData(
+        showDragHandle: true,
+        dragHandleColor: theme.colors.secondaryText.withValues(alpha: 0.5),
+        dragHandleSize: Size(34, 7),
+        modalBarrierColor: theme.colors.modalBarrier,
+        backgroundColor: theme.colors.overlay,
+      ),
+      progressIndicatorTheme: ProgressIndicatorThemeData(
+        color: theme.colors.primary,
+      ),
+      extensions: <ThemeExtension<AppTheme>>[theme],
+      pageTransitionsTheme: const PageTransitionsTheme(
+        builders: <TargetPlatform, PageTransitionsBuilder>{
+          TargetPlatform.android: PredictiveBackPageTransitionsBuilder(),
+          TargetPlatform.iOS: CupertinoPageTransitionsBuilder(),
+        },
+      ),
+    );
+  }
 }

@@ -1,6 +1,5 @@
-import 'dart:io';
-
 import 'package:dio/dio.dart';
+import 'package:flutter/foundation.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:ua_client_hints/ua_client_hints.dart';
@@ -36,7 +35,7 @@ class ApiClient {
     final dio = Dio(options);
     dio.interceptors.add(InterceptorsWrapper(
       onRequest: (options, handler) async {
-        if (Platform.isIOS || Platform.isAndroid) {
+        if (!kIsWeb) {
           final uaHeaders = await userAgentClientHintsHeader();
           options.headers.addAll(uaHeaders);
         }
