@@ -1,35 +1,25 @@
 {
-    "name": "ukhsc_mobile_app",
-    "short_name": "ukhsc_mobile_app",
-    "start_url": ".",
-    "display": "standalone",
-    "background_color": "#0175C2",
-    "theme_color": "#0175C2",
-    "description": "A new Flutter project.",
-    "orientation": "portrait-primary",
-    "prefer_related_applications": false,
-    "icons": [
-        {
-            "src": "icons/Icon-192.png",
-            "sizes": "192x192",
-            "type": "image/png"
-        },
-        {
-            "src": "icons/Icon-512.png",
-            "sizes": "512x512",
-            "type": "image/png"
-        },
-        {
-            "src": "icons/Icon-maskable-192.png",
-            "sizes": "192x192",
-            "type": "image/png",
-            "purpose": "maskable"
-        },
-        {
-            "src": "icons/Icon-maskable-512.png",
-            "sizes": "512x512",
-            "type": "image/png",
-            "purpose": "maskable"
-        }
-    ]
+  "name": "高校特約",
+  "short_name": "高雄高校特約聯盟 行動 App",
+  "start_url": ".",
+  "display": "standalone",
+  "background_color": "#FADEC4",
+  "theme_color": "#FADEC4",
+  "description": "A new Flutter project.",
+  "orientation": "portrait-primary",
+  "prefer_related_applications": false,
+  "icons": [
+    {
+      "src": "/light/logo-light.svg",
+      "sizes": "144x144",
+      "type": "image/svg+xml",
+      "media": "(prefers-color-scheme: light)"
+    },
+    {
+      "src": "/dark/logo-dark.svg",
+      "sizes": "144x144",
+      "type": "image/svg+xml",
+      "media": "(prefers-color-scheme: dark)"
+    }
+  ]
 }
