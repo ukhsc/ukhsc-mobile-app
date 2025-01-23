@@ -1,3 +1,5 @@
+import 'package:flutter/material.dart'
+    show ScaffoldMessenger, SnackBar, SnackBarBehavior;
 import 'package:flutter/widgets.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
@@ -61,18 +63,29 @@ class _SchoolGridViewState extends ConsumerState<SchoolGridView> {
             ],
           ),
         ),
-        FilledButton.darkLabel(
+        ComposableButton(
           onPressed: () {
             final school = selectedSchool.value;
-            if (school != null) {
-              SchoolAccountHintRoute($extra: school).push(context);
+            if (school == null) {
+              ScaffoldMessenger.of(context).showSnackBar(
+                SnackBar(
+                  behavior: SnackBarBehavior.floating,
+                  content: Text('請先選擇您就讀的學校'),
+                ),
+              );
+              return;
             }
+
+            SchoolAccountHintRoute($extra: school).push(context);
           },
-          options: FilledButtonOptions(
-              padding: EdgeInsets.symmetric(
-                  horizontal: 100, vertical: theme.spaces.sm)),
-          label: '繼續',
-        ),
+          style: FilledStyle.dark(),
+          content: ButtonContent(Text('繼續')).withPadding(
+            EdgeInsets.symmetric(
+              horizontal: 100,
+              vertical: theme.spaces.sm,
+            ),
+          ),
+        )
       ],
     );
   }
@@ -91,20 +104,12 @@ class SchoolItem extends HookWidget {
 
   @override
   Widget build(BuildContext context) {
-    final theme = useTheme();
-
-    return FilledButton.lightLabel(
+    return ComposableButton(
       onPressed: onPressed,
-      label: school.shortName,
-      options: FilledButtonOptions(
-        icon: Icons.school_outlined,
-        backgroundColor: isSelected ? theme.colors.primary : Colors.white,
-        padding: EdgeInsets.all(theme.spaces.sm),
-        textStyle: theme.text.common.titleMedium.copyWith(
-          color:
-              isSelected ? theme.colors.darkButtonText : theme.colors.primary,
-        ),
-      ),
+      style: isSelected ? FilledStyle.dark() : FilledStyle.light(),
+      content: Text(school.shortName)
+          .asButtonContent
+          .withIcon(Icons.school_outlined),
     );
   }
 }

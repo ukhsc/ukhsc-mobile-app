@@ -31,6 +31,7 @@ class AppTextStyle {
     return AppTextStyle(
       common: commonStyle,
       button: commonStyle.titleSmall.copyWith(
+        fontSize: 18,
         fontVariations: AppFontWeight.bold.variations,
       ),
       specialNumber: TextStyle(

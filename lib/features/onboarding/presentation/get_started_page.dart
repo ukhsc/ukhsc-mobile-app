@@ -8,7 +8,7 @@ import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 import 'package:ukhsc_mobile_app/components/lib.dart';
-import 'package:ukhsc_mobile_app/core/links.dart';
+import 'package:ukhsc_mobile_app/core/env.dart';
 import 'package:ukhsc_mobile_app/core/style/lib.dart';
 import 'package:ukhsc_mobile_app/features/auth/lib.dart';
 import 'package:ukhsc_mobile_app/gen/assets.gen.dart';
@@ -101,21 +101,21 @@ class _GetStartedPageState extends ConsumerState<GetStartedPage> {
             mainAxisSize: MainAxisSize.min,
             spacing: theme.spaces.md,
             children: [
-              FilledButton.lightLabel(
+              ComposableButton(
                 onPressed: () {
                   showModalBottomSheet(
                     context: context,
                     builder: (context) => const LoginOptionsSheets(),
                   );
                 },
-                label: '開始使用',
-                options: FilledButtonOptions(
-                  backgroundColor: Colors.white,
-                  padding: EdgeInsets.symmetric(
-                    horizontal: MediaQuery.of(context).size.width / 2 * 0.55,
-                    vertical: theme.spaces.md,
-                  ),
-                ),
+                style: FilledStyle.light(),
+                content: Text('開始使用').asButtonContent.withPadding(
+                      EdgeInsets.symmetric(
+                        horizontal:
+                            MediaQuery.of(context).size.width / 2 * 0.55,
+                        vertical: theme.spaces.md,
+                      ),
+                    ),
               ),
               // TODO: Add a link to the terms of service and privacy policy.
               RichText(
@@ -128,7 +128,7 @@ class _GetStartedPageState extends ConsumerState<GetStartedPage> {
                         style: linkTextStyle,
                         recognizer: TapGestureRecognizer()
                           ..onTap = () {
-                            launchUrlString(Links.termsOfService);
+                            launchUrlString(AppEnvironment.termsOfServiceLink);
                           },
                       ),
                       TextSpan(
@@ -139,7 +139,7 @@ class _GetStartedPageState extends ConsumerState<GetStartedPage> {
                         style: linkTextStyle,
                         recognizer: TapGestureRecognizer()
                           ..onTap = () {
-                            launchUrlString(Links.privacyPolicy);
+                            launchUrlString(AppEnvironment.privacyPolicyLink);
                           },
                       ),
                     ]),

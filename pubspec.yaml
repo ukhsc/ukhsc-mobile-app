@@ -5,7 +5,7 @@ version: 0.0.1
 
 environment:
   sdk: ^3.6.0
-  flutter: 3.27.1
+  flutter: 3.27.3
 
 dependencies:
   flutter:
@@ -24,6 +24,7 @@ dependencies:
   json_annotation: ^4.9.0
   ua_client_hints: ^1.4.1
   url_launcher: ^6.3.1
+  envied: ^1.1.0
 
 dev_dependencies:
   flutter_test:
@@ -38,6 +39,7 @@ dev_dependencies:
   freezed: ^2.5.8
   freezed_lint: ^0.0.7
   json_serializable: ^6.9.3
+  envied_generator: ^1.1.0
 
 dependency_overrides:
   # TODO: Flutter Gen Workaround (dart_style)

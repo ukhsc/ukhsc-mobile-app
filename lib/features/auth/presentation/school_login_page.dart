@@ -35,7 +35,7 @@ class _SchoolLoginPageState extends ConsumerState<SchoolLoginPage> {
               Expanded(
                 child: switch (schools) {
                   AsyncData(:final value) => Padding(
-                      padding: EdgeInsets.all(theme.spaces.md),
+                      padding: EdgeInsets.all(theme.spaces.lg),
                       child: SchoolGridView(schools: value),
                     ),
                   // TODO: Add error handling

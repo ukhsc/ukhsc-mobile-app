@@ -1,11 +1,11 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart' show Divider, Scaffold;
 import 'package:flutter/widgets.dart';
-import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 import 'package:ukhsc_mobile_app/components/lib.dart';
-import 'package:ukhsc_mobile_app/core/links.dart';
+import 'package:ukhsc_mobile_app/core/env.dart';
 import 'package:ukhsc_mobile_app/core/style/lib.dart';
 import 'package:ukhsc_mobile_app/features/auth/lib.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -13,11 +13,17 @@ import 'package:url_launcher/url_launcher_string.dart';
 
 import '../models/school.dart';
 
-class SchoolAccountHintPage extends HookWidget {
+class SchoolAccountHintPage extends StatefulHookConsumerWidget {
   final PartnerSchool school;
 
   const SchoolAccountHintPage({super.key, required this.school});
 
+  @override
+  ConsumerState<SchoolAccountHintPage> createState() =>
+      _SchoolAccountHintPageState();
+}
+
+class _SchoolAccountHintPageState extends ConsumerState<SchoolAccountHintPage> {
   @override
   Widget build(BuildContext context) {
     final theme = useTheme();
@@ -62,7 +68,7 @@ class SchoolAccountHintPage extends HookWidget {
       spacing: theme.spaces.sm,
       children: [
         Text('帳號格式', style: theme.text.common.headlineLarge),
-        Text('倘若您對於${school.shortName}的帳號格式不是很清楚，我們提供貴校的帳號格式及預設密碼作為參考。',
+        Text('倘若您對於${widget.school.shortName}的帳號格式不是很清楚，我們提供貴校的帳號格式及預設密碼作為參考。',
             style: theme.text.common.bodyLarge),
         Padding(
           padding: EdgeInsets.all(theme.spaces.md),
@@ -76,10 +82,10 @@ class SchoolAccountHintPage extends HookWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               spacing: theme.spaces.xxs,
               children: [
-                Text('帳號格式：${school.googleAccountConfig.usernameFormat}',
+                Text('帳號格式：${widget.school.googleAccountConfig.usernameFormat}',
                     style: theme.text.common.bodyLarge),
                 Divider(color: theme.colors.tertiaryText, thickness: 0.5),
-                Text('預設密碼：${school.googleAccountConfig.passwordFormat}',
+                Text('預設密碼：${widget.school.googleAccountConfig.passwordFormat}',
                     style: theme.text.common.bodyLarge),
               ],
             ),
@@ -99,7 +105,7 @@ class SchoolAccountHintPage extends HookWidget {
                 ),
                 recognizer: TapGestureRecognizer()
                   ..onTap = () {
-                    launchUrlString(Links.instagram);
+                    launchUrlString(AppEnvironment.socialMediaLink);
                   },
               ),
             ],
@@ -110,31 +116,28 @@ class SchoolAccountHintPage extends HookWidget {
   }
 
   Widget _buildButton(AppTheme theme) {
-    return FilledButton.darkLabel(
+    return ComposableButton(
       onPressed: () {
-        const googleOAuthClientId =
-            String.fromEnvironment('GOOGLE_OAUTH_CLIENT_ID');
-        if (googleOAuthClientId.isEmpty) {
-          throw Exception('GOOGLE_OAUTH_CLIENT_ID is not set');
-        }
-
         final uri = Uri.https('accounts.google.com', '/o/oauth2/v2/auth', {
-          'client_id': googleOAuthClientId,
+          'client_id': AppEnvironment.googleOauthClientId,
           'redirect_uri': 'https://web.ukhsc.org/auth/callback/google',
           'response_type': 'code',
           'scope': 'https://www.googleapis.com/auth/userinfo.email openid',
-          'hd': school.googleAccountConfig.domainName,
+          'hd': widget.school.googleAccountConfig.domainName,
         });
-        launchUrl(uri, webOnlyWindowName: '_blank');
+        launchUrl(uri,
+            webOnlyWindowName: '_blank', mode: LaunchMode.inAppBrowserView);
       },
-      label: '使用學校帳號登入',
-      options: FilledButtonOptions(
-        icon: FontAwesomeIcons.google,
-        textStyle: theme.text.common.headlineMedium
-            .copyWith(height: 1.2, color: theme.colors.darkButtonText),
-        padding: EdgeInsets.symmetric(
-            vertical: theme.spaces.lg, horizontal: theme.spaces.xl),
-      ),
+      style: FilledStyle.dark(),
+      content: Text('使用學校帳號登入',
+              style: theme.text.common.headlineSmall
+                  .copyWith(height: 1.2, color: theme.colors.onPrimary))
+          .asButtonContent
+          .withIcon(FontAwesomeIcons.google)
+          .withPadding(
+            EdgeInsets.symmetric(
+                vertical: theme.spaces.md, horizontal: theme.spaces.lg),
+          ),
     );
   }
 }

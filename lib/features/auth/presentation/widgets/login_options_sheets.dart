@@ -26,15 +26,17 @@ class _LoginOptionsSheetsState extends ConsumerState<LoginOptionsSheets> {
         spacing: theme.spaces.lg,
         children: [
           Text('高校特約會員登入', style: theme.text.common.headlineLarge),
-          FilledButton.darkLabel(
+          ComposableButton(
             onPressed: () {
               SchoolLoginRoute().push(context);
             },
-            options: FilledButtonOptions(
-              padding: EdgeInsets.symmetric(
-                  horizontal: 105, vertical: theme.spaces.sm),
-            ),
-            label: '註冊帳號',
+            style: FilledStyle.dark(),
+            content: Text('註冊帳號').asButtonContent.withPadding(
+                  EdgeInsets.symmetric(
+                    horizontal: 105,
+                    vertical: theme.spaces.sm,
+                  ),
+                ),
           ),
           Row(
             spacing: theme.spaces.sm,
