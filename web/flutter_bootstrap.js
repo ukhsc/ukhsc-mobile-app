@@ -79,7 +79,18 @@ async function initializeFlutter() {
     onEntrypointLoaded: async function (engineInitializer) {
       const appRunner = await engineInitializer.initializeEngine();
       await appRunner.runApp();
-      document.getElementById("splash-view")?.remove();
+      const splashView = document.getElementById("splash-view");
+      if (splashView) {
+        const container = splashView.firstElementChild;
+        const content = container.firstElementChild;
+
+        container.style.opacity = "0";
+        content.style.transform = "scale(0.8)";
+
+        setTimeout(() => {
+          splashView.remove();
+        }, 700);
+      }
     },
   });
 }

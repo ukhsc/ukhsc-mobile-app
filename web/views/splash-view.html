@@ -1,11 +1,19 @@
 <template id="splash-template">
   <div
-    class="fixed inset-0 flex items-center justify-center bg-gray-50 dark:bg-gray-900"
+    class="fixed inset-0 flex items-center justify-center bg-gray-50 dark:bg-gray-900 transition-all duration-700 ease-in-out"
   >
-    <div class="text-center px-4">
+    <div class="text-center px-4 transition-all duration-700 scale-100">
       <div class="animate-bounce mb-12">
-        <img src="/icons/logo-light.svg" class="w-40 h-40 mx-auto dark:hidden" alt="Logo" />
-        <img src="/icons/logo-dark.svg" class="w-40 h-40 mx-auto hidden dark:block" alt="Logo" />
+        <img
+          src="/icons/logo-light.svg"
+          class="w-40 h-40 mx-auto dark:hidden"
+          alt="Logo"
+        />
+        <img
+          src="/icons/logo-dark.svg"
+          class="w-40 h-40 mx-auto hidden dark:block"
+          alt="Logo"
+        />
       </div>
       <div class="splash-message-container">
         <p
