@@ -47,6 +47,7 @@ app.*.map.json
 # Dart Build Runner Generated Files
 *.g.dart
 *.gen.dart
+*.freezed.dart
 
 # FVM Version Cache
 .fvm/
