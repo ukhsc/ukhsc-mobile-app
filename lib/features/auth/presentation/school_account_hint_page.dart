@@ -141,8 +141,7 @@ class _SchoolAccountHintPageState extends ConsumerState<SchoolAccountHintPage> {
   }
 
   Uri getOAuthUri() {
-    // final useLocalWeb = kDebugMode && kIsWeb;
-    final useLocalWeb = true;
+    final useLocalWeb = kDebugMode && kIsWeb;
     final redirectUri = Uri(
       scheme: useLocalWeb ? 'http' : 'https',
       host: useLocalWeb ? 'localhost' : 'web.ukhsc.org',
