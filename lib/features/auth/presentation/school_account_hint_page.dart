@@ -1,17 +1,20 @@
+import 'dart:convert';
+
+import 'package:flutter/foundation.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart' show Divider, Scaffold;
 import 'package:flutter/widgets.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:url_launcher/url_launcher.dart';
+import 'package:url_launcher/url_launcher_string.dart';
 
 import 'package:ukhsc_mobile_app/components/lib.dart';
 import 'package:ukhsc_mobile_app/core/env.dart';
 import 'package:ukhsc_mobile_app/core/style/lib.dart';
 import 'package:ukhsc_mobile_app/features/auth/lib.dart';
-import 'package:url_launcher/url_launcher.dart';
-import 'package:url_launcher/url_launcher_string.dart';
 
-import '../models/school.dart';
+import '../models/oauth.dart';
 
 class SchoolAccountHintPage extends StatefulHookConsumerWidget {
   final PartnerSchool school;
@@ -118,15 +121,11 @@ class _SchoolAccountHintPageState extends ConsumerState<SchoolAccountHintPage> {
   Widget _buildButton(AppTheme theme) {
     return ComposableButton(
       onPressed: () {
-        final uri = Uri.https('accounts.google.com', '/o/oauth2/v2/auth', {
-          'client_id': AppEnvironment.googleOauthClientId,
-          'redirect_uri': 'https://web.ukhsc.org/auth/callback/google',
-          'response_type': 'code',
-          'scope': 'https://www.googleapis.com/auth/userinfo.email openid',
-          'hd': widget.school.googleAccountConfig.domainName,
-        });
-        launchUrl(uri,
-            webOnlyWindowName: '_blank', mode: LaunchMode.inAppBrowserView);
+        launchUrl(
+          getOAuthUri(),
+          webOnlyWindowName: '_self',
+          mode: LaunchMode.externalApplication,
+        );
       },
       style: FilledStyle.dark(),
       content: Text('使用學校帳號登入',
@@ -139,5 +138,35 @@ class _SchoolAccountHintPageState extends ConsumerState<SchoolAccountHintPage> {
                 vertical: theme.spaces.md, horizontal: theme.spaces.lg),
           ),
     );
+  }
+
+  Uri getOAuthUri() {
+    // final useLocalWeb = kDebugMode && kIsWeb;
+    final useLocalWeb = true;
+    final redirectUri = Uri(
+      scheme: useLocalWeb ? 'http' : 'https',
+      host: useLocalWeb ? 'localhost' : 'web.ukhsc.org',
+      port: useLocalWeb ? 3000 : null,
+      path: Uri.decodeComponent(AuthCallbackRoute(
+        provider: FederatedProvider.googleWorkspace,
+      ).location),
+    );
+
+    final state = OAuthCallbackState.registerMember(
+      redirectUri: redirectUri.toString(),
+      schoolId: widget.school.id,
+      isNativeApp: !kIsWeb,
+    );
+
+    final uri = Uri.https('accounts.google.com', '/o/oauth2/v2/auth', {
+      'client_id': AppEnvironment.googleOauthClientId,
+      'redirect_uri': redirectUri.toString(),
+      'response_type': 'code',
+      'scope': 'https://www.googleapis.com/auth/userinfo.email openid',
+      'hd': widget.school.googleAccountConfig.domainName,
+      'prompt': 'select_account',
+      'state': jsonEncode(state.toJson()),
+    });
+    return uri;
   }
 }

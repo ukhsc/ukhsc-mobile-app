@@ -4,14 +4,12 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart'
     show Colors, Scaffold, showModalBottomSheet;
 import 'package:flutter/widgets.dart';
-import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 import 'package:ukhsc_mobile_app/components/lib.dart';
 import 'package:ukhsc_mobile_app/core/env.dart';
 import 'package:ukhsc_mobile_app/core/style/lib.dart';
 import 'package:ukhsc_mobile_app/features/auth/lib.dart';
-import 'package:ukhsc_mobile_app/gen/assets.gen.dart';
 import 'package:url_launcher/url_launcher_string.dart';
 
 class GetStartedPage extends StatefulHookConsumerWidget {
@@ -27,6 +25,8 @@ class _GetStartedPageState extends ConsumerState<GetStartedPage> {
     final theme = useTheme();
 
     return Scaffold(
+      appBar: AppBar(),
+      extendBodyBehindAppBar: true,
       body: Container(
         constraints: BoxConstraints.expand(),
         decoration: BoxDecoration(
@@ -41,7 +41,7 @@ class _GetStartedPageState extends ConsumerState<GetStartedPage> {
           children: [
             Align(
               alignment: Alignment.bottomCenter,
-              child: _HamburgerMascot(),
+              child: HamburgerMascot(),
             ),
             SafeArea(
               child: Padding(
@@ -66,34 +66,30 @@ class _GetStartedPageState extends ConsumerState<GetStartedPage> {
 
     return Stack(
       children: [
+        // Align(
+        //   alignment: Alignment.topLeft,
+        //   child: Padding(
+        //     padding: EdgeInsets.only(left: theme.spaces.xl),
+        //     child: AppTitle(),
+        //   ),
+        // ),
         Align(
-          alignment: Alignment.topLeft,
-          child: Padding(
-            padding: EdgeInsets.only(left: theme.spaces.xl),
-            child: AppTitle(),
-          ),
-        ),
-        Align(
-            alignment: Alignment.centerLeft,
-            child: Padding(
-              padding: EdgeInsets.only(
-                  left: theme.spaces.xxl, bottom: theme.spaces.xxl),
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    '開啟',
-                    style: theme.text.common.displayLarge,
+            alignment: Alignment(-0.6, -0.15),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  '開啟',
+                  style: theme.text.common.displayLarge,
+                ),
+                Text(
+                  '新篇章',
+                  style: theme.text.common.displayLarge.copyWith(
+                    color: theme.colors.accentText,
                   ),
-                  Text(
-                    '新篇章',
-                    style: theme.text.common.displayLarge.copyWith(
-                      color: theme.colors.accentText,
-                    ),
-                  ),
-                ],
-              ),
+                ),
+              ],
             )),
         Align(
           alignment: Alignment.bottomCenter,
@@ -148,36 +144,6 @@ class _GetStartedPageState extends ConsumerState<GetStartedPage> {
           ),
         )
       ],
-    );
-  }
-}
-
-class _HamburgerMascot extends HookWidget {
-  const _HamburgerMascot();
-
-  @override
-  Widget build(BuildContext context) {
-    final theme = useTheme();
-
-    return ImageFiltered(
-      imageFilter: ImageFilter.blur(sigmaX: 2, sigmaY: 2),
-      child: Assets.images.onboardingHamburgerMascot.image(
-        frameBuilder: (context, child, frame, wasSynchronouslyLoaded) {
-          return Stack(
-            alignment: Alignment.bottomCenter,
-            children: [
-              child,
-              ColoredBox(
-                color: theme.colors.tintGradient.withValues(alpha: 0.7),
-                child: SizedBox(
-                  height: 250,
-                  width: double.infinity,
-                ),
-              ),
-            ],
-          );
-        },
-      ),
     );
   }
 }

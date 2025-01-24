@@ -28,7 +28,7 @@ class FilledStyle extends ButtonStyle {
     return FilledStyle(
       backgroundColor: Colors.white,
       foregroundColor: theme.colors.lightButtonText,
-      overlayColor: theme.colors.overlay,
+      overlayColor: theme.colors.primary,
     );
   }
 

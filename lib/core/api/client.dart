@@ -5,10 +5,9 @@ import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:ua_client_hints/ua_client_hints.dart';
 
 import 'response.dart';
+import '../env.dart';
 
 part 'client.g.dart';
-
-const apiBaseUrl = 'https://api.ukhsc.org';
 
 extension CancelTokenX on Ref {
   CancelToken get cancelToken {
@@ -25,8 +24,9 @@ class ApiClient {
   ApiClient._(this._client);
 
   factory ApiClient.configure() {
+    Map<String, String>? uaHeaders;
     final options = BaseOptions(
-      baseUrl: apiBaseUrl,
+      baseUrl: AppEnvironment.apiBaseUrl,
       headers: {
         'Content-Type': 'application/json',
       },
@@ -36,8 +36,8 @@ class ApiClient {
     dio.interceptors.add(InterceptorsWrapper(
       onRequest: (options, handler) async {
         if (!kIsWeb) {
-          final uaHeaders = await userAgentClientHintsHeader();
-          options.headers.addAll(uaHeaders);
+          options.headers
+              .addAll(uaHeaders ??= await userAgentClientHintsHeader());
         }
 
         return handler.next(options);
@@ -61,14 +61,24 @@ class ApiClient {
     }
   }
 
-  Future<ApiResponse<T>> get<T>(
+  Future<ApiResponse<T>> request<T>(
+    HttpMethod method,
     String path, {
+    Map<String, dynamic>? data,
     Map<String, dynamic>? queryParameters,
+    String? token,
     CancelToken? cancelToken,
   }) async {
     final request = _client.request<T>(
       path,
-      options: Options(method: 'GET'),
+      options: Options(
+        method: method.value,
+        headers: {
+          if (token != null) 'Authorization': 'Bearer $token',
+        },
+        responseType: ResponseType.json,
+      ),
+      data: data,
       queryParameters: queryParameters,
       cancelToken: cancelToken,
     );
@@ -77,7 +87,21 @@ class ApiClient {
   }
 }
 
-@riverpod
+enum HttpMethod {
+  get,
+  post;
+
+  String get value {
+    switch (this) {
+      case HttpMethod.get:
+        return 'GET';
+      case HttpMethod.post:
+        return 'POST';
+    }
+  }
+}
+
+@Riverpod(keepAlive: true)
 ApiClient apiClient(Ref ref) {
   return ApiClient.configure();
 }

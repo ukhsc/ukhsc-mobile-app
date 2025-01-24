@@ -1,9 +1,12 @@
 import 'dart:async';
+import 'dart:convert';
 
 import 'package:flutter/widgets.dart';
 import 'package:go_router/go_router.dart';
-import 'package:ukhsc_mobile_app/features/auth/presentation/school_account_hint_page.dart';
 
+import 'models/oauth.dart';
+import 'presentation/member_creation_page.dart';
+import 'presentation/school_account_hint_page.dart';
 import 'presentation/school_login_page.dart';
 import 'models/school.dart';
 
@@ -44,14 +47,33 @@ class SchoolAccountHintRoute extends GoRouteData {
 @TypedGoRoute<AuthCallbackRoute>(path: '/auth/callback/:provider')
 class AuthCallbackRoute extends GoRouteData {
   final FederatedProvider provider;
-  final String code;
+  final String? code;
+  final String? state;
 
-  const AuthCallbackRoute({required this.provider, required this.code});
+  const AuthCallbackRoute({required this.provider, this.code, this.state});
 
   @override
   Widget build(BuildContext context, GoRouterState state) {
-    return Text('${provider.toString()} callback not implemented, code: $code');
+    if (this.state == null || code == null) {
+      throw Exception('Invalid callback parameters');
+    }
+
+    final OAuthCallbackState state;
+    try {
+      state = OAuthCallbackState.fromJson(jsonDecode(this.state!));
+    } catch (e) {
+      throw Exception('Invalid callback state');
+    }
+
+    switch (state) {
+      case RegisterMember():
+        return MemberCreationPage(
+          schoolId: state.schoolId,
+          authorizationCode: code!,
+          redirectUri: state.redirectUri,
+        );
+      case LinkFederatedAccount():
+        throw UnimplementedError();
+    }
   }
 }
-
-enum FederatedProvider { google, googleWorkspace }

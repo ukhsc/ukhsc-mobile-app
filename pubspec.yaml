@@ -22,9 +22,16 @@ dependencies:
   dio: ^5.7.0
   freezed_annotation: ^2.4.4
   json_annotation: ^4.9.0
-  ua_client_hints: ^1.4.1
+  ua_client_hints:
+    # TODO: iOS app name workaround: https://github.com/SiongSng/flutter_ua_client_hints/commit/2011d084d2f419725d59f9d994e66904c1b48f18
+    git:
+      url: https://github.com/SiongSng/flutter_ua_client_hints.git
+      ref: main
+      sha: 2011d084d2f419725d59f9d994e66904c1b48f18
   url_launcher: ^6.3.1
   envied: ^1.1.0
+  flutter_secure_storage: ^10.0.0-beta.4
+  dart_jsonwebtoken: ^2.16.0
 
 dev_dependencies:
   flutter_test:

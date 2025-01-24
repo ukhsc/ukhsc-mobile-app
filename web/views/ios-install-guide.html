@@ -1,0 +1,125 @@
+<template id="ios-install-guide-template">
+  <div class="ios-install-guide">
+    <div
+      class="fixed inset-x-0 bottom-0 z-[9999] bg-white dark:bg-gray-800 p-4 shadow-lg"
+      id="ios-guide-container"
+    >
+      <div class="flex items-center justify-between">
+        <div class="flex-1">
+          <h3 class="text-lg font-semibold text-[#34495D] dark:text-white">
+            安裝高校特約
+          </h3>
+          <p class="text-sm text-gray-600 dark:text-gray-300">
+            免下載，立即安裝享受最佳特約體驗
+          </p>
+        </div>
+        <div class="flex items-center gap-2">
+          <button
+            id="show-guide-btn"
+            class="px-4 py-2 bg-[#34495D] text-white rounded-lg text-sm"
+          >
+            查看步驟
+          </button>
+          <button
+            id="close-guide-btn"
+            class="p-2 text-gray-500 hover:text-gray-700 dark:text-gray-400"
+          >
+            <svg
+              class="w-5 h-5"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M6 18L18 6M6 6l12 12"
+              ></path>
+            </svg>
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <div
+      class="fixed inset-0 z-[9999] opacity-0 pointer-events-none transition-all duration-300 flex items-center justify-center"
+      id="guide-overlay"
+    >
+      <div class="absolute inset-0 bg-black/70"></div>
+
+      <div class="relative w-full flex flex-col items-center max-w-sm mx-auto">
+        <div class="w-full px-4 mb-24">
+          <div class="bg-white dark:bg-gray-800 p-6 rounded-2xl shadow-xl">
+            <h4 class="text-xl font-bold text-[#34495D] dark:text-white mb-6">
+              如何加入主畫面
+            </h4>
+            <ol class="space-y-6 text-gray-600 dark:text-gray-300">
+              <li class="flex items-center gap-3">
+                <span
+                  class="flex-shrink-0 w-8 h-8 flex items-center justify-center rounded-full bg-[#34495D] text-white text-lg font-bold"
+                  >1</span
+                >
+                <div class="flex items-center gap-2 flex-1">
+                  <span class="text-lg">點擊下方正中央的分享按鈕</span>
+                  <div
+                    class="flex items-center justify-center w-10 h-10 rounded-full bg-gray-100 dark:bg-gray-700 shadow-inner"
+                  >
+                    <svg
+                      class="w-6 h-6 text-[#34495D] dark:text-white"
+                      fill="currentColor"
+                      viewBox="0 0 24 24"
+                    >
+                      <path
+                        d="M16 5l-1.42 1.42-1.59-1.59V16h-1.98V4.83L9.42 6.42 8 5l4-4 4 4zm4 5v11c0 1.1-.9 2-2 2H6c-1.11 0-2-.9-2-2V10c0-1.11.89-2 2-2h3v2H6v11h12V10h-3V8h3c1.1 0 2 .89 2 2z"
+                      />
+                    </svg>
+                  </div>
+                </div>
+              </li>
+              <li class="flex items-center gap-3">
+                <span
+                  class="flex-shrink-0 w-8 h-8 flex items-center justify-center rounded-full bg-[#34495D] text-white text-lg font-bold"
+                  >2</span
+                >
+                <span class="text-lg">捲動並選擇「加入主畫面」選項</span>
+              </li>
+              <li class="flex items-center gap-3">
+                <span
+                  class="flex-shrink-0 w-8 h-8 flex items-center justify-center rounded-full bg-[#34495D] text-white text-lg font-bold"
+                  >3</span
+                >
+                <span class="text-lg">點擊「加入」完成安裝</span>
+              </li>
+              <li class="flex items-center gap-3">
+                <span
+                  class="flex-shrink-0 w-8 h-8 flex items-center justify-center rounded-full bg-[#34495D] text-white text-lg font-bold"
+                  >4</span
+                >
+                <span class="text-lg">在主畫面開啟享受最佳體驗</span>
+              </li>
+            </ol>
+            <button
+              id="close-overlay-btn"
+              class="mt-8 w-full py-3 bg-[#34495D] text-white rounded-xl text-lg font-medium"
+            >
+              我知道了
+            </button>
+          </div>
+        </div>
+
+        <div class="absolute -bottom-12 animate-bounce">
+          <svg
+            class="w-14 h-14 text-white filter drop-shadow-lg"
+            fill="currentColor"
+            viewBox="0 0 24 24"
+          >
+            <path
+              d="M20 12l-1.41-1.41L13 16.17V4h-2v12.17l-5.58-5.59L4 12l8 8 8-8z"
+            />
+          </svg>
+        </div>
+      </div>
+    </div>
+  </div>
+</template>

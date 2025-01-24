@@ -38,7 +38,7 @@ jobs:
 
       - name: Build Web
         run: |
-          flutter build web --release --dart-define=GOOGLE_OAUTH_CLIENT_ID=${{ secrets.GOOGLE_OAUTH_CLIENT_ID }}
+          flutter build web --release
 
       - name: Deploy to Cloudflare Pages
         # TODO: Workaround: https://github.com/cloudflare/wrangler-action/issues/347

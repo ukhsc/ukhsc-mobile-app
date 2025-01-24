@@ -4,6 +4,9 @@ part 'env.g.dart';
 
 @Envied(useConstantCase: true, requireEnvFile: false, obfuscate: true)
 abstract class AppEnvironment {
+  @EnviedField(defaultValue: 'https://api.ukhsc.org')
+  static final String apiBaseUrl = _AppEnvironment.apiBaseUrl;
+
   @EnviedField()
   static final String socialMediaLink = _AppEnvironment.socialMediaLink;
   @EnviedField()

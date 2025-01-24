@@ -27,7 +27,7 @@ class _SchoolLoginPageState extends ConsumerState<SchoolLoginPage> {
       body: Container(
         constraints: BoxConstraints.expand(),
         color: theme.colors.secondaryBackground,
-        padding: EdgeInsets.symmetric(vertical: theme.spaces.sm),
+        padding: EdgeInsets.only(top: theme.spaces.sm),
         child: SafeArea(
           child: Column(
             children: [
@@ -38,8 +38,23 @@ class _SchoolLoginPageState extends ConsumerState<SchoolLoginPage> {
                       padding: EdgeInsets.all(theme.spaces.lg),
                       child: SchoolGridView(schools: value),
                     ),
-                  // TODO: Add error handling
-                  AsyncError(:final error) => Text('Error' + error.toString()),
+                  // TODO: Integrate with Sentry.
+                  AsyncError(:final error) => Center(
+                        child: Column(
+                      mainAxisSize: MainAxisSize.min,
+                      spacing: theme.spaces.sm,
+                      children: [
+                        Text(
+                          '無法取得合作學校清單，請稍候再試。',
+                          style: theme.text.common.bodyLarge,
+                        ),
+                        ComposableButton(
+                          onPressed: () => ref.refresh(partnerSchoolsProvider),
+                          style: FilledStyle.light(),
+                          content: Text('重新載入').asButtonContent,
+                        ),
+                      ],
+                    )),
                   _ => Center(child: CircularProgressIndicator()),
                 },
               )

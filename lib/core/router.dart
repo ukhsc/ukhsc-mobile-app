@@ -3,7 +3,6 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:go_router/go_router.dart';
-import 'package:ukhsc_mobile_app/features/auth/lib.dart';
 
 import '../features/lib.dart';
 

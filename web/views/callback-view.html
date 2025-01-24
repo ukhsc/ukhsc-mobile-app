@@ -1,0 +1,112 @@
+<template id="success-template">
+  <div
+    class="fixed inset-0 flex items-center justify-center bg-gray-50 dark:bg-gray-900"
+  >
+    <div
+      class="bg-white dark:bg-gray-800 p-8 rounded-3xl shadow-xl w-full max-w-md mx-6"
+    >
+      <div class="text-center">
+        <svg
+          class="w-24 h-24 text-[#34495D] dark:text-white mx-auto"
+          fill="none"
+          stroke="currentColor"
+          viewBox="0 0 24 24"
+        >
+          <path
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            stroke-width="2"
+            d="M5 13l4 4L19 7"
+          ></path>
+        </svg>
+        <h2 class="mt-6 text-3xl font-bold text-[#34495D] dark:text-white">
+          登入成功
+        </h2>
+        <p class="mt-4 text-lg text-gray-600 dark:text-gray-300">
+          請點擊下方按鈕回到特約應用程式
+        </p>
+        <button
+          id="openAppBtn"
+          class="mt-8 w-full bg-[#34495D] hover:bg-[#2C3E50] text-white text-lg font-medium px-6 py-3 rounded-xl transition-colors"
+        >
+          回到應用程式
+        </button>
+        <p class="mt-6 text-base text-gray-500 dark:text-gray-400">
+          或等待 <span id="countdown">5</span> 秒後自動跳轉
+        </p>
+      </div>
+    </div>
+  </div>
+</template>
+
+<template id="error-template">
+  <div
+    class="fixed inset-0 flex items-center justify-center bg-gray-50 dark:bg-gray-900"
+  >
+    <div
+      class="bg-white dark:bg-gray-800 p-8 rounded-3xl shadow-xl w-full max-w-md mx-6"
+    >
+      <div class="text-center">
+        <svg
+          class="w-24 h-24 text-red-500 mx-auto"
+          fill="none"
+          stroke="currentColor"
+          viewBox="0 0 24 24"
+        >
+          <path
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            stroke-width="2"
+            d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"
+          ></path>
+        </svg>
+        <h2 class="mt-6 text-3xl font-bold text-gray-900 dark:text-white">
+          登入失敗
+        </h2>
+        <p class="mt-4 text-lg text-gray-600 dark:text-gray-300">
+          無法完成授權，可能是因為您：
+        </p>
+        <ul class="mt-2 text-left text-gray-600 dark:text-gray-300 space-y-2">
+          <li class="flex items-center">
+            <svg
+              class="w-5 h-5 mr-2 text-red-500"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M6 18L18 6M6 6l12 12"
+              ></path>
+            </svg>
+            使用非學校配發的 Google 帳號
+          </li>
+          <li class="flex items-center">
+            <svg
+              class="w-5 h-5 mr-2 text-red-500"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M6 18L18 6M6 6l12 12"
+              ></path>
+            </svg>
+            取消授權程序或拒絕授權
+          </li>
+        </ul>
+        <button
+          id="openAppBtn"
+          class="mt-8 w-full bg-[#34495D] hover:bg-[#2C3E50] text-white text-lg font-medium px-6 py-3 rounded-xl transition-colors"
+        >
+          再試一次
+        </button>
+      </div>
+    </div>
+  </div>
+</template>

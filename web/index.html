@@ -1,61 +1,88 @@
-<!doctype html>
+<!DOCTYPE html>
 <html>
-    <head>
-        <!--
-    If you are serving your web app in a path other than the root, change the
-    href value below to reflect the base path you are serving from.
+  <head>
+    <base href="$FLUTTER_BASE_HREF" />
 
-    The path provided below has to start and end with a slash "/" in order for
-    it to work correctly.
+    <meta charset="UTF-8" />
+    <meta content="IE=Edge" http-equiv="X-UA-Compatible" />
+    <meta name="description" content="高雄高校特約聯盟 第七屆 行動會員 App" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, viewport-fit=cover"
+    />
+    <meta name="screen-orientation" content="portrait" />
+    <meta name="x5-orientation" content="portrait" />
+    <meta name="mobile-web-app-capable" content="yes" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover"
+    />
 
-    For more details:
-    * https://developer.mozilla.org/en-US/docs/Web/HTML/Element/base
+    <!-- iOS meta tags & icons -->
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="default" />
+    <meta name="apple-mobile-web-app-title" content="高校特約" />
 
-    This is a placeholder for base href that will be replaced by the value of
-    the `--base-href` argument provided to `flutter build`.
-  -->
-        <base href="$FLUTTER_BASE_HREF" />
+    <script>
+      fetch("apple-touch-startup-images.html")
+        .then((res) => res.text())
+        .then((links) => {
+          document.head.insertAdjacentHTML("beforeend", links);
+        });
+    </script>
 
-        <meta charset="UTF-8" />
-        <meta content="IE=Edge" http-equiv="X-UA-Compatible" />
-        <meta name="description" content="A new Flutter project." />
+    <!-- PWA Meta Tags -->
+    <meta name="mobile-web-app-capable" content="yes" />
+    <meta name="theme-color" content="#34495D" />
 
-        <!-- iOS meta tags & icons -->
-        <meta name="mobile-web-app-capable" content="yes" />
-        <meta
-            name="apple-mobile-web-app-status-bar-style"
-            content="black-translucent"
-        />
-        <meta name="apple-mobile-web-app-title" content="高校特約" />
+    <!-- iOS icons -->
+    <link rel="apple-touch-icon" href="icons/icon-192.png" />
+    <link rel="apple-touch-icon" sizes="512x512" href="icons/icon-512.png" />
 
-        <!-- Favicon -->
-        <link
-            rel="icon"
-            href="/icons/logo-light.svg"
-            type="image/svg+xml"
-            media="(prefers-color-scheme: light)"
-        />
-        <link
-            rel="icon"
-            href="/icons/logo-dark.svg"
-            type="image/svg+xml"
-            media="(prefers-color-scheme: dark)"
-        />
-        <link
-            rel="apple-touch-icon"
-            href="/icons/logo-light.png"
-            media="(prefers-color-scheme: light)"
-        />
-        <link
-            rel="apple-touch-icon"
-            href="/icons/logo-dark.png"
-            media="(prefers-color-scheme: dark)"
-        />
+    <!-- Favicon -->
+    <link rel="icon" type="image/png" sizes="192x192" href="favicon.png" />
+    <link rel="icon" href="favicon.svg" type="image/svg+xml" />
 
-        <title>高校特約聯盟</title>
-        <link rel="manifest" href="manifest.json" />
-    </head>
-    <body>
-        <script src="flutter_bootstrap.js" async></script>
-    </body>
+    <title>UKHSC | 高校特約</title>
+    <link rel="manifest" href="manifest.json" />
+    <style>
+      body {
+        margin: 0;
+        padding: env(safe-area-inset-top) env(safe-area-inset-right)
+          env(safe-area-inset-bottom) env(safe-area-inset-left);
+        height: 100vh;
+        width: 100vw;
+        overflow: hidden;
+        -webkit-text-size-adjust: 100%;
+      }
+      #native-callback-view,
+      #splash-view,
+      #device-not-supported-view {
+        height: 100vh;
+        width: 100vw;
+        font-size: 16px;
+      }
+      @media (min-width: 481px) {
+        #native-callback-view,
+        #splash-view {
+          display: none;
+        }
+        #device-not-supported-view {
+          display: block;
+        }
+      }
+      @media (max-width: 480px) {
+        #device-not-supported-view {
+          display: none;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div id="native-callback-view"></div>
+    <div id="splash-view"></div>
+    <div id="device-not-supported-view"></div>
+    <script src="https://unpkg.com/@tailwindcss/browser@4"></script>
+    <script type="module" src="flutter_bootstrap.js"></script>
+  </body>
 </html>

@@ -33,7 +33,7 @@ class _LoginOptionsSheetsState extends ConsumerState<LoginOptionsSheets> {
             style: FilledStyle.dark(),
             content: Text('註冊帳號').asButtonContent.withPadding(
                   EdgeInsets.symmetric(
-                    horizontal: 105,
+                    horizontal: MediaQuery.of(context).size.width * 0.2,
                     vertical: theme.spaces.sm,
                   ),
                 ),
