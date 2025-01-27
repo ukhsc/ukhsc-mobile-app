@@ -67,7 +67,7 @@ class AppTheme extends ThemeExtension<AppTheme> {
   }
 
   static ThemeData initial() {
-        final theme = AppTheme.light();
+    final theme = AppTheme.light();
 
     return ThemeData(
       typography: Typography.material2021(),
@@ -81,6 +81,7 @@ class AppTheme extends ThemeExtension<AppTheme> {
       progressIndicatorTheme: ProgressIndicatorThemeData(
         color: theme.colors.primary,
       ),
+      scaffoldBackgroundColor: theme.colors.screenBackground,
       extensions: <ThemeExtension<AppTheme>>[theme],
       pageTransitionsTheme: const PageTransitionsTheme(
         builders: <TargetPlatform, PageTransitionsBuilder>{

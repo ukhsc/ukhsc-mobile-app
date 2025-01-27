@@ -4,7 +4,7 @@ import 'dart:convert';
 import 'package:flutter/widgets.dart';
 import 'package:go_router/go_router.dart';
 
-import 'models/oauth.dart';
+import 'models/auth.dart';
 import 'presentation/member_creation_page.dart';
 import 'presentation/school_account_hint_page.dart';
 import 'presentation/school_login_page.dart';

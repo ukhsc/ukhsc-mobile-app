@@ -2,8 +2,8 @@ import 'package:flutter/widgets.dart';
 import 'package:flutter/material.dart' show Scaffold;
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:ukhsc_mobile_app/components/lib.dart';
 
+import 'package:ukhsc_mobile_app/components/lib.dart';
 import 'package:ukhsc_mobile_app/core/style/lib.dart';
 
 import 'widgets/history_case.dart';
@@ -34,7 +34,7 @@ class _HistoryRetrospectPageState extends ConsumerState<HistoryRetrospectPage> {
             end: Alignment.bottomCenter,
           ),
         ),
-        child: SafeArea(
+        child: AppSafeArea(
           child: Stack(
             children: [
               Center(

@@ -1,16 +1,14 @@
-import 'dart:ui';
-
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart'
     show Colors, Scaffold, showModalBottomSheet;
 import 'package:flutter/widgets.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:url_launcher/url_launcher_string.dart';
 
 import 'package:ukhsc_mobile_app/components/lib.dart';
 import 'package:ukhsc_mobile_app/core/env.dart';
 import 'package:ukhsc_mobile_app/core/style/lib.dart';
 import 'package:ukhsc_mobile_app/features/auth/lib.dart';
-import 'package:url_launcher/url_launcher_string.dart';
 
 class GetStartedPage extends StatefulHookConsumerWidget {
   const GetStartedPage({super.key});
@@ -43,7 +41,7 @@ class _GetStartedPageState extends ConsumerState<GetStartedPage> {
               alignment: Alignment.bottomCenter,
               child: HamburgerMascot(),
             ),
-            SafeArea(
+            AppSafeArea(
               child: Padding(
                 padding: EdgeInsets.all(theme.spaces.md),
                 child: _buildSafeArea(),

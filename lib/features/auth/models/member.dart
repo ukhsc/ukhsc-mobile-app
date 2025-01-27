@@ -1,7 +1,5 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
 
-import 'user.dart';
-
 part 'member.freezed.dart';
 part 'member.g.dart';
 
@@ -18,7 +16,6 @@ abstract class StudentMember with _$StudentMember {
     final DateTime? activatedAt,
     final DateTime? expiredAt,
     final bool isActivated,
-    final User user,
   ) = _StudentMember;
 
   factory StudentMember.fromJson(Map<String, dynamic> json) =>

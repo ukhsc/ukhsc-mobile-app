@@ -1,12 +1,10 @@
-import 'package:animated_text_kit/animated_text_kit.dart';
 import 'package:flutter/material.dart' show LinearProgressIndicator, Scaffold;
 import 'package:flutter/widgets.dart';
-import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 import 'package:ukhsc_mobile_app/components/lib.dart';
 import 'package:ukhsc_mobile_app/core/style/lib.dart';
-import 'package:ukhsc_mobile_app/features/auth/data/auth_repository.dart';
+import 'package:ukhsc_mobile_app/features/lib.dart';
 
 class MemberCreationPage extends StatefulHookConsumerWidget {
   final int schoolId;
@@ -38,17 +36,15 @@ class _MemberCreationPageState extends ConsumerState<MemberCreationPage> {
     );
 
     registerState.whenData((data) async {
-      await Future.delayed(Duration(milliseconds: 500));
-
-      // TODO: navigate to home
-      print('finished');
+      await Future.delayed(Duration(milliseconds: 300));
+      if (context.mounted) {
+        HomeRoute().go(context);
+      }
     });
 
     if (registerState.hasError) {
       print(registerState.error);
       print(registerState.stackTrace);
-
-      return Text('Error');
       throw UnimplementedError();
     }
 

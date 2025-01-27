@@ -4,8 +4,12 @@ part 'env.g.dart';
 
 @Envied(useConstantCase: true, requireEnvFile: false, obfuscate: true)
 abstract class AppEnvironment {
+  @EnviedField(defaultValue: 'development')
+  static final DeployEnvironment deployEnvironment = _AppEnvironment.deployEnvironment;
   @EnviedField(defaultValue: 'https://api.ukhsc.org')
   static final String apiBaseUrl = _AppEnvironment.apiBaseUrl;
+  @EnviedField(optional: true)
+  static final bool? useLocalFrontend = _AppEnvironment.useLocalFrontend;
 
   @EnviedField()
   static final String socialMediaLink = _AppEnvironment.socialMediaLink;
@@ -14,6 +18,10 @@ abstract class AppEnvironment {
   @EnviedField()
   static final String termsOfServiceLink = _AppEnvironment.termsOfServiceLink;
 
+  @EnviedField(varName: 'SENTRY_DSN', optional: true)
+  static final String? sentryDSN = _AppEnvironment.sentryDSN;
   @EnviedField()
   static final String googleOauthClientId = _AppEnvironment.googleOauthClientId;
 }
+
+enum DeployEnvironment { development, staging, production }

@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart' show CircularProgressIndicator, Scaffold;
 import 'package:flutter/widgets.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+
 import 'package:ukhsc_mobile_app/components/lib.dart';
 import 'package:ukhsc_mobile_app/core/style/lib.dart';
 
-import '../data/auth_repository.dart';
 import 'widgets/school_grid_view.dart';
+import '../data/provider.dart';
 
 class SchoolLoginPage extends StatefulHookConsumerWidget {
   const SchoolLoginPage({super.key});
@@ -28,7 +29,7 @@ class _SchoolLoginPageState extends ConsumerState<SchoolLoginPage> {
         constraints: BoxConstraints.expand(),
         color: theme.colors.secondaryBackground,
         padding: EdgeInsets.only(top: theme.spaces.sm),
-        child: SafeArea(
+        child: AppSafeArea(
           child: Column(
             children: [
               Text('請選擇您就讀的學校', style: theme.text.common.displaySmall),

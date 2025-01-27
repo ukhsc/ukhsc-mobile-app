@@ -14,7 +14,7 @@ import 'package:ukhsc_mobile_app/core/env.dart';
 import 'package:ukhsc_mobile_app/core/style/lib.dart';
 import 'package:ukhsc_mobile_app/features/auth/lib.dart';
 
-import '../models/oauth.dart';
+import '../models/auth.dart';
 
 class SchoolAccountHintPage extends StatefulHookConsumerWidget {
   final PartnerSchool school;
@@ -38,7 +38,7 @@ class _SchoolAccountHintPageState extends ConsumerState<SchoolAccountHintPage> {
         constraints: BoxConstraints.expand(),
         padding: EdgeInsets.all(theme.spaces.lg),
         color: theme.colors.lightGradient,
-        child: SafeArea(
+        child: AppSafeArea(
           child: Column(
             spacing: theme.spaces.lg,
             children: [
@@ -141,7 +141,8 @@ class _SchoolAccountHintPageState extends ConsumerState<SchoolAccountHintPage> {
   }
 
   Uri getOAuthUri() {
-    final useLocalWeb = kDebugMode && kIsWeb;
+    final useLocalWeb =
+        (AppEnvironment.useLocalFrontend ?? kDebugMode && kIsWeb);
     final redirectUri = Uri(
       scheme: useLocalWeb ? 'http' : 'https',
       host: useLocalWeb ? 'localhost' : 'web.ukhsc.org',

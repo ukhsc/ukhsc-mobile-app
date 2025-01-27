@@ -14,6 +14,7 @@ class AppColors {
 
   final Color primaryBackground;
   final Color secondaryBackground;
+  final Color screenBackground;
 
   final Color onPrimary;
   final Color lightButtonText;
@@ -36,6 +37,7 @@ class AppColors {
     required this.accentText,
     required this.primaryBackground,
     required this.secondaryBackground,
+    required this.screenBackground,
     required this.onPrimary,
     required this.lightButtonText,
     required this.iconColor,
@@ -62,6 +64,8 @@ class AppColors {
       secondaryBackground:
           Color.lerp(a.secondaryBackground, b.secondaryBackground, t) ??
               b.secondaryBackground,
+      screenBackground: Color.lerp(a.screenBackground, b.screenBackground, t) ??
+          b.screenBackground,
       onPrimary: Color.lerp(a.onPrimary, b.onPrimary, t) ?? b.onPrimary,
       lightButtonText: Color.lerp(a.lightButtonText, b.lightButtonText, t) ??
           b.lightButtonText,
@@ -96,6 +100,7 @@ class AppColors {
       ),
       primaryBackground: const Color(0xffFADEC4),
       secondaryBackground: const Color(0xffFFE9D4),
+      screenBackground: whiteColor,
       onPrimary: whiteColor,
       lightButtonText: navyColor,
       iconColor: const Color(0xffB2B2B2),

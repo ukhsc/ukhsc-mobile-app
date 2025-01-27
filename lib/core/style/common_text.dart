@@ -51,7 +51,7 @@ class CommonTextStyle {
 
     final display = initial.copyWith(
       color: colors.primary,
-      fontVariations: AppFontWeight.bold.variations,
+      fontVariations: AppFontWeight.extraBold.variations,
     );
     final headline = initial.copyWith(
       color: colors.primary,

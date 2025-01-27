@@ -1,4 +1,3 @@
-
 import 'dart:async';
 
 import 'package:flutter/widgets.dart';
@@ -9,7 +8,7 @@ import 'presentation/history_retrospect_page.dart';
 
 part 'router.g.dart';
 
-@TypedGoRoute<OnboardingRoute>(path: '/onboarding')
+@TypedGoRoute<OnboardingRoute>(name: 'Onboarding', path: '/onboarding')
 class OnboardingRoute extends GoRouteData {
   const OnboardingRoute();
   @override
@@ -19,7 +18,10 @@ class OnboardingRoute extends GoRouteData {
   }
 }
 
-@TypedGoRoute<HistoryRoute>(path: '/onboarding/history')
+@TypedGoRoute<HistoryRoute>(
+  name: 'History Retrospect',
+  path: '/onboarding/history',
+)
 class HistoryRoute extends GoRouteData {
   const HistoryRoute();
 
@@ -33,7 +35,10 @@ class HistoryRoute extends GoRouteData {
   }
 }
 
-@TypedGoRoute<GetStartedRoute>(path: '/onboarding/get-started')
+@TypedGoRoute<GetStartedRoute>(
+  name: 'Get Started',
+  path: '/onboarding/get-started',
+)
 class GetStartedRoute extends GoRouteData {
   @override
   Widget build(BuildContext context, GoRouterState state) => GetStartedPage();

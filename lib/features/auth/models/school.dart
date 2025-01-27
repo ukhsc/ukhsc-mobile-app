@@ -6,7 +6,7 @@ part 'school.g.dart';
 @freezed
 abstract class PartnerSchool with _$PartnerSchool {
   @JsonSerializable(explicitToJson: true)
-  factory PartnerSchool(
+  const factory PartnerSchool(
     final int id,
     @JsonKey(name: 'short_name') final String shortName,
     @JsonKey(name: 'full_name') final String fullName,

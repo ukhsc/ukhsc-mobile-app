@@ -2,6 +2,7 @@ import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
+import 'package:sentry_dio/sentry_dio.dart';
 import 'package:ua_client_hints/ua_client_hints.dart';
 
 import 'response.dart';
@@ -43,18 +44,21 @@ class ApiClient {
         return handler.next(options);
       },
     ));
+    dio.addSentry();
 
     return ApiClient._(dio);
   }
 
-  ApiResponse<T> _handleResponse<T>(Response response) {
+  Future<ApiResponse<T>> _handleRequest<T>(Future<Response> request) async {
     try {
+      final response = await request;
       return ApiResponse<T>.data(response.data);
     } on DioException catch (e) {
       final response = e.response;
 
       if (e.type == DioExceptionType.badResponse && response != null) {
-        return ApiResponse<T>.error(response.statusCode!, response.data);
+        return ApiResponse.error(
+            response.statusCode!, ApiErrorData.fromJson(response.data));
       } else {
         rethrow;
       }
@@ -77,13 +81,15 @@ class ApiClient {
           if (token != null) 'Authorization': 'Bearer $token',
         },
         responseType: ResponseType.json,
+        sendTimeout: const Duration(seconds: 5),
+        receiveTimeout: const Duration(seconds: 5),
       ),
       data: data,
       queryParameters: queryParameters,
       cancelToken: cancelToken,
     );
 
-    return _handleResponse<T>(await request);
+    return await _handleRequest<T>(request);
   }
 }
 

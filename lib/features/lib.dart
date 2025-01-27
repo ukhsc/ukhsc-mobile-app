@@ -1,3 +1,3 @@
 export 'onboarding/lib.dart';
-export 'home/home_page.dart';
+export 'home/lib.dart';
 export 'auth/lib.dart';

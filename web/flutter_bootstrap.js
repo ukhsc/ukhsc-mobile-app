@@ -34,11 +34,13 @@ async function callbackHandler(searchParams) {
     const deepLink = isSuccess
       ? createDeepLink()
       : createDeepLink("/auth/school");
+    let linkClicked = false;
 
     const openAppBtn = document.getElementById("openAppBtn");
     if (openAppBtn) {
       openAppBtn.addEventListener("click", () => {
         window.location.href = deepLink;
+        linkClicked = true;
       });
     }
 
@@ -51,6 +53,8 @@ async function callbackHandler(searchParams) {
         countdownElement.textContent = countdown;
         if (countdown <= 0) {
           clearInterval(timer);
+          if (linkClicked) return;
+
           window.location.href = deepLink;
         }
       }, 1000);
@@ -81,15 +85,10 @@ async function initializeFlutter() {
       await appRunner.runApp();
       const splashView = document.getElementById("splash-view");
       if (splashView) {
-        const container = splashView.firstElementChild;
-        const content = container.firstElementChild;
-
-        container.style.opacity = "0";
-        content.style.transform = "scale(0.8)";
-
+        splashView.firstElementChild.style.opacity = "0";
         setTimeout(() => {
           splashView.remove();
-        }, 700);
+        }, 500);
       }
     },
   });

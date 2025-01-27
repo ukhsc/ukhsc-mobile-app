@@ -38,7 +38,15 @@ jobs:
 
       - name: Build Web
         run: |
-          flutter build web --release
+          flutter build web --release --source-maps
+      
+      - name: Upload Source Maps
+        run: |
+          dart run sentry_dart_plugin
+        env:
+          SENTRY_AUTH_TOKEN: ${{ secrets.SENTRY_AUTH_TOKEN }}
+          SENTRY_ORG: ${{ secrets.SENTRY_ORG }}
+          SENTRY_PROJECT: ${{ secrets.SENTRY_PROJECT }}
 
       - name: Deploy to Cloudflare Pages
         # TODO: Workaround: https://github.com/cloudflare/wrangler-action/issues/347
