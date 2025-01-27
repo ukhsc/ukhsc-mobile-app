@@ -38,15 +38,7 @@ jobs:
 
       - name: Build Web
         run: |
-          flutter build web --release --source-maps
-      
-      - name: Upload Source Maps
-        run: |
-          dart run sentry_dart_plugin
-        env:
-          SENTRY_AUTH_TOKEN: ${{ secrets.SENTRY_AUTH_TOKEN }}
-          SENTRY_ORG: ${{ secrets.SENTRY_ORG }}
-          SENTRY_PROJECT: ${{ secrets.SENTRY_PROJECT }}
+          flutter build web --release
 
       - name: Deploy to Cloudflare Pages
         # TODO: Workaround: https://github.com/cloudflare/wrangler-action/issues/347
@@ -56,3 +48,15 @@ jobs:
           accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
           gitHubToken: ${{ secrets.GITHUB_TOKEN }}
           command: pages deploy --project-name=ukhsc-mobile-web build/web
+
+      # See Also: 
+      #  1. https://github.com/flutter/flutter/issues/145111
+      #  2. https://github.com/getsentry/sentry-dart/issues/897
+      - name: Upload Source Maps
+        run: |
+          flutter build web --source-maps
+          dart run sentry_dart_plugin
+        env:
+          SENTRY_AUTH_TOKEN: ${{ secrets.SENTRY_AUTH_TOKEN }}
+          SENTRY_ORG: ${{ secrets.SENTRY_ORG }}
+          SENTRY_PROJECT: ${{ secrets.SENTRY_PROJECT }}
