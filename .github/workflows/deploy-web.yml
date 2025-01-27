@@ -36,10 +36,23 @@ jobs:
         env:
           ENV_FILE_CONTENTS: ${{ secrets.ENV_FILE_CONTENTS }}
 
+      - name: Generate version
+        id: version
+        run: |
+          echo "BUILD_ID=$(date +%Y%m%d)-$(git rev-parse --short HEAD)" >> $GITHUB_OUTPUT
+
       - name: Build Web
         run: |
           flutter build web --release
 
+          cd build/web
+          for file in *.js; do
+            if [ -f "$file" ]; then
+              mv "$file" "${file%.*}.v${{ steps.version.outputs.BUILD_ID }}.js"
+              find . -type f -name "*.html" -exec sed -i "s|$file|${file%.*}.v${{ steps.version.outputs.BUILD_ID }}.js|g" {} +
+              find . -type f -name "*.js" -exec sed -i "s|$file|${file%.*}.v${{ steps.version.outputs.BUILD_ID }}.js|g" {} +
+            fi
+          done
       - name: Deploy to Cloudflare Pages
         # TODO: Workaround: https://github.com/cloudflare/wrangler-action/issues/347
         uses: cloudflare/wrangler-action@v3.13.0
@@ -49,7 +62,7 @@ jobs:
           gitHubToken: ${{ secrets.GITHUB_TOKEN }}
           command: pages deploy --project-name=ukhsc-mobile-web build/web
 
-      # See Also: 
+      # See Also:
       #  1. https://github.com/flutter/flutter/issues/145111
       #  2. https://github.com/getsentry/sentry-dart/issues/897
       - name: Upload Source Maps
