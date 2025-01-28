@@ -37,6 +37,9 @@ Future<void> main() async {
           options.enableTimeToFullDisplayTracing = true;
           options.attachScreenshot = true;
 
+          options.experimental.replay.sessionSampleRate = 0.3;
+          options.experimental.replay.onErrorSampleRate = 1.0;
+
           options.addIntegration(
               LoggingIntegration(minBreadcrumbLevel: Level.FINE));
         },

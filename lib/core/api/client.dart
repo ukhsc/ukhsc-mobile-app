@@ -1,6 +1,7 @@
 import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:logging/logging.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:sentry_dio/sentry_dio.dart';
 import 'package:ua_client_hints/ua_client_hints.dart';
@@ -21,6 +22,7 @@ extension CancelTokenX on Ref {
 
 class ApiClient {
   final Dio _client;
+  final _logger = Logger('ApiClient');
 
   ApiClient._(this._client);
 
@@ -57,8 +59,12 @@ class ApiClient {
       final response = e.response;
 
       if (e.type == DioExceptionType.badResponse && response != null) {
-        return ApiResponse.error(
-            response.statusCode!, ApiErrorData.fromJson(response.data));
+        final data = ApiErrorData.fromJson(response.data);
+        if (data is UnknownApiError) {
+          _logger.warning('Unknown API error: ${data.raw}');
+        }
+
+        return ApiResponse.error(response.statusCode!, data);
       } else {
         rethrow;
       }
@@ -81,7 +87,7 @@ class ApiClient {
           if (token != null) 'Authorization': 'Bearer $token',
         },
         responseType: ResponseType.json,
-        sendTimeout: const Duration(seconds: 5),
+        sendTimeout: kIsWeb ? null : const Duration(seconds: 5),
         receiveTimeout: const Duration(seconds: 5),
       ),
       data: data,

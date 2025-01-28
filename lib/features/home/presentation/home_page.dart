@@ -76,7 +76,7 @@ class _HomePageState extends ConsumerState<HomePage> {
                   children: [
                     // TODO: Replace with user's nickname and greeting message
                     Text(
-                      '晚安，同學',
+                      '${getGreetings()}，同學',
                       style: theme.text.common.headlineMedium
                           .copyWith(color: theme.colors.accentText),
                     ),
@@ -97,7 +97,7 @@ class _HomePageState extends ConsumerState<HomePage> {
               child: Assets.images.tryHack.image(),
             ),
             Container(
-              constraints: BoxConstraints.expand(height: 650),
+              constraints: BoxConstraints.expand(height: 800),
               decoration: BoxDecoration(
                 gradient: LinearGradient(
                   colors: [
@@ -116,7 +116,7 @@ class _HomePageState extends ConsumerState<HomePage> {
               alignment: Alignment.bottomCenter,
               child: Column(
                 children: [
-                  SizedBox(height: 330),
+                  SizedBox(height: MediaQuery.of(context).size.height * 0.35),
                   Text(
                     '更多功能即將推出',
                     style: theme.text.common.displaySmall,
@@ -168,5 +168,20 @@ class _HomePageState extends ConsumerState<HomePage> {
         )
       ],
     );
+  }
+
+  String getGreetings() {
+    final now = DateTime.now();
+    final hour = now.hour;
+
+    if (hour < 6) {
+      return '晚安';
+    } else if (hour < 12) {
+      return '早安';
+    } else if (hour < 18) {
+      return '午安';
+    } else {
+      return '晚安';
+    }
   }
 }

@@ -45,8 +45,9 @@ class _NavigationBarState extends ConsumerState<NavigationBar> {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  _buildLeftNavigation(selectedPage),
-                  _buildRightNavigation(selectedPage),
+                  ..._buildLeftNavigation(selectedPage),
+                  Spacer(flex: 2),
+                  ..._buildRightNavigation(selectedPage),
                 ],
               ),
             ),
@@ -115,10 +116,11 @@ class _NavigationBarState extends ConsumerState<NavigationBar> {
     );
   }
 
-  Widget _buildLeftNavigation(ValueNotifier<NavigationPage> selectedPage) {
-    return Row(
-      children: [
-        NavigationItem(
+  List<Widget> _buildLeftNavigation(
+      ValueNotifier<NavigationPage> selectedPage) {
+    return [
+      Flexible(
+        child: NavigationItem(
           title: '首頁',
           selectedIcon: Icons.home_rounded,
           unselectedIcon: Icons.home_outlined,
@@ -126,7 +128,9 @@ class _NavigationBarState extends ConsumerState<NavigationBar> {
           selectedPage: selectedPage,
           onTap: () => selectedPage.value = NavigationPage.home,
         ),
-        NavigationItem(
+      ),
+      Flexible(
+        child: NavigationItem(
           title: '地圖',
           selectedIcon: Icons.map_rounded,
           unselectedIcon: Icons.map_outlined,
@@ -134,14 +138,15 @@ class _NavigationBarState extends ConsumerState<NavigationBar> {
           selectedPage: selectedPage,
           onTap: () => selectedPage.value = NavigationPage.map,
         ),
-      ],
-    );
+      ),
+    ];
   }
 
-  Widget _buildRightNavigation(ValueNotifier<NavigationPage> selectedPage) {
-    return Row(
-      children: [
-        NavigationItem(
+  List<Widget> _buildRightNavigation(
+      ValueNotifier<NavigationPage> selectedPage) {
+    return [
+      Flexible(
+        child: NavigationItem(
           title: '店家',
           selectedIcon: Icons.storefront_rounded,
           unselectedIcon: Icons.storefront_outlined,
@@ -149,7 +154,9 @@ class _NavigationBarState extends ConsumerState<NavigationBar> {
           selectedPage: selectedPage,
           onTap: () => selectedPage.value = NavigationPage.store,
         ),
-        NavigationItem(
+      ),
+      Flexible(
+        child: NavigationItem(
           title: '帳號',
           selectedIcon: Icons.person_rounded,
           unselectedIcon: Icons.person_outlined,
@@ -157,8 +164,8 @@ class _NavigationBarState extends ConsumerState<NavigationBar> {
           selectedPage: selectedPage,
           onTap: () => selectedPage.value = NavigationPage.profile,
         ),
-      ],
-    );
+      ),
+    ];
   }
 }
 
@@ -201,46 +208,49 @@ class NavigationItem extends HookWidget {
       return null;
     }, [isSelected]);
 
-    return AnimatedBuilder(
-      animation: animationController,
-      builder: (context, child) {
-        final color = Color.lerp(
-          theme.colors.iconColor,
-          theme.colors.selectedIconColor,
-          animationController.value,
-        );
+    return LayoutBuilder(builder: (context, constraints) {
+      print(constraints.maxWidth);
+      return AnimatedBuilder(
+        animation: animationController,
+        builder: (context, child) {
+          final color = Color.lerp(
+            theme.colors.iconColor,
+            theme.colors.selectedIconColor,
+            animationController.value,
+          );
 
-        return InkWell(
-          onTap: onTap,
-          borderRadius: BorderRadius.circular(theme.spaces.xs),
-          overlayColor: WidgetStateProperty.all(
-              theme.colors.selectedIconColor.withValues(alpha: 0.1)),
-          child: Container(
-            padding: EdgeInsets.symmetric(
-              horizontal: 20,
-              vertical: theme.spaces.xs,
-            ),
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              spacing: theme.spaces.xxs,
-              children: [
-                Transform.scale(
-                  scale: 1.0 + (animationController.value * 0.1),
-                  child: Icon(
-                    isSelected ? selectedIcon : unselectedIcon,
-                    color: color,
-                    size: theme.spaces.xl,
+          return InkWell(
+            onTap: onTap,
+            borderRadius: BorderRadius.circular(theme.spaces.xs),
+            overlayColor: WidgetStateProperty.all(
+                theme.colors.selectedIconColor.withValues(alpha: 0.1)),
+            child: Container(
+              padding: EdgeInsets.symmetric(
+                horizontal: constraints.maxWidth * 0.25,
+                vertical: theme.spaces.xs,
+              ),
+              child: Column(
+                mainAxisSize: MainAxisSize.max,
+                spacing: theme.spaces.xxs,
+                children: [
+                  Transform.scale(
+                    scale: 1.0 + (animationController.value * 0.1),
+                    child: Icon(
+                      isSelected ? selectedIcon : unselectedIcon,
+                      color: color,
+                      size: theme.spaces.xl,
+                    ),
                   ),
-                ),
-                Text(
-                  title,
-                  style: theme.text.common.bodyMedium.copyWith(color: color),
-                ),
-              ],
+                  Text(
+                    title,
+                    style: theme.text.common.bodyMedium.copyWith(color: color),
+                  ),
+                ],
+              ),
             ),
-          ),
-        );
-      },
-    );
+          );
+        },
+      );
+    });
   }
 }
