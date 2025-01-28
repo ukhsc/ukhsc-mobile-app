@@ -13,6 +13,7 @@ import 'package:ukhsc_mobile_app/components/lib.dart';
 import 'package:ukhsc_mobile_app/core/env.dart';
 import 'package:ukhsc_mobile_app/core/style/lib.dart';
 import 'package:ukhsc_mobile_app/features/auth/lib.dart';
+import 'package:ukhsc_mobile_app/core/web.dart';
 
 import '../models/auth.dart';
 
@@ -36,18 +37,22 @@ class _SchoolAccountHintPageState extends ConsumerState<SchoolAccountHintPage> {
       extendBodyBehindAppBar: true,
       body: Container(
         constraints: BoxConstraints.expand(),
-        padding: EdgeInsets.all(theme.spaces.lg),
         color: theme.colors.lightGradient,
-        child: AppSafeArea(
-          child: Column(
-            spacing: theme.spaces.lg,
-            children: [
-              _buildTitle(theme),
-              Divider(),
-              _buildAccountHint(theme),
-              Divider(),
-              _buildButton(theme),
-            ],
+        child: SingleChildScrollView(
+          child: Padding(
+            padding: EdgeInsets.all(theme.spaces.md),
+            child: AppSafeArea(
+              child: Column(
+                spacing: theme.spaces.sm,
+                children: [
+                  _buildTitle(theme),
+                  Divider(),
+                  _buildAccountHint(theme),
+                  Divider(),
+                  _buildButton(theme),
+                ],
+              ),
+            ),
           ),
         ),
       ),
@@ -68,13 +73,13 @@ class _SchoolAccountHintPageState extends ConsumerState<SchoolAccountHintPage> {
 
   Widget _buildAccountHint(AppTheme theme) {
     return Column(
-      spacing: theme.spaces.sm,
+      spacing: theme.spaces.xs,
       children: [
         Text('帳號格式', style: theme.text.common.headlineLarge),
         Text('倘若您對於${widget.school.shortName}的帳號格式不是很清楚，我們提供貴校的帳號格式及預設密碼作為參考。',
             style: theme.text.common.bodyLarge),
         Padding(
-          padding: EdgeInsets.all(theme.spaces.md),
+          padding: EdgeInsets.symmetric(horizontal: theme.spaces.md),
           child: Container(
             padding: EdgeInsets.all(theme.spaces.md),
             decoration: BoxDecoration(
@@ -121,9 +126,11 @@ class _SchoolAccountHintPageState extends ConsumerState<SchoolAccountHintPage> {
   Widget _buildButton(AppTheme theme) {
     return ComposableButton(
       onPressed: () {
+        final isWebView = kIsWeb && WebDetector.isWebView();
+
         launchUrl(
           getOAuthUri(),
-          webOnlyWindowName: '_self',
+          webOnlyWindowName: isWebView ? '_blank' : '_self',
           mode: LaunchMode.externalApplication,
         );
       },

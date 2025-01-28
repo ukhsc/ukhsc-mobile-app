@@ -1,6 +1,7 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/widgets.dart';
-import 'package:universal_html/html.dart' as html;
+
+import 'package:ukhsc_mobile_app/core/web.dart';
 
 // Workaround for iOS PWA bottom padding.
 // See Also: https://github.com/flutter/flutter/issues/84833
@@ -17,10 +18,7 @@ class AppSafeArea extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final isPWA =
-        kIsWeb && html.window.matchMedia('(display-mode: standalone)').matches;
-    final isIosPWA = isPWA &&
-        html.window.navigator.userAgent.contains(RegExp(r'iPhone|iPad|iPod'));
+    final isIosPWA = kIsWeb && WebDetector.isPWA() && WebDetector.isIOS();
 
     return SafeArea(
         top: top,
