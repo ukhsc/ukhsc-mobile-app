@@ -197,10 +197,58 @@ async function detectDeviceAndProceed() {
     return false;
   }
 
-  if (isIOSDevice() && isSafariBrowser() && !window.navigator.standalone) {
-    await showIOSInstallGuide();
-  }
   return true;
+}
+
+function isInWebView() {
+  const ua = navigator.userAgent;
+  const patterns = [
+    /FB[\w_]+\/(Messenger)/,
+    /^(?!.*\buseragents)(?!.*\bIABMV).*(FB_IAB|FBAN)/,
+    /Instagram/,
+    /FB[\w_]+\//,
+    /Twitter/,
+    /Line\//,
+    /MicroMessenger\//,
+    /Barcelona/,
+    /musical_ly|Bytedance/,
+    /Snapchat/,
+    /LinkedInApp/,
+    /GSA/,
+    /WebView/,
+    /(iPhone|iPod|iPad)(?!.*Safari)/,
+    /Android.*(\;\s+wv|Version\/\d\.\d\s+Chrome\/\d+(\\.0){3})/,
+    /Linux; U; Android/,
+  ];
+  return patterns.some((pattern) => pattern.test(ua));
+}
+
+async function showWebViewWarning() {
+  const template = await loadTemplate("webview-warning");
+  if (!template) return;
+
+  const warningView = document.getElementById("webview-warning-view");
+  if (!warningView) return;
+
+  const warning = template.content.cloneNode(true);
+  warningView.innerHTML = "";
+  warningView.appendChild(warning);
+
+  const copyLinkBtn = document.getElementById("copyLinkBtn");
+  if (copyLinkBtn) {
+    copyLinkBtn.addEventListener("click", () => {
+      const currentUrl = window.location.href;
+      navigator.clipboard
+        .writeText(currentUrl)
+        .then(() => {
+          copyLinkBtn.textContent = "已複製";
+          setTimeout(() => {
+            copyLinkBtn.textContent = "複製連結";
+          }, 2000);
+        })
+        .catch(console.error);
+    });
+  }
 }
 
 document.addEventListener("DOMContentLoaded", async () => {
@@ -215,9 +263,14 @@ document.addEventListener("DOMContentLoaded", async () => {
       ? JSON.parse(searchParams.get("state"))
       : null;
 
-    if (isCallback && state?.is_native_app) {
+    if (isInWebView()) {
+      await showWebViewWarning();
+    } else if (isCallback && state?.is_native_app) {
       callbackHandler(searchParams);
     } else {
+      if (isIOSDevice() && isSafariBrowser() && !window.navigator.standalone) {
+        await showIOSInstallGuide();
+      }
       initializeFlutter();
     }
   } catch (error) {

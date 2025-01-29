@@ -7,7 +7,6 @@ import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:flutter_web_plugins/url_strategy.dart';
 import 'package:logging/logging.dart';
-import 'package:logging_appenders/logging_appenders.dart';
 import 'package:sentry_flutter/sentry_flutter.dart';
 import 'package:sentry_logging/sentry_logging.dart';
 import 'package:ukhsc_mobile_app/core/env.dart';
@@ -17,7 +16,7 @@ import 'core/style/lib.dart';
 import 'core/router.dart';
 
 Future<void> main() async {
-  PrintAppender.setupLogging();
+  Logger.root.level = Level.ALL;
   runZonedGuarded(() async {
     platformSetup();
 

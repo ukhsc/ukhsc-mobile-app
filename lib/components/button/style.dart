@@ -4,12 +4,39 @@ import 'package:flutter/widgets.dart';
 import 'package:ukhsc_mobile_app/core/style/lib.dart';
 
 abstract class ButtonStyle {
-  final Color foregroundColor;
+  final Color? foregroundColor;
 
-  const ButtonStyle({required this.foregroundColor});
+  const ButtonStyle({this.foregroundColor});
 
   Widget build(Widget child, VoidCallback? onPressed);
   TextStyle textStyle();
+}
+
+class PlainStyle extends ButtonStyle {
+  const PlainStyle({required super.foregroundColor});
+
+  @override
+  Widget build(Widget child, VoidCallback? onPressed) {
+    final theme = useTheme();
+
+    return md.TextButton(
+      onPressed: onPressed,
+      style: md.TextButton.styleFrom(
+        foregroundColor: foregroundColor,
+        overlayColor: theme.colors.overlay,
+        iconColor: foregroundColor,
+        iconSize: 20,
+      ),
+      child: child,
+    );
+  }
+
+  @override
+  TextStyle textStyle() {
+    final theme = useTheme();
+
+    return theme.text.button.copyWith(color: foregroundColor);
+  }
 }
 
 class FilledStyle extends ButtonStyle {
@@ -54,10 +81,13 @@ class FilledStyle extends ButtonStyle {
         overlayColor: overlayColor,
         alignment: Alignment.centerLeft,
         shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.all(theme.radii.large),
+          borderRadius: BorderRadius.all(theme.radii.medium),
         ),
       ),
-      child: child,
+      child: IconTheme(
+        data: IconThemeData(size: 24, color: foregroundColor),
+        child: child,
+      ),
     );
   }
 
@@ -65,9 +95,7 @@ class FilledStyle extends ButtonStyle {
   TextStyle textStyle() {
     final theme = useTheme();
 
-    return theme.text.button.copyWith(
-      color: foregroundColor,
-    );
+    return theme.text.button.copyWith(color: foregroundColor);
   }
 }
 

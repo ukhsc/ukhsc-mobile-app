@@ -76,7 +76,7 @@ class AppTheme extends ThemeExtension<AppTheme> {
         dragHandleColor: theme.colors.secondaryText.withValues(alpha: 0.5),
         dragHandleSize: Size(34, 7),
         modalBarrierColor: theme.colors.modalBarrier,
-        backgroundColor: theme.colors.overlay,
+        backgroundColor: Colors.transparent,
       ),
       progressIndicatorTheme: ProgressIndicatorThemeData(
         color: theme.colors.primary,

@@ -25,9 +25,9 @@ class AppRadius {
   factory AppRadius.normal() {
     return AppRadius(
       extraLarge: Radius.circular(50),
-      large: Radius.circular(25),
-      medium: Radius.circular(20),
-      small: Radius.circular(10),
+      large: Radius.circular(30),
+      medium: Radius.circular(25),
+      small: Radius.circular(20),
     );
   }
 }

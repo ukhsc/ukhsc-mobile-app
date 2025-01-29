@@ -4,6 +4,7 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:flutter/material.dart' show InkWell;
 
 import 'package:ukhsc_mobile_app/core/style/lib.dart';
+import 'package:ukhsc_mobile_app/features/lib.dart';
 
 enum NavigationPage {
   home,
@@ -58,61 +59,11 @@ class _NavigationBarState extends ConsumerState<NavigationBar> {
             right: 0,
             child: Align(
               alignment: Alignment.topCenter,
-              child: _buildMembershipCard(),
+              child: MembershipCardButton(),
             ),
           ),
         ],
       ),
-    );
-  }
-
-  Widget _buildMembershipCard() {
-    final theme = useTheme();
-    final isPressed = useState(false);
-
-    return Column(
-      spacing: theme.spaces.xs,
-      children: [
-        GestureDetector(
-          onTapDown: (_) => isPressed.value = true,
-          onTapUp: (_) => isPressed.value = false,
-          onTapCancel: () => isPressed.value = false,
-          child: AnimatedScale(
-            scale: isPressed.value ? 0.95 : 1.0,
-            duration: const Duration(milliseconds: 100),
-            child: InkWell(
-              onTap: () {},
-              borderRadius: BorderRadius.all(theme.radii.extraLarge),
-              child: Container(
-                padding: EdgeInsets.all(theme.spaces.md),
-                decoration: BoxDecoration(
-                  color: theme.colors.primary,
-                  borderRadius: BorderRadius.all(theme.radii.extraLarge),
-                  boxShadow: [
-                    BoxShadow(
-                      color: theme.colors.primary.withValues(alpha: 0.2),
-                      blurRadius: 8,
-                      offset: Offset(0, 4),
-                      spreadRadius: 2,
-                    ),
-                  ],
-                ),
-                child: Icon(
-                  Icons.credit_card_rounded,
-                  size: theme.spaces.xl,
-                  color: theme.colors.primaryBackground,
-                ),
-              ),
-            ),
-          ),
-        ),
-        Text(
-          '數位會員卡',
-          style: theme.text.common.bodyMedium.copyWith(
-            color: theme.colors.iconColor,
-          ),
-        ),
-      ],
     );
   }
 
@@ -209,7 +160,6 @@ class NavigationItem extends HookWidget {
     }, [isSelected]);
 
     return LayoutBuilder(builder: (context, constraints) {
-      print(constraints.maxWidth);
       return AnimatedBuilder(
         animation: animationController,
         builder: (context, child) {

@@ -9,11 +9,13 @@ class AppTextStyle {
 
   final TextStyle button;
   final TextStyle specialNumber;
+  final TextStyle membershipCardYear;
 
   AppTextStyle({
     required this.common,
     required this.button,
     required this.specialNumber,
+    required this.membershipCardYear,
   });
 
   static AppTextStyle lerp(AppTextStyle a, AppTextStyle b, double t) {
@@ -22,6 +24,9 @@ class AppTextStyle {
       button: TextStyle.lerp(a.button, b.button, t) ?? b.button,
       specialNumber: TextStyle.lerp(a.specialNumber, b.specialNumber, t) ??
           b.specialNumber,
+      membershipCardYear:
+          TextStyle.lerp(a.membershipCardYear, b.membershipCardYear, t) ??
+              b.membershipCardYear,
     );
   }
 
@@ -30,14 +35,18 @@ class AppTextStyle {
 
     return AppTextStyle(
       common: commonStyle,
-      button: commonStyle.titleSmall.copyWith(
-        fontSize: 18,
-        fontVariations: AppFontWeight.bold.variations,
-      ),
+      button: commonStyle.titleSmall
+          .copyWith(fontVariations: AppFontWeight.bold.variations),
       specialNumber: TextStyle(
         fontFamily: FontFamily.delaGothicOne,
         fontSize: 24,
         color: colors.primary,
+      ),
+      membershipCardYear: TextStyle(
+        fontFamily: FontFamily.iBMPlexMono,
+        fontWeight: FontWeight.w600,
+        fontSize: 24,
+        color: colors.primary.withValues(alpha: 0.2),
       ),
     );
   }

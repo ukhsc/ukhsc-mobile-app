@@ -99,6 +99,7 @@ class _GetStartedPageState extends ConsumerState<GetStartedPage> {
                 onPressed: () {
                   showModalBottomSheet(
                     context: context,
+                    backgroundColor: theme.colors.overlay,
                     builder: (context) => const LoginOptionsSheets(),
                   );
                 },

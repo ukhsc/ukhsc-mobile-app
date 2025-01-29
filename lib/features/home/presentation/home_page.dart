@@ -105,7 +105,7 @@ class _HomePageState extends ConsumerState<HomePage> {
                     Colors.white.withValues(alpha: 0.85),
                     Colors.white,
                   ],
-                  stops: [0.01, 0.15, 0.75],
+                  stops: [0.01, 0.05, 0.5],
                   begin: Alignment.topCenter,
                   end: Alignment.bottomCenter,
                 ),
@@ -116,7 +116,7 @@ class _HomePageState extends ConsumerState<HomePage> {
               alignment: Alignment.bottomCenter,
               child: Column(
                 children: [
-                  SizedBox(height: MediaQuery.of(context).size.height * 0.35),
+                  SizedBox(height: MediaQuery.of(context).size.height * 0.3),
                   Text(
                     '更多功能即將推出',
                     style: theme.text.common.displaySmall,

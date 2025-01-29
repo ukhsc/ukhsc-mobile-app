@@ -1,9 +1,9 @@
 import 'dart:convert';
 
 import 'package:dio/dio.dart';
-import 'package:logging/logging.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import 'package:ukhsc_mobile_app/core/logger.dart';
 
 import 'package:ukhsc_mobile_app/features/auth/data/auth_data_source.dart';
 import 'package:ukhsc_mobile_app/features/auth/models/auth.dart';
@@ -62,7 +62,7 @@ class AuthRepositoryImpl implements AuthRepository {
   final FlutterSecureStorage secureStorage;
   final _storageSchemaVersion = 1;
 
-  final _logger = Logger('AuthRepositoryImpl');
+  final _logger = AppLogger.getLogger('auth.repo');
 
   AuthRepositoryImpl({required this.dataSource, required this.secureStorage});
 

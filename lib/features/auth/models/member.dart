@@ -10,7 +10,7 @@ abstract class StudentMember with _$StudentMember {
     final String id,
     final int schoolAttendedId,
     final int userId,
-    final String? studentId,
+    final String? studentIdHash,
     final String? nickname,
     final DateTime createdAt,
     final DateTime? activatedAt,

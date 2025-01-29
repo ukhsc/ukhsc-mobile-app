@@ -7,6 +7,7 @@ import 'package:logging/logging.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 import 'package:ukhsc_mobile_app/core/api/lib.dart';
+import 'package:ukhsc_mobile_app/core/logger.dart';
 
 import '../models/school.dart';
 import '../models/user.dart';
@@ -62,7 +63,7 @@ class UserState {
 
 @Riverpod(keepAlive: true)
 class UserStateNotifier extends _$UserStateNotifier {
-  final Logger _logger = Logger('UserStateNotifier');
+  final Logger _logger = AppLogger.getLogger('user_state');
 
   @override
   FutureOr<UserState?> build() async {
@@ -82,6 +83,7 @@ class UserStateNotifier extends _$UserStateNotifier {
   }
 
   Future<UserState> _fetchState() async {
+    await Future.delayed(const Duration(seconds: 1));
     bool offlineMode;
     try {
       offlineMode = !await _hasNetwork().timeout(Duration(seconds: 5));

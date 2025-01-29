@@ -57,21 +57,23 @@
       }
       #native-callback-view,
       #splash-view,
-      #device-not-supported-view {
+      #device-not-supported-view,
+      #webview-warning-view {
         height: 100vh;
         width: 100vw;
         font-size: 16px;
       }
-      @media (min-width: 481px) {
+      @media (min-width: 881px) {
         #native-callback-view,
-        #splash-view {
+        #splash-view,
+        #webview-warning-view {
           display: none;
         }
         #device-not-supported-view {
           display: block;
         }
       }
-      @media (max-width: 480px) {
+      @media (max-width: 880px) {
         #device-not-supported-view {
           display: none;
         }
@@ -82,6 +84,7 @@
     <div id="native-callback-view"></div>
     <div id="splash-view"></div>
     <div id="device-not-supported-view"></div>
+    <div id="webview-warning-view"></div>
     <script src="https://unpkg.com/@tailwindcss/browser@4"></script>
     <script type="module" src="flutter_bootstrap.js"></script>
   </body>

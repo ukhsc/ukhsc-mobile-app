@@ -1,6 +1,6 @@
 import 'package:dio/dio.dart';
-import 'package:logging/logging.dart';
 import 'package:ukhsc_mobile_app/core/api/lib.dart';
+import 'package:ukhsc_mobile_app/core/logger.dart';
 import 'package:ukhsc_mobile_app/features/auth/models/member.dart';
 import 'package:ukhsc_mobile_app/features/auth/models/server_status.dart';
 
@@ -12,7 +12,7 @@ class AuthDataSource {
   final ApiClient api;
   AuthDataSource({required this.api});
 
-  final _logger = Logger('AuthDataSource');
+  final _logger = AppLogger.getLogger('auth.data');
 
   Future<List<PartnerSchool>> fetchPartnerSchools({
     CancelToken? cancelToken,

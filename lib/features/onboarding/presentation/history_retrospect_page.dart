@@ -64,14 +64,20 @@ class _HistoryRetrospectPageState extends ConsumerState<HistoryRetrospectPage> {
                 alignment: Alignment.bottomCenter,
                 child: Padding(
                   padding: EdgeInsets.all(theme.spaces.xs),
-                  child: TextButton.icon(
+                  child: ComposableButton(
                     onPressed: () {
                       widget.onFinished();
                     },
-                    alignment: IconAlignment.right,
-                    icon: FontAwesomeIcons.arrowRight,
-                    color: buttonColor,
-                    label: '跳過介紹',
+                    style: PlainStyle(foregroundColor: buttonColor),
+                    content: Text('跳過介紹',
+                            style: TextStyle(
+                                fontVariations:
+                                    AppFontWeight.semiBold.variations))
+                        .asButtonContent
+                        .withIcon(
+                          FontAwesomeIcons.arrowRight,
+                          alignment: IconAlignment.right,
+                        ),
                   ),
                 ),
               ),

@@ -1,11 +1,11 @@
 import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:logging/logging.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:sentry_dio/sentry_dio.dart';
 import 'package:ua_client_hints/ua_client_hints.dart';
 
+import 'package:ukhsc_mobile_app/core/logger.dart';
 import 'response.dart';
 import '../env.dart';
 
@@ -22,7 +22,7 @@ extension CancelTokenX on Ref {
 
 class ApiClient {
   final Dio _client;
-  final _logger = Logger('ApiClient');
+  final _logger = AppLogger.getLogger('api');
 
   ApiClient._(this._client);
 

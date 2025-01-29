@@ -4,6 +4,11 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 import 'style.dart';
 
+enum IconAlignment {
+  left,
+  right,
+}
+
 class ComposableButton extends HookWidget {
   final ButtonStyle style;
   final ButtonContent content;
@@ -22,10 +27,7 @@ class ComposableButton extends HookWidget {
       AnimatedDefaultTextStyle(
         style: style.textStyle(),
         duration: const Duration(milliseconds: 200),
-        child: IconTheme(
-          data: IconThemeData(size: 24, color: style.foregroundColor),
-          child: content.child,
-        ),
+        child: content.child,
       ),
       onPressed,
     );
@@ -37,14 +39,16 @@ class ButtonContent {
 
   const ButtonContent(this.child);
 
-  ButtonContent withIcon(IconData icon) {
+  ButtonContent withIcon(IconData icon,
+      {IconAlignment alignment = IconAlignment.left}) {
     return ButtonContent(
       Row(
         mainAxisSize: MainAxisSize.min,
         spacing: 8,
         children: [
-          FaIcon(icon),
+          if (alignment == IconAlignment.left) FaIcon(icon),
           child,
+          if (alignment == IconAlignment.right) FaIcon(icon),
         ],
       ),
     );
