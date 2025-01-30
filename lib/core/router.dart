@@ -4,11 +4,20 @@ import 'package:sentry_flutter/sentry_flutter.dart';
 import '../features/lib.dart';
 
 GoRouter getRouterConfig(bool hasCredential) {
+  final initialLocation =
+      hasCredential ? HomeRoute().location : OnboardingRoute().location;
+
   return GoRouter(
-    initialLocation:
-        hasCredential ? HomeRoute().location : OnboardingRoute().location,
+    initialLocation: initialLocation,
     debugLogDiagnostics: true,
     routes: [...$homeRoute, ...$onboardingRoute, ...$authRoute],
+    redirect: (context, state) {
+      if (state.path == '/' || state.path == HomeRoute().location) {
+        return initialLocation;
+      }
+
+      return null;
+    },
     observers: [SentryNavigatorObserver()],
   );
 }
