@@ -1,7 +1,6 @@
 import 'package:dio/dio.dart';
 import 'package:ukhsc_mobile_app/core/api/lib.dart';
 import 'package:ukhsc_mobile_app/core/logger.dart';
-import 'package:ukhsc_mobile_app/features/auth/models/member.dart';
 import 'package:ukhsc_mobile_app/features/auth/models/server_status.dart';
 
 import '../models/school.dart';
@@ -14,7 +13,7 @@ class AuthDataSource {
 
   final _logger = AppLogger.getLogger('auth.data');
 
-  Future<List<PartnerSchool>> fetchPartnerSchools({
+  Future<List<SchoolWithConfig>> fetchPartnerSchools({
     CancelToken? cancelToken,
   }) async {
     final response = await api.request<List>(HttpMethod.get, '/school',
@@ -25,7 +24,7 @@ class AuthDataSource {
         return data
             .map((e) => PartnerSchool.fromJson(e))
             .toList()
-            .cast<PartnerSchool>();
+            .cast<SchoolWithConfig>();
       case ApiResponseError():
         throw Exception('Failed to fetch partner schools');
     }
@@ -96,25 +95,6 @@ class AuthDataSource {
         _logger.severe('Failed to register member: $data');
         // TODO: handle various error cases
         throw Exception('Failed to register member');
-    }
-  }
-
-  Future<StudentMember> fetchMemberData({
-    required String accessToken,
-    CancelToken? cancelToken,
-  }) async {
-    final response = await api.request<Map<String, dynamic>>(
-      HttpMethod.get,
-      '/member/me',
-      token: accessToken,
-      cancelToken: cancelToken,
-    );
-
-    switch (response) {
-      case ApiResponseData(:final data):
-        return StudentMember.fromJson(data);
-      case ApiResponseError():
-        throw Exception('Failed to fetch member data');
     }
   }
 

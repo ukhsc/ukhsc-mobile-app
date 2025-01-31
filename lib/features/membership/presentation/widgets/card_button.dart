@@ -4,9 +4,9 @@ import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 import 'package:ukhsc_mobile_app/core/style/lib.dart';
+import 'package:ukhsc_mobile_app/features/auth/lib.dart';
 
 import 'card_sheet.dart';
-import '../provider.dart';
 
 class MembershipCardButton extends HookConsumerWidget {
   const MembershipCardButton({super.key});
@@ -16,18 +16,17 @@ class MembershipCardButton extends HookConsumerWidget {
     final theme = useTheme();
     final autoOpened = useState(false);
 
-    final state = ref.watch(membershipControllerProvider);
-    final enabled = state.hasValue && state.value?.permission == true;
+    final state = ref.watch(userStateNotifierProvider);
+    final enabled =
+        state.value?.roles.contains(UserRole.studentMember) ?? false;
 
-    state.whenData((value) {
-      if (enabled && !autoOpened.value) {
-        // TODO: In the 1.0 release, we will disable auto-open the card sheet.
-        WidgetsBinding.instance.addPostFrameCallback((_) {
-          autoOpened.value = true;
-          openCardSheet(context);
-        });
-      }
-    });
+    if (enabled && !autoOpened.value) {
+      // TODO: In the 1.0 release, we will disable auto-open the card sheet.
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        autoOpened.value = true;
+        openCardSheet(context);
+      });
+    }
 
     return Column(
       spacing: theme.spaces.xs,

@@ -18,7 +18,7 @@ import 'package:ukhsc_mobile_app/core/web.dart';
 import '../models/auth.dart';
 
 class SchoolAccountHintPage extends StatefulHookConsumerWidget {
-  final PartnerSchool school;
+  final SchoolWithConfig school;
 
   const SchoolAccountHintPage({super.key, required this.school});
 

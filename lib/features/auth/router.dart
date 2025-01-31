@@ -24,7 +24,7 @@ class SchoolLoginRoute extends GoRouteData {
 
 @TypedGoRoute<SchoolAccountHintRoute>(path: '/auth/school/hint')
 class SchoolAccountHintRoute extends GoRouteData {
-  final PartnerSchool? $extra;
+  final SchoolWithConfig? $extra;
 
   const SchoolAccountHintRoute({required this.$extra});
 

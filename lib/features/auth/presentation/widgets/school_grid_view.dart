@@ -9,7 +9,7 @@ import 'package:ukhsc_mobile_app/core/style/lib.dart';
 import 'package:ukhsc_mobile_app/features/auth/lib.dart';
 
 class SchoolGridView extends StatefulHookConsumerWidget {
-  final List<PartnerSchool> schools;
+  final List<SchoolWithConfig> schools;
 
   const SchoolGridView({super.key, required this.schools});
 
@@ -21,7 +21,7 @@ class _SchoolGridViewState extends ConsumerState<SchoolGridView> {
   @override
   Widget build(BuildContext context) {
     final theme = useTheme();
-    final selectedSchool = useState<PartnerSchool?>(null);
+    final selectedSchool = useState<SchoolWithConfig?>(null);
 
     return Column(
       mainAxisAlignment: MainAxisAlignment.spaceAround,

@@ -13,7 +13,9 @@ abstract class ButtonStyle {
 }
 
 class PlainStyle extends ButtonStyle {
-  const PlainStyle({required super.foregroundColor});
+  final Color? overlayColor;
+
+  const PlainStyle({required super.foregroundColor, this.overlayColor});
 
   @override
   Widget build(Widget child, VoidCallback? onPressed) {
@@ -23,7 +25,7 @@ class PlainStyle extends ButtonStyle {
       onPressed: onPressed,
       style: md.TextButton.styleFrom(
         foregroundColor: foregroundColor,
-        overlayColor: theme.colors.overlay,
+        overlayColor: overlayColor ?? theme.colors.overlay,
         iconColor: foregroundColor,
         iconSize: 20,
       ),

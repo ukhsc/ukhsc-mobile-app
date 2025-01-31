@@ -1,13 +1,13 @@
 import 'package:flutter/widgets.dart';
 import 'package:flutter/material.dart' show LinearProgressIndicator, Scaffold;
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:url_launcher/url_launcher_string.dart';
 
 import 'package:ukhsc_mobile_app/components/lib.dart';
 import 'package:ukhsc_mobile_app/core/env.dart';
 import 'package:ukhsc_mobile_app/core/style/lib.dart';
 import 'package:ukhsc_mobile_app/features/lib.dart';
 import 'package:ukhsc_mobile_app/gen/assets.gen.dart';
-import 'package:url_launcher/url_launcher_string.dart';
 
 class HomePage extends StatefulHookConsumerWidget {
   const HomePage({super.key});
@@ -19,7 +19,6 @@ class HomePage extends StatefulHookConsumerWidget {
 class _HomePageState extends ConsumerState<HomePage> {
   @override
   Widget build(BuildContext context) {
-    final theme = useTheme();
     final userState = ref.watch(userStateNotifierProvider);
 
     return Scaffold(
@@ -28,19 +27,7 @@ class _HomePageState extends ConsumerState<HomePage> {
           Expanded(
             child: Stack(
               children: [
-                Container(
-                  constraints: BoxConstraints.expand(height: 250),
-                  decoration: BoxDecoration(
-                    gradient: LinearGradient(
-                      colors: [
-                        theme.colors.primaryBackground,
-                        theme.colors.screenBackground
-                      ],
-                      begin: Alignment.topCenter,
-                      end: Alignment.bottomCenter,
-                    ),
-                  ),
-                ),
+                _buildGradient(),
                 _buildMainContent(),
                 if (userState.isLoading) LinearProgressIndicator(),
               ],
@@ -51,6 +38,24 @@ class _HomePageState extends ConsumerState<HomePage> {
             child: NavigationBar(),
           ),
         ],
+      ),
+    );
+  }
+
+  Widget _buildGradient() {
+    final theme = useTheme();
+
+    return Container(
+      constraints: BoxConstraints.expand(height: 250),
+      decoration: BoxDecoration(
+        gradient: LinearGradient(
+          colors: [
+            theme.colors.primaryBackground,
+            theme.colors.screenBackground
+          ],
+          begin: Alignment.topCenter,
+          end: Alignment.bottomCenter,
+        ),
       ),
     );
   }

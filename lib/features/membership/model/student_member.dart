@@ -1,7 +1,9 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
 
-part 'member.freezed.dart';
-part 'member.g.dart';
+import 'package:ukhsc_mobile_app/features/auth/models/lib.dart';
+
+part 'student_member.freezed.dart';
+part 'student_member.g.dart';
 
 @freezed
 abstract class StudentMember with _$StudentMember {
@@ -9,6 +11,7 @@ abstract class StudentMember with _$StudentMember {
   factory StudentMember(
     final String id,
     final int schoolAttendedId,
+    final PartnerSchool schoolAttended,
     final int userId,
     final String? studentIdHash,
     final String? nickname,

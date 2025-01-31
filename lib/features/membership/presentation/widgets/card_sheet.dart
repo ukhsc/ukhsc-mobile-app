@@ -1,16 +1,21 @@
 import 'package:flutter/widgets.dart';
-import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:go_router/go_router.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 import 'package:ukhsc_mobile_app/core/style/lib.dart';
 import 'package:ukhsc_mobile_app/components/lib.dart';
+import 'package:ukhsc_mobile_app/features/membership/model/student_member.dart';
+import 'package:ukhsc_mobile_app/features/membership/presentation/provider.dart';
+import 'package:ukhsc_mobile_app/gen/assets.gen.dart';
 
-class MembershipCardSheet extends HookWidget {
+class MembershipCardSheet extends HookConsumerWidget {
   const MembershipCardSheet({super.key});
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     final theme = useTheme();
+    final controller = ref.watch(membershipControllerProvider);
+    final member = controller.value;
 
     return Container(
       constraints: BoxConstraints.expand(
@@ -34,55 +39,99 @@ class MembershipCardSheet extends HookWidget {
                 onPressed: () {
                   context.pop();
                 },
-                style: PlainStyle(foregroundColor: theme.colors.primary),
+                style: PlainStyle(
+                  foregroundColor: theme.colors.primary,
+                  overlayColor: theme.colors.primary,
+                ),
                 content: Text('完成').asButtonContent,
               ),
-              Container(
-                padding: EdgeInsets.all(theme.spaces.sm),
-                decoration: BoxDecoration(
-                  gradient: LinearGradient(
-                    colors: [Color(0xff75A692), Color(0xff7FC8AB)],
-                    begin: Alignment.topLeft,
-                    end: Alignment.bottomRight,
-                  ),
-                  borderRadius: BorderRadius.all(theme.radii.small),
-                ),
-                child: Row(
-                  spacing: theme.spaces.xxs,
-                  children: [
-                    Icon(
-                      Icons.check_circle_outline,
-                      size: 16,
-                    ),
-                    Text('帳號生效中', style: theme.text.common.bodyMedium),
-                  ],
-                ),
-              )
+              if (member != null) _buildBadge()
             ],
           ),
-          SingleChildScrollView(
-            child: Column(
-              spacing: theme.spaces.md,
-              children: [
-                _buildBlock(
-                  Stack(
-                    children: [
-                      Row(
-                        children: [],
-                      ),
-                      _buildYearText()
-                    ],
-                  ),
-                ),
-                Column(
+          if (member != null)
+            SingleChildScrollView(
+              child: _buildContent(member),
+            ),
+        ],
+      ),
+    );
+  }
+
+  Column _buildContent(StudentMember member) {
+    final theme = useTheme();
+
+    return Column(
+      spacing: theme.spaces.md,
+      children: [
+        _buildBlock(
+          Stack(
+            children: [
+              Padding(
+                padding: EdgeInsets.only(left: theme.spaces.sm),
+                child: Row(
+                  spacing: theme.spaces.lg,
                   children: [
-                    Text('行動載具'),
-                    _buildBlock(
-                      Row(children: []),
-                    ),
+                    _buildDefaultAvatar(),
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(member.schoolAttended.shortName,
+                            style: theme.text.common.bodyMedium.copyWith(
+                                color: theme.colors.primary,
+                                fontVariations:
+                                    AppFontWeight.semiBold.variations)),
+                        Text(member.nickname ?? '學生',
+                            style: theme.text.common.displaySmall
+                                .copyWith(color: theme.colors.accentText)),
+                      ],
+                    )
                   ],
                 ),
-              ],
+              ),
+              _buildYearText()
+            ],
+          ),
+        ),
+        Column(
+          children: [
+            Text('行動載具'),
+            _buildBlock(
+              Row(children: []),
+            ),
+          ],
+        ),
+      ],
+    );
+  }
+
+  Container _buildBadge() {
+    final theme = useTheme();
+    final color = Colors.white;
+
+    return Container(
+      padding: EdgeInsets.all(theme.spaces.sm)
+          .add(EdgeInsets.symmetric(horizontal: theme.spaces.xxs)),
+      decoration: BoxDecoration(
+        gradient: LinearGradient(
+          colors: [Color(0xff75A692), Color(0xff7FC8AB)],
+          begin: Alignment.topLeft,
+          end: Alignment.bottomRight,
+        ),
+        borderRadius: BorderRadius.all(theme.radii.small),
+      ),
+      child: Row(
+        spacing: theme.spaces.xxs,
+        children: [
+          Icon(
+            Icons.check_circle_outline,
+            size: 16,
+            color: color,
+          ),
+          Text(
+            '帳號生效中',
+            style: theme.text.common.bodyMedium.copyWith(
+              fontVariations: AppFontWeight.bold.variations,
+              color: color,
             ),
           ),
         ],
@@ -90,7 +139,7 @@ class MembershipCardSheet extends HookWidget {
     );
   }
 
-  Align _buildYearText() {
+  Widget _buildYearText() {
     final theme = useTheme();
     final style = theme.text.membershipCardYear;
 
@@ -134,6 +183,25 @@ class MembershipCardSheet extends HookWidget {
         borderRadius: BorderRadius.all(theme.radii.small),
       ),
       child: child,
+    );
+  }
+
+  Widget _buildDefaultAvatar() {
+    final theme = useTheme();
+
+    return Container(
+      width: 70,
+      height: 70,
+      decoration: BoxDecoration(
+        color: theme.colors.tintGradient,
+        borderRadius: BorderRadius.all(theme.radii.extraLarge),
+        image: DecorationImage(
+          image: AssetImage(Assets.images.onboardingHamburgerMascot.path),
+          fit: BoxFit.none,
+          scale: 4.8,
+          alignment: Alignment.bottomCenter,
+        ),
+      ),
     );
   }
 }

@@ -2,8 +2,8 @@ import 'dart:convert';
 
 import 'package:dio/dio.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
-import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:ukhsc_mobile_app/core/logger.dart';
+import 'package:ukhsc_mobile_app/core/storage_service.dart';
 
 import 'package:ukhsc_mobile_app/features/auth/data/auth_data_source.dart';
 import 'package:ukhsc_mobile_app/features/auth/models/auth.dart';
@@ -39,7 +39,7 @@ class AuthCredential {
 
 abstract class AuthRepository {
   Future<ServiceStatus> getServiceStatus({CancelToken? cancelToken});
-  FutureOr<List<PartnerSchool>> getPartnerSchools({CancelToken? cancelToken});
+  FutureOr<List<SchoolWithConfig>> getPartnerSchools({CancelToken? cancelToken});
 
   Future<AuthCredential> registerMember({
     required int schoolAttendanceId,
@@ -48,6 +48,7 @@ abstract class AuthRepository {
     CancelToken? cancelToken,
   });
 
+  Future<AuthCredential?> getCredential();
   Future<void> saveCredential(AuthCredential credential);
   // Warning: This method is only for quick check, it doesn't validate the token.
   Future<bool> hasCredential();
@@ -59,15 +60,14 @@ abstract class AuthRepository {
 
 class AuthRepositoryImpl implements AuthRepository {
   final AuthDataSource dataSource;
-  final FlutterSecureStorage secureStorage;
-  final _storageSchemaVersion = 1;
+  final StorageService storage;
 
   final _logger = AppLogger.getLogger('auth.repo');
 
-  AuthRepositoryImpl({required this.dataSource, required this.secureStorage});
+  AuthRepositoryImpl({required this.dataSource, required this.storage});
 
   @override
-  FutureOr<List<PartnerSchool>> getPartnerSchools({CancelToken? cancelToken}) {
+  FutureOr<List<SchoolWithConfig>> getPartnerSchools({CancelToken? cancelToken}) {
     return dataSource.fetchPartnerSchools(cancelToken: cancelToken);
   }
 
@@ -94,40 +94,26 @@ class AuthRepositoryImpl implements AuthRepository {
 
   @override
   Future<void> saveCredential(AuthCredential credential) async {
-    await migrateSchema();
-    await secureStorage.write(
-        key: 'access_token', value: credential.accessToken);
-    await secureStorage.write(
-        key: 'refresh_token', value: credential.refreshToken);
+    await storage.migrateSchema();
+    await storage.write(key: 'access_token', value: credential.accessToken);
+    await storage.write(key: 'refresh_token', value: credential.refreshToken);
 
     final user =
         await dataSource.fetchUserData(accessToken: credential.accessToken);
-    await secureStorage.write(
-        key: 'user_cache', value: jsonEncode(user.toJson()));
-
-    final roles = credential.payload.roles;
-    if (roles.contains(UserRole.studentMember)) {
-      _logger.fine('Fetching member data...');
-      final member =
-          await dataSource.fetchMemberData(accessToken: credential.accessToken);
-      await secureStorage.write(
-          key: 'member_cache', value: jsonEncode(member.toJson()));
-    }
+    await storage.write(key: 'user_cache', value: jsonEncode(user.toJson()));
     _logger.fine('Credential saved');
   }
 
   @override
   Future<bool> hasCredential() async {
-    await migrateSchema();
-    final credentials = await _getCredentials();
+    final credentials = await getCredential();
     return credentials != null;
   }
 
   @override
   Future<User?> getCredentialUser(
       {required bool isOffline, CancelToken? cancelToken}) async {
-    await migrateSchema();
-    final credentials = await _getCredentials();
+    final credentials = await getCredential();
     if (credentials == null) return null;
 
     if (credentials.isExpired) {
@@ -143,55 +129,22 @@ class AuthRepositoryImpl implements AuthRepository {
       await saveCredential(newCredentials);
     }
 
-    final rawCache = await secureStorage.read(key: 'user_cache');
+    final rawCache = await storage.read('user_cache');
     if (rawCache == null) return null;
 
     return User.fromJson(jsonDecode(rawCache));
   }
 
-  Future<void> migrateSchema() async {
-    final hasSchemaVersion =
-        await secureStorage.containsKey(key: 'schema_version');
-    if (!hasSchemaVersion) {
-      _logger.warning('Schema version not found, trying to migrate...');
-      final all = await secureStorage.readAll();
-      if (all.isEmpty) {
-        _logger.warning('No data found, skipping migration...');
-        await _saveSchemaVersion();
-        return;
-      }
-    }
-
-    if (await _isSchemaOutdated()) {
-      _logger.warning('Schema version is outdated, trying to migrate...');
-      // TODO: in the future, we can implement a migration strategy (if we have version 2)
-      await secureStorage.deleteAll();
-      await _saveSchemaVersion();
-      _logger.warning('Schema version migrated to $_storageSchemaVersion');
-    }
-
-    _logger.fine('Schema version is up-to-date');
-  }
-
-  Future<AuthCredential?> _getCredentials() async {
-    final accessToken = await secureStorage.read(key: 'access_token');
-    final refreshToken = await secureStorage.read(key: 'refresh_token');
+  @override
+  Future<AuthCredential?> getCredential() async {
+    await storage.migrateSchema();
+    final accessToken = await storage.read('access_token');
+    final refreshToken = await storage.read('refresh_token');
 
     if (accessToken == null || refreshToken == null) {
       return null;
     }
 
     return AuthCredential(accessToken: accessToken, refreshToken: refreshToken);
-  }
-
-  Future<void> _saveSchemaVersion() async {
-    await secureStorage.write(
-        key: 'schema_version', value: _storageSchemaVersion.toString());
-  }
-
-  Future<bool> _isSchemaOutdated() async {
-    final schemaVersion = await secureStorage.read(key: 'schema_version');
-    _logger.fine('Current schema version: $schemaVersion');
-    return schemaVersion != _storageSchemaVersion.toString();
   }
 }

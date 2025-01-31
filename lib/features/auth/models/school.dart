@@ -4,28 +4,49 @@ part 'school.freezed.dart';
 part 'school.g.dart';
 
 @freezed
-abstract class PartnerSchool with _$PartnerSchool {
-  @JsonSerializable(explicitToJson: true)
+sealed class PartnerSchool with _$PartnerSchool {
+  const PartnerSchool._();
+
+  @JsonSerializable(fieldRename: FieldRename.snake)
+  const factory PartnerSchool.withConfig(
+    final int id,
+    final String shortName,
+    final String fullName,
+    final GoogleAccountConfig googleAccountConfig,
+  ) = SchoolWithConfig;
+
+  @JsonSerializable(fieldRename: FieldRename.snake)
   const factory PartnerSchool(
     final int id,
-    @JsonKey(name: 'short_name') final String shortName,
-    @JsonKey(name: 'full_name') final String fullName,
-    @JsonKey(name: 'google_account_config')
-    final GoogleAccountConfig googleAccountConfig,
-  ) = _School;
-  factory PartnerSchool.fromJson(Map<String, dynamic> json) =>
-      _$PartnerSchoolFromJson(json);
+    final String shortName,
+    final String fullName,
+  ) = School;
+
+  factory PartnerSchool.fromJson(Map<String, dynamic> json) {
+    if (json.containsKey('google_account_config')) {
+      return _$$SchoolWithConfigImplFromJson(json);
+    }
+
+    return _$$SchoolImplFromJson(json);
+  }
+
+  Map<String, dynamic> toJson() {
+    return map(
+      (value) => _$$SchoolImplToJson(value as _$SchoolImpl),
+      withConfig: (value) =>
+          _$$SchoolWithConfigImplToJson(value as _$SchoolWithConfigImpl),
+    );
+  }
 }
 
 @freezed
 abstract class GoogleAccountConfig with _$GoogleAccountConfig {
-  @JsonSerializable(explicitToJson: true)
+  @JsonSerializable(explicitToJson: true, fieldRename: FieldRename.snake)
   factory GoogleAccountConfig(
-    @JsonKey(name: 'username_format') final String usernameFormat,
-    @JsonKey(name: 'student_username_format')
+    final String usernameFormat,
     final String studentUsernameFormat,
-    @JsonKey(name: 'password_format') final String passwordFormat,
-    @JsonKey(name: 'domain_name') final String domainName,
+    final String passwordFormat,
+    final String domainName,
   ) = _GoogleAccountConfig;
 
   factory GoogleAccountConfig.fromJson(Map<String, dynamic> json) =>

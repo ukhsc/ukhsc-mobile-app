@@ -66,5 +66,5 @@ enum AppFontWeight {
   const AppFontWeight(this.value);
 
   /// See Also: https://github.com/flutter/flutter/issues/148026
-  List<FontVariation> get variations => [FontVariation('wght', value)];
+  List<FontVariation> get variations => [FontVariation.weight(value)];
 }

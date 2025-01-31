@@ -6,7 +6,7 @@ import 'package:ukhsc_mobile_app/components/lib.dart';
 import 'package:ukhsc_mobile_app/core/style/lib.dart';
 
 import 'widgets/school_grid_view.dart';
-import '../data/provider.dart';
+import 'provider.dart';
 
 class SchoolLoginPage extends StatefulHookConsumerWidget {
   const SchoolLoginPage({super.key});
