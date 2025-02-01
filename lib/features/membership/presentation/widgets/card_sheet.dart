@@ -4,9 +4,11 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 import 'package:ukhsc_mobile_app/core/style/lib.dart';
 import 'package:ukhsc_mobile_app/components/lib.dart';
-import 'package:ukhsc_mobile_app/features/membership/model/student_member.dart';
-import 'package:ukhsc_mobile_app/features/membership/presentation/provider.dart';
 import 'package:ukhsc_mobile_app/gen/assets.gen.dart';
+
+import 'data_view.dart';
+import '../provider.dart';
+import '../../model/student_member.dart';
 
 class MembershipCardSheet extends HookConsumerWidget {
   const MembershipCardSheet({super.key});
@@ -43,7 +45,7 @@ class MembershipCardSheet extends HookConsumerWidget {
                   foregroundColor: theme.colors.primary,
                   overlayColor: theme.colors.primary,
                 ),
-                content: Text('完成').asButtonContent,
+                content: Text('關閉').asButtonContent,
               ),
               if (member != null) _buildBadge()
             ],
@@ -61,45 +63,53 @@ class MembershipCardSheet extends HookConsumerWidget {
     final theme = useTheme();
 
     return Column(
-      spacing: theme.spaces.md,
+      spacing: theme.spaces.lg,
+      crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        _buildBlock(
-          Stack(
+        _buildBlock(_buildUserCard(member)),
+        Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Padding(
+              padding: EdgeInsets.only(bottom: theme.spaces.xs)
+                  .add(EdgeInsets.symmetric(horizontal: theme.spaces.sm)),
+              child: Text('發票載具（手機條碼）', style: theme.text.common.titleSmall),
+            ),
+            _buildBlock(SizedBox(height: 100, width: double.infinity)),
+          ],
+        ),
+        MembershipDataView(member: member),
+      ],
+    );
+  }
+
+  Stack _buildUserCard(StudentMember member) {
+    final theme = useTheme();
+
+    return Stack(
+      children: [
+        Padding(
+          padding: EdgeInsets.only(left: theme.spaces.sm),
+          child: Row(
+            spacing: theme.spaces.lg,
             children: [
-              Padding(
-                padding: EdgeInsets.only(left: theme.spaces.sm),
-                child: Row(
-                  spacing: theme.spaces.lg,
-                  children: [
-                    _buildDefaultAvatar(),
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(member.schoolAttended.shortName,
-                            style: theme.text.common.bodyMedium.copyWith(
-                                color: theme.colors.primary,
-                                fontVariations:
-                                    AppFontWeight.semiBold.variations)),
-                        Text(member.nickname ?? '學生',
-                            style: theme.text.common.displaySmall
-                                .copyWith(color: theme.colors.accentText)),
-                      ],
-                    )
-                  ],
-                ),
-              ),
-              _buildYearText()
+              _buildDefaultAvatar(),
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text('${member.schoolAttended.shortName}#${member.userId}',
+                      style: theme.text.common.bodyMedium.copyWith(
+                          color: theme.colors.primary,
+                          fontVariations: AppFontWeight.semiBold.variations)),
+                  Text(member.nickname ?? '學生會員',
+                      style: theme.text.common.displaySmall
+                          .copyWith(color: theme.colors.accentText)),
+                ],
+              )
             ],
           ),
         ),
-        Column(
-          children: [
-            Text('行動載具'),
-            _buildBlock(
-              Row(children: []),
-            ),
-          ],
-        ),
+        _buildYearText()
       ],
     );
   }
@@ -109,8 +119,8 @@ class MembershipCardSheet extends HookConsumerWidget {
     final color = Colors.white;
 
     return Container(
-      padding: EdgeInsets.all(theme.spaces.sm)
-          .add(EdgeInsets.symmetric(horizontal: theme.spaces.xxs)),
+      padding: EdgeInsets.symmetric(
+          horizontal: theme.spaces.md, vertical: theme.spaces.sm),
       decoration: BoxDecoration(
         gradient: LinearGradient(
           colors: [Color(0xff75A692), Color(0xff7FC8AB)],
@@ -129,7 +139,7 @@ class MembershipCardSheet extends HookConsumerWidget {
           ),
           Text(
             '帳號生效中',
-            style: theme.text.common.bodyMedium.copyWith(
+            style: theme.text.common.bodySmall.copyWith(
               fontVariations: AppFontWeight.bold.variations,
               color: color,
             ),

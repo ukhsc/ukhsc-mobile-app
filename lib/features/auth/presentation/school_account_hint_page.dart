@@ -46,6 +46,7 @@ class _SchoolAccountHintPageState extends ConsumerState<SchoolAccountHintPage> {
                 spacing: theme.spaces.sm,
                 children: [
                   _buildTitle(theme),
+                  // TODO: Improve divider color and hint steps UI
                   Divider(),
                   _buildAccountHint(theme),
                   Divider(),

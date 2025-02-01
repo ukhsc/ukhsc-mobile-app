@@ -39,6 +39,7 @@ class _LoginOptionsSheetsState extends ConsumerState<LoginOptionsSheets> {
               Expanded(child: Divider()),
               Text('我已有會員帳號', style: theme.text.common.labelLarge),
               Expanded(child: Divider()),
+              // TODO: Add social login buttons
             ],
           ),
           Text(
