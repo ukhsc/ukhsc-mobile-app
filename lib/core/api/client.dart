@@ -101,6 +101,8 @@ class ApiClient {
 
 enum HttpMethod {
   get,
+  put,
+  patch,
   post;
 
   String get value {
@@ -109,6 +111,10 @@ enum HttpMethod {
         return 'GET';
       case HttpMethod.post:
         return 'POST';
+      case HttpMethod.put:
+        return 'PUT';
+      case HttpMethod.patch:
+        return 'PATCH';
     }
   }
 }

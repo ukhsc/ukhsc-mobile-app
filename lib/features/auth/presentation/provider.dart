@@ -51,7 +51,7 @@ Future<void> registerMember(
   await ref.read(userStateNotifierProvider.notifier).login(credential);
   await ref
       .read(memberRepositoryProvider)
-      .updateCacheData(credential.accessToken);
+      .updateCacheData(credential.accessToken, cancelToken: ref.cancelToken);
 }
 
 @Riverpod(keepAlive: true)

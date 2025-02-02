@@ -36,7 +36,7 @@ class ErrorService extends _$ErrorService {
           stackTrace: stackTrace,
         );
       } else {
-        await Sentry.captureEvent(
+        eventId = await Sentry.captureEvent(
           SentryEvent(
             throwable: originalError,
             level: _getSentryLevel(event.severity),

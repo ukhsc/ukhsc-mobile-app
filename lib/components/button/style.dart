@@ -51,11 +51,11 @@ class FilledStyle extends ButtonStyle {
     required this.overlayColor,
   });
 
-  factory FilledStyle.light() {
+  factory FilledStyle.light({Color backgroundColor = Colors.white}) {
     final theme = useTheme();
 
     return FilledStyle(
-      backgroundColor: Colors.white,
+      backgroundColor: backgroundColor,
       foregroundColor: theme.colors.lightButtonText,
       overlayColor: theme.colors.primary,
     );
