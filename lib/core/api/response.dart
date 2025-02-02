@@ -41,9 +41,9 @@ sealed class ApiErrorData with _$ApiErrorData {
   }
 }
 
-extension ApiResponseExtension on ApiResponse {
+extension ApiResponseExtension<D> on ApiResponse<D> {
   T handle<T>({
-    required T Function(Map<String, dynamic> data) onData,
+    required T Function(D data) onData,
     required AppException? Function(KnownErrorCode code) errorMapper,
   }) {
     switch (this) {

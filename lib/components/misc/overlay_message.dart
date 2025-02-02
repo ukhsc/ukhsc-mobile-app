@@ -31,7 +31,7 @@ class OverlayMessage {
 
     final overlay = Overlay.of(context, rootOverlay: true);
     overlay.insert(entry);
-    Future.delayed(const Duration(seconds: 2), hide);
+    Future.delayed(const Duration(seconds: 3), hide);
   }
 
   static Widget _buildContent(String message) {

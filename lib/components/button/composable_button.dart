@@ -1,4 +1,5 @@
 import 'package:flutter/widgets.dart';
+import 'package:flutter/material.dart' show CircularProgressIndicator, Colors;
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
@@ -76,9 +77,30 @@ class ButtonContent {
     );
   }
 
-  // TODO: Implement this method
-  ButtonContent withLoading() {
-    throw UnimplementedError();
+  ButtonContent withLoading(bool isLoading) {
+    return ButtonContent(
+      SizedBox(
+        width: double.infinity,
+        child: Stack(
+          alignment: Alignment.center,
+          children: [
+            Opacity(
+              opacity: isLoading ? 0.0 : 1.0,
+              child: child,
+            ),
+            if (isLoading)
+              SizedBox(
+                width: 22,
+                height: 22,
+                child: CircularProgressIndicator(
+                  color: Colors.white,
+                  strokeWidth: 3,
+                ),
+              ),
+          ],
+        ),
+      ),
+    );
   }
 }
 
