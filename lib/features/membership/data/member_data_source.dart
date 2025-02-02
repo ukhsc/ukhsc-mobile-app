@@ -26,4 +26,20 @@ class MemberDataSource {
         throw response;
     }
   }
+
+  Future<void> editMemberSettings(MemberSettings settings,
+      {required String accessToken, CancelToken? cancelToken}) async {
+    final response = await api.request(
+      HttpMethod.put,
+      '/member/me/settings',
+      token: accessToken,
+      data: settings.toJson(),
+      cancelToken: cancelToken,
+    );
+
+    return response.handle<void>(
+      onData: (data) {},
+      errorMapper: (code) => null,
+    );
+  }
 }

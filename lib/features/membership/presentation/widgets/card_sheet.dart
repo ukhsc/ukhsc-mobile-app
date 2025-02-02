@@ -7,6 +7,7 @@ import 'package:ukhsc_mobile_app/components/lib.dart';
 import 'package:ukhsc_mobile_app/gen/assets.gen.dart';
 
 import 'data_view.dart';
+import 'barcode_block.dart';
 import '../provider.dart';
 import '../../model/student_member.dart';
 
@@ -54,6 +55,12 @@ class MembershipCardSheet extends HookConsumerWidget {
             SingleChildScrollView(
               child: _buildContent(member),
             ),
+          if (member == null)
+            Flexible(
+              child: Center(
+                child: CircularProgressIndicator(),
+              ),
+            ),
         ],
       ),
     );
@@ -75,7 +82,8 @@ class MembershipCardSheet extends HookConsumerWidget {
                   .add(EdgeInsets.symmetric(horizontal: theme.spaces.sm)),
               child: Text('發票載具（手機條碼）', style: theme.text.common.titleSmall),
             ),
-            _buildBlock(SizedBox(height: 100, width: double.infinity)),
+            _buildBlock(
+                BarcodeBlock(barcode: member.settings?.eInvoiceBarcode)),
           ],
         ),
         MembershipDataView(member: member),

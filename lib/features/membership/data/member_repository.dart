@@ -1,5 +1,7 @@
 import 'dart:convert';
 
+import 'package:dio/dio.dart';
+
 import 'package:ukhsc_mobile_app/core/logger.dart';
 import 'package:ukhsc_mobile_app/core/services/storage_service.dart';
 import 'package:ukhsc_mobile_app/features/lib.dart';
@@ -8,7 +10,11 @@ import 'member_data_source.dart';
 
 abstract class MemberRepository {
   Future<StudentMember?> getCacheData();
-  Future<StudentMember> updateCacheData(String accessToken);
+  Future<StudentMember> updateCacheData(String accessToken,
+      {CancelToken? cancelToken});
+
+  Future<void> editMemberSettings(MemberSettings settings,
+      {required String accessToken, CancelToken? cancelToken});
 }
 
 class MemberRepositoryImpl implements MemberRepository {
@@ -31,7 +37,8 @@ class MemberRepositoryImpl implements MemberRepository {
   }
 
   @override
-  Future<StudentMember> updateCacheData(String accessToken) async {
+  Future<StudentMember> updateCacheData(String accessToken,
+      {CancelToken? cancelToken}) async {
     await storage.migrateSchema();
     _logger.fine('Fetching member data...');
 
@@ -41,5 +48,16 @@ class MemberRepositoryImpl implements MemberRepository {
     _logger.fine('Member data saved');
 
     return member;
+  }
+
+  @override
+  Future<void> editMemberSettings(MemberSettings settings,
+      {required String accessToken, CancelToken? cancelToken}) async {
+    _logger.fine('Editing member data...');
+
+    await dataSource.editMemberSettings(settings,
+        accessToken: accessToken, cancelToken: cancelToken);
+
+    _logger.fine('Member data edited');
   }
 }

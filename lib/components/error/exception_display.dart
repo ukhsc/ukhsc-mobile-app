@@ -76,7 +76,8 @@ class PanicExceptionDisplay extends HookConsumerWidget {
                         context: navigatorKey.currentContext!,
                         builder: (context) => TechnicalSupportSheet(
                           eventId: Sentry.lastEventId,
-                          technicalMessage: details?.exception.toString(),
+                          technicalMessage:
+                              '${details?.exceptionAsString()}${details?.context}',
                         ),
                       );
                     },
