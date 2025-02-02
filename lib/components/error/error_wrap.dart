@@ -20,7 +20,7 @@ class ErrorHandlerWrap extends HookConsumerWidget {
       final event = next.lastEvent;
       if (event == null) return;
 
-      if (event.severity == ErrorSeverity.panic) {
+      if (event.severity == ErrorSeverity.global) {
         if (dialogOpened.value) return;
         dialogOpened.value = true;
         _showDialog(
