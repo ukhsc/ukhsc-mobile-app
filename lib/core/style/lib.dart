@@ -76,10 +76,16 @@ class AppTheme extends ThemeExtension<AppTheme> {
         dragHandleColor: theme.colors.secondaryText.withValues(alpha: 0.5),
         dragHandleSize: Size(34, 7),
         modalBarrierColor: theme.colors.modalBarrier,
-        backgroundColor: Colors.transparent,
+        backgroundColor: whiteColor,
+      ),
+      dialogTheme: DialogTheme(
+        barrierColor: theme.colors.modalBarrier,
       ),
       progressIndicatorTheme: ProgressIndicatorThemeData(
         color: theme.colors.primary,
+      ),
+      dividerTheme: DividerThemeData(
+        color: blackColor.withValues(alpha: 0.15),
       ),
       scaffoldBackgroundColor: theme.colors.screenBackground,
       extensions: <ThemeExtension<AppTheme>>[theme],

@@ -1,5 +1,3 @@
-import 'package:flutter/material.dart'
-    show ScaffoldMessenger, SnackBar, SnackBarBehavior;
 import 'package:flutter/widgets.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
@@ -65,12 +63,7 @@ class _SchoolGridViewState extends ConsumerState<SchoolGridView> {
               onPressed: () {
                 final school = selectedSchool.value;
                 if (school == null) {
-                  ScaffoldMessenger.of(context).showSnackBar(
-                    SnackBar(
-                      behavior: SnackBarBehavior.floating,
-                      content: Text('請先選擇您就讀的學校'),
-                    ),
-                  );
+                  OverlayMessage.show('請先選擇您就讀的學校');
                   return;
                 }
 

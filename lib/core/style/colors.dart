@@ -109,7 +109,7 @@ class AppColors {
       tintGradient: const Color(0xffF2E2CF),
       lightGradient: const Color(0xffFEF5EC),
       overlay: whiteColor,
-      modalBarrier: blackColor.withValues(alpha: 0.6),
+      modalBarrier: blackColor.withValues(alpha: 0.65),
     );
   }
 }

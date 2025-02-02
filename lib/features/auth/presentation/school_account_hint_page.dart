@@ -13,7 +13,6 @@ import 'package:ukhsc_mobile_app/components/lib.dart';
 import 'package:ukhsc_mobile_app/core/env.dart';
 import 'package:ukhsc_mobile_app/core/style/lib.dart';
 import 'package:ukhsc_mobile_app/features/auth/lib.dart';
-import 'package:ukhsc_mobile_app/core/web.dart';
 
 import '../models/auth.dart';
 
@@ -67,7 +66,7 @@ class _SchoolAccountHintPageState extends ConsumerState<SchoolAccountHintPage> {
         Text('最後一步', style: theme.text.common.displayMedium),
         SizedBox(height: theme.spaces.md),
         Text('為了確保您是本聯盟合作學校的學生，請您使用學校配發的 Google 帳號完成註冊手續，驗證完畢後即可提供您專屬的會員服務。',
-            style: theme.text.common.bodyLarge)
+            style: theme.text.common.bodyLarge, textAlign: TextAlign.center)
       ],
     );
   }
@@ -78,7 +77,7 @@ class _SchoolAccountHintPageState extends ConsumerState<SchoolAccountHintPage> {
       children: [
         Text('帳號格式', style: theme.text.common.headlineLarge),
         Text('倘若您對於${widget.school.shortName}的帳號格式不是很清楚，我們提供貴校的帳號格式及預設密碼作為參考。',
-            style: theme.text.common.bodyLarge),
+            style: theme.text.common.bodyLarge, textAlign: TextAlign.center),
         Padding(
           padding: EdgeInsets.symmetric(horizontal: theme.spaces.md),
           child: Container(
@@ -127,11 +126,9 @@ class _SchoolAccountHintPageState extends ConsumerState<SchoolAccountHintPage> {
   Widget _buildButton(AppTheme theme) {
     return ComposableButton(
       onPressed: () {
-        final isWebView = kIsWeb && WebDetector.isWebView();
-
         launchUrl(
           getOAuthUri(),
-          webOnlyWindowName: isWebView ? '_blank' : '_self',
+          webOnlyWindowName: '_self',
           mode: LaunchMode.externalApplication,
         );
       },

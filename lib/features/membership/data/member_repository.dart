@@ -1,7 +1,7 @@
 import 'dart:convert';
 
 import 'package:ukhsc_mobile_app/core/logger.dart';
-import 'package:ukhsc_mobile_app/core/storage_service.dart';
+import 'package:ukhsc_mobile_app/core/services/storage_service.dart';
 import 'package:ukhsc_mobile_app/features/lib.dart';
 
 import 'member_data_source.dart';

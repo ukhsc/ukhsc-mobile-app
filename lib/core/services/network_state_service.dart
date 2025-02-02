@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
+import 'package:ukhsc_mobile_app/core/error/lib.dart';
 
 import 'package:ukhsc_mobile_app/core/logger.dart';
 import 'package:ukhsc_mobile_app/features/auth/lib.dart';
@@ -55,6 +56,11 @@ Future<bool> onConnectivityChanged(
       return false;
     }
   } catch (err, stackTrace) {
+    final notifier = ref.read(errorServiceProvider.notifier);
+    notifier.handleError(
+        AppErrorEvent(severity: ErrorSeverity.warning, message: '檢查服務狀態失敗'),
+        originalError: err,
+        stackTrace: stackTrace);
     _logger.warning('Failed to check service status', err, stackTrace);
     return false;
   }

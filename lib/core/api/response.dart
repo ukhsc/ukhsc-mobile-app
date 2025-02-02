@@ -1,5 +1,7 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
-import 'package:ukhsc_mobile_app/core/api/error.dart';
+
+import 'error.dart';
+import '../error/exception.dart';
 
 part 'response.freezed.dart';
 
@@ -36,5 +38,35 @@ sealed class ApiErrorData with _$ApiErrorData {
     }
 
     return ApiErrorData.unknown(json);
+  }
+}
+
+extension ApiResponseExtension on ApiResponse {
+  T handle<T>({
+    required T Function(Map<String, dynamic> data) onData,
+    required AppException? Function(KnownErrorCode code) errorMapper,
+  }) {
+    switch (this) {
+      case ApiResponseData(:final data):
+        return onData(data);
+      case ApiResponseError(:final data):
+        final AppException? exception;
+
+        if (data is KnownApiError) {
+          exception = errorMapper(data.code);
+        } else {
+          exception = null;
+        }
+
+        if (exception != null) {
+          throw AppException(
+            userReadableMessage: exception.userReadableMessage,
+            originalError: this,
+            stackTrace: StackTrace.current,
+          );
+        } else {
+          throw this;
+        }
+    }
   }
 }

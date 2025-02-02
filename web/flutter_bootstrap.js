@@ -45,7 +45,7 @@ async function callbackHandler(searchParams) {
     }
 
     if (!isSuccess) return;
-    let countdown = 5;
+    let countdown = 3;
     const countdownElement = document.getElementById("countdown");
     if (countdownElement) {
       const timer = setInterval(() => {

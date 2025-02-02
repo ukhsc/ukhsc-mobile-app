@@ -64,13 +64,6 @@ class _GetStartedPageState extends ConsumerState<GetStartedPage> {
 
     return Stack(
       children: [
-        // Align(
-        //   alignment: Alignment.topLeft,
-        //   child: Padding(
-        //     padding: EdgeInsets.only(left: theme.spaces.xl),
-        //     child: AppTitle(),
-        //   ),
-        // ),
         Align(
             alignment: Alignment(-0.6, -0.15),
             child: Column(
@@ -99,7 +92,6 @@ class _GetStartedPageState extends ConsumerState<GetStartedPage> {
                 onPressed: () {
                   showModalBottomSheet(
                     context: context,
-                    backgroundColor: theme.colors.overlay,
                     builder: (context) => const LoginOptionsSheets(),
                   );
                 },
@@ -112,7 +104,6 @@ class _GetStartedPageState extends ConsumerState<GetStartedPage> {
                       ),
                     ),
               ),
-              // TODO: Add a link to the terms of service and privacy policy.
               RichText(
                 text: TextSpan(
                     text: '點擊「開始使用」，即代表您同意我們的',

@@ -24,7 +24,7 @@ class MembershipDataView extends HookWidget {
         ),
         Padding(
           padding: EdgeInsets.only(bottom: theme.spaces.xxs),
-          child: Divider(color: Colors.black.withValues(alpha: 0.15)),
+          child: Divider(),
         ),
         Column(
           spacing: theme.spaces.sm,

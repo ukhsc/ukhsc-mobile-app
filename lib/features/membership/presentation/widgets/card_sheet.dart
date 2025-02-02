@@ -101,7 +101,7 @@ class MembershipCardSheet extends HookConsumerWidget {
                       style: theme.text.common.bodyMedium.copyWith(
                           color: theme.colors.primary,
                           fontVariations: AppFontWeight.semiBold.variations)),
-                  Text(member.nickname ?? '學生會員',
+                  Text(member.settings?.nickname ?? '學生會員',
                       style: theme.text.common.displaySmall
                           .copyWith(color: theme.colors.accentText)),
                 ],
