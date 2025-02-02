@@ -17,6 +17,11 @@ Stream<bool> networkConnectivity(Ref ref) async* {
   _logger.fine('Checking network connectivity...');
 
   final controller = StreamController<bool>();
+
+  final initState = await onConnectivityChanged(
+      await Connectivity().checkConnectivity(), ref);
+  yield initState;
+
   final stream = Connectivity().onConnectivityChanged;
   final subscription = stream.listen((_) async {
     // Workaround: https://github.com/fluttercommunity/plus_plugins/issues/198
