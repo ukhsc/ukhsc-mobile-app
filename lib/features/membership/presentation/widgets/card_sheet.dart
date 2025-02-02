@@ -33,7 +33,6 @@ class MembershipCardSheet extends HookConsumerWidget {
         ),
       ),
       child: Column(
-        spacing: theme.spaces.lg,
         children: [
           Padding(
             padding: EdgeInsets.symmetric(
@@ -60,7 +59,9 @@ class MembershipCardSheet extends HookConsumerWidget {
               child: SingleChildScrollView(
                 child: Padding(
                   padding: EdgeInsets.symmetric(
-                      horizontal: theme.spaces.lg, vertical: theme.spaces.md),
+                          horizontal: theme.spaces.lg,
+                          vertical: theme.spaces.md)
+                      .add(EdgeInsets.only(top: theme.spaces.lg)),
                   child: _buildContent(member),
                 ),
               ),
