@@ -43,7 +43,7 @@ class SchoolAccountHintRoute extends GoRouteData {
   }
 }
 
-// TODO: Support deep linking
+// TODO: Support deep linking powered by Web URL.
 @TypedGoRoute<AuthCallbackRoute>(path: '/auth/callback/:provider')
 class AuthCallbackRoute extends GoRouteData {
   final FederatedProvider provider;

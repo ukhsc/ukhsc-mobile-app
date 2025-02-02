@@ -4,7 +4,7 @@ import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:ukhsc_mobile_app/core/api/lib.dart';
 import 'package:ukhsc_mobile_app/core/logger.dart';
 import 'package:ukhsc_mobile_app/core/services/network_state_service.dart';
-import 'package:ukhsc_mobile_app/core/storage_service.dart';
+import 'package:ukhsc_mobile_app/core/services/storage_service.dart';
 import 'package:ukhsc_mobile_app/features/auth/lib.dart';
 
 import '../model/student_member.dart';

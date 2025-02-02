@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart' show Divider;
+// import 'package:flutter/material.dart' show Divider;
 import 'package:flutter/widgets.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
@@ -38,14 +38,15 @@ class _LoginOptionsSheetsState extends ConsumerState<LoginOptionsSheets> {
                   ),
                 ),
           ),
-          Row(
-            spacing: theme.spaces.sm,
-            children: [
-              Expanded(child: Divider()),
-              Text('我已有會員帳號', style: theme.text.common.labelLarge),
-              Expanded(child: Divider()),
-            ],
-          ),
+          // Row(
+          //   spacing: theme.spaces.sm,
+          //   children: [
+          //     Expanded(child: Divider()),
+          //     Text('我已有會員帳號', style: theme.text.common.labelLarge),
+          //     Expanded(child: Divider()),
+          //   ],
+          // ),
+          // TODO: Add social login buttons
           Text(
             '*會員帳號僅限本屆參與合作學校之在學學生使用',
             style: theme.text.common.labelLarge,

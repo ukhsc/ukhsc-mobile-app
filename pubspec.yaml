@@ -1,7 +1,7 @@
 name: ukhsc_mobile_app
 description: "A new Flutter project."
 publish_to: "none"
-version: 0.0.1
+version: 0.0.2
 
 environment:
   sdk: ^3.6.0
@@ -39,6 +39,7 @@ dependencies:
   sentry_dart_plugin: ^2.4.0
   connectivity_plus: ^6.1.2
   universal_html: ^2.2.4
+  barcode_widget: ^2.0.4
 
 dev_dependencies:
   flutter_test:

@@ -3,6 +3,7 @@ import 'package:flutter/widgets.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 import 'package:ukhsc_mobile_app/components/lib.dart';
+import 'package:ukhsc_mobile_app/core/error/lib.dart';
 import 'package:ukhsc_mobile_app/core/style/lib.dart';
 
 import 'widgets/school_grid_view.dart';
@@ -39,23 +40,26 @@ class _SchoolLoginPageState extends ConsumerState<SchoolLoginPage> {
                       padding: EdgeInsets.all(theme.spaces.lg),
                       child: SchoolGridView(schools: value),
                     ),
-                  // TODO: Integrate with Sentry.
-                  AsyncError(:final error) => Center(
-                        child: Column(
-                      mainAxisSize: MainAxisSize.min,
-                      spacing: theme.spaces.sm,
-                      children: [
-                        Text(
-                          '無法取得合作學校清單，請稍候再試。',
-                          style: theme.text.common.bodyLarge,
-                        ),
-                        ComposableButton(
-                          onPressed: () => ref.refresh(partnerSchoolsProvider),
-                          style: FilledStyle.light(),
-                          content: Text('重新載入').asButtonContent,
-                        ),
-                      ],
-                    )),
+                  AsyncError err => Builder(builder: (context) {
+                      err.handleError(ref);
+                      return Center(
+                          child: Column(
+                        mainAxisSize: MainAxisSize.min,
+                        spacing: theme.spaces.sm,
+                        children: [
+                          Text(
+                            '無法取得合作學校清單，請稍候再試。',
+                            style: theme.text.common.bodyLarge,
+                          ),
+                          ComposableButton(
+                            onPressed: () =>
+                                ref.refresh(partnerSchoolsProvider),
+                            style: FilledStyle.light(),
+                            content: Text('重新載入').asButtonContent,
+                          ),
+                        ],
+                      ));
+                    }),
                   _ => Center(child: CircularProgressIndicator()),
                 },
               )

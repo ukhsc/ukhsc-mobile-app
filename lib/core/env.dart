@@ -6,13 +6,15 @@ part 'env.g.dart';
 abstract class AppEnvironment {
   @EnviedField(defaultValue: 'development')
   static final DeployEnvironment deployEnvironment = _AppEnvironment.deployEnvironment;
-  @EnviedField(defaultValue: 'https://api.ukhsc.org')
+  @EnviedField(defaultValue: 'https://api.ukhsc.org/api/v1')
   static final String apiBaseUrl = _AppEnvironment.apiBaseUrl;
   @EnviedField(optional: true)
   static final bool? useLocalFrontend = _AppEnvironment.useLocalFrontend;
 
   @EnviedField()
   static final String socialMediaLink = _AppEnvironment.socialMediaLink;
+  @EnviedField(defaultValue: 'https://discord.gg/d5HhBG5jJA')
+  static final String technicalSupportGroupLink = _AppEnvironment.technicalSupportGroupLink;
   @EnviedField()
   static final String privacyPolicyLink = _AppEnvironment.privacyPolicyLink;
   @EnviedField()

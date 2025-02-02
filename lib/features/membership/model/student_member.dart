@@ -11,16 +11,28 @@ abstract class StudentMember with _$StudentMember {
   factory StudentMember(
     final String id,
     final int schoolAttendedId,
-    final PartnerSchool schoolAttended,
     final int userId,
     final String? studentIdHash,
-    final String? nickname,
     final DateTime createdAt,
     final DateTime? activatedAt,
     final DateTime? expiredAt,
     final bool isActivated,
+    final PartnerSchool schoolAttended,
+    final MemberSettings? settings,
   ) = _StudentMember;
 
   factory StudentMember.fromJson(Map<String, dynamic> json) =>
       _$StudentMemberFromJson(json);
+}
+
+@freezed
+abstract class MemberSettings with _$MemberSettings {
+  @JsonSerializable(fieldRename: FieldRename.snake)
+  factory MemberSettings({
+    final String? nickname,
+    final String? eInvoiceBarcode,
+  }) = _MemberSettings;
+
+  factory MemberSettings.fromJson(Map<String, dynamic> json) =>
+      _$MemberSettingsFromJson(json);
 }

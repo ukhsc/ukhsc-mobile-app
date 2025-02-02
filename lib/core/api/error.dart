@@ -18,6 +18,7 @@ enum KnownErrorCode {
   // 1000 ~ 1999: Basic CRUD operations
   NOT_FOUND('U1000'),
   MISMATCH('U1001'),
+  CONCURRENCY_CONFLICT('U1002'),
 
   // 2000 ~ 2999: Authentication and Authorization
   NO_TOKEN('U2000'),
@@ -33,7 +34,9 @@ enum KnownErrorCode {
   FEDERATED_NOT_LINKED('U3002'),
 
   // 4000 ~ 4999: Membership management
-  INVALID_SCHOOL_EMAIL('U4000');
+  INVALID_SCHOOL_EMAIL('U4000'),
+  INVALID_INVOICE_BARCODE('U4001'),
+  INVALID_NICKNAME('U4002');
 
   final String code;
   const KnownErrorCode(this.code);

@@ -22,8 +22,8 @@ class MemberDataSource {
     switch (response) {
       case ApiResponseData(:final data):
         return StudentMember.fromJson(data);
-      case ApiResponseError():
-        throw Exception('Failed to fetch member data');
+      default:
+        throw response;
     }
   }
 }
