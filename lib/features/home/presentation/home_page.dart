@@ -7,6 +7,7 @@ import 'package:ukhsc_mobile_app/components/lib.dart';
 import 'package:ukhsc_mobile_app/core/env.dart';
 import 'package:ukhsc_mobile_app/core/style/lib.dart';
 import 'package:ukhsc_mobile_app/features/lib.dart';
+import 'package:ukhsc_mobile_app/core/error/lib.dart';
 import 'package:ukhsc_mobile_app/gen/assets.gen.dart';
 
 class HomePage extends StatefulHookConsumerWidget {
@@ -20,6 +21,12 @@ class _HomePageState extends ConsumerState<HomePage> {
   @override
   Widget build(BuildContext context) {
     final userState = ref.watch(userStateNotifierProvider);
+    userState.handleError(
+      ref,
+      severity: ErrorSeverity.global,
+      action: () => GetStartedRoute().go(context),
+      actionLabel: '重新登入',
+    );
 
     return Scaffold(
       body: Column(

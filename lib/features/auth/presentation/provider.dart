@@ -5,7 +5,7 @@ import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 import 'package:ukhsc_mobile_app/core/api/lib.dart';
 import 'package:ukhsc_mobile_app/core/services/network_state_service.dart';
-import 'package:ukhsc_mobile_app/core/storage_service.dart';
+import 'package:ukhsc_mobile_app/core/services/storage_service.dart';
 import 'package:ukhsc_mobile_app/features/membership/presentation/provider.dart';
 
 import '../models/school.dart';

@@ -63,6 +63,19 @@ class ButtonContent {
     );
   }
 
+  ButtonContent withExpanded() {
+    return ButtonContent(
+      LayoutBuilder(
+        builder: (context, constraints) => HookBuilder(
+          builder: (context) => ConstrainedBox(
+            constraints: BoxConstraints(minWidth: constraints.maxWidth),
+            child: Center(child: child),
+          ),
+        ),
+      ),
+    );
+  }
+
   // TODO: Implement this method
   ButtonContent withLoading() {
     throw UnimplementedError();

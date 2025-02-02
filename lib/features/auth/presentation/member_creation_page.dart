@@ -3,6 +3,7 @@ import 'package:flutter/widgets.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 import 'package:ukhsc_mobile_app/components/lib.dart';
+import 'package:ukhsc_mobile_app/core/error/lib.dart';
 import 'package:ukhsc_mobile_app/core/style/lib.dart';
 import 'package:ukhsc_mobile_app/features/lib.dart';
 
@@ -27,26 +28,25 @@ class _MemberCreationPageState extends ConsumerState<MemberCreationPage> {
   Widget build(BuildContext context) {
     final theme = useTheme();
 
-    final registerState = ref.watch(
+    final state = ref.watch(
       registerMemberProvider(
         schoolAttendanceId: widget.schoolId,
         authorizationCode: widget.authorizationCode,
         redirectUri: widget.redirectUri,
       ),
     );
-
-    registerState.whenData((data) async {
+    state.whenData((data) async {
       await Future.delayed(Duration(milliseconds: 300));
       if (context.mounted) {
         HomeRoute().go(context);
       }
     });
-
-    if (registerState.hasError) {
-      print(registerState.error);
-      print(registerState.stackTrace);
-      throw UnimplementedError();
-    }
+    state.handleError(
+      ref,
+      severity: ErrorSeverity.global,
+      action: () => GetStartedRoute().go(context),
+      actionLabel: '重新登入',
+    );
 
     return Scaffold(
       appBar: AppBar(),
@@ -63,7 +63,7 @@ class _MemberCreationPageState extends ConsumerState<MemberCreationPage> {
         ),
         child: Stack(
           children: [
-            if (registerState.isLoading)
+            if (state.isLoading)
               Align(
                 alignment: Alignment.topCenter,
                 child: LinearProgressIndicator(

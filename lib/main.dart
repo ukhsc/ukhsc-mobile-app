@@ -9,11 +9,15 @@ import 'package:flutter_web_plugins/url_strategy.dart';
 import 'package:logging/logging.dart';
 import 'package:sentry_flutter/sentry_flutter.dart';
 import 'package:sentry_logging/sentry_logging.dart';
-import 'package:ukhsc_mobile_app/core/env.dart';
-import 'package:ukhsc_mobile_app/features/auth/lib.dart';
 
+import 'core/env.dart';
+import 'core/error/lib.dart';
 import 'core/style/lib.dart';
 import 'core/router.dart';
+import 'core/logger.dart';
+import 'features/auth/lib.dart';
+import 'components/error/error_wrap.dart';
+import 'components/error/exception_display.dart';
 
 Future<void> main() async {
   Logger.root.level = Level.ALL;
@@ -24,7 +28,7 @@ Future<void> main() async {
     if (kReleaseMode && dsn == null) {
       throw Exception('Sentry DSN is required in release mode');
     }
-    if (kReleaseMode && dsn != null) {
+    if (kEnableSentry) {
       await SentryFlutter.init(
         (options) {
           options.dsn = dsn;
@@ -49,17 +53,18 @@ Future<void> main() async {
     final auth = container.read(authRepositoryProvider);
     final hasCredential = await auth.hasCredential();
 
-    // ignore: missing_provider_scope
     runApp(
-      SentryWidget(
-        child: DefaultAssetBundle(
-          bundle: SentryAssetBundle(),
-          child: ProviderScope(child: MainApp(hasCredential: hasCredential)),
+      ProviderScope(
+        child: SentryWidget(
+          child: DefaultAssetBundle(
+            bundle: SentryAssetBundle(),
+            child: MainApp(hasCredential: hasCredential),
+          ),
         ),
       ),
     );
   }, (error, stackTrace) async {
-    if (kDebugMode) return;
+    if (!kEnableSentry) return;
     await Sentry.captureException(error, stackTrace: stackTrace);
   });
 }
@@ -90,6 +95,24 @@ class MainApp extends StatelessWidget {
     return MaterialApp.router(
       routerConfig: getRouterConfig(hasCredential),
       theme: AppTheme.initial(),
+      builder: (context, child) {
+        ErrorWidget.builder = (FlutterErrorDetails details) {
+          return PanicExceptionDisplay(details: details);
+        };
+
+        if (child == null) {
+          globalLogger.severe('child is null in MaterialApp.builder');
+          return PanicExceptionDisplay();
+        }
+
+        return Overlay(
+          initialEntries: [
+            OverlayEntry(
+              builder: (context) => ErrorHandlerWrap(child: child),
+            ),
+          ],
+        );
+      },
     );
   }
 }

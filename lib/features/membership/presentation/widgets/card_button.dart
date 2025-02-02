@@ -18,7 +18,7 @@ class MembershipCardButton extends HookConsumerWidget {
 
     final state = ref.watch(userStateNotifierProvider);
     final enabled =
-        state.value?.roles.contains(UserRole.studentMember) ?? false;
+        state.valueOrNull?.roles.contains(UserRole.studentMember) ?? false;
 
     if (enabled && !autoOpened.value) {
       // TODO: In the 1.0 release, we will disable auto-open the card sheet.

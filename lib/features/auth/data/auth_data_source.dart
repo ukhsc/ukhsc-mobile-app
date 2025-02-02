@@ -1,17 +1,15 @@
 import 'package:dio/dio.dart';
 import 'package:ukhsc_mobile_app/core/api/lib.dart';
-import 'package:ukhsc_mobile_app/core/logger.dart';
 import 'package:ukhsc_mobile_app/features/auth/models/server_status.dart';
 
 import '../models/school.dart';
 import '../models/user.dart';
 import 'auth_repository.dart';
+import 'exception.dart';
 
 class AuthDataSource {
   final ApiClient api;
   AuthDataSource({required this.api});
-
-  final _logger = AppLogger.getLogger('auth.data');
 
   Future<List<SchoolWithConfig>> fetchPartnerSchools({
     CancelToken? cancelToken,
@@ -25,8 +23,8 @@ class AuthDataSource {
             .map((e) => PartnerSchool.fromJson(e))
             .toList()
             .cast<SchoolWithConfig>();
-      case ApiResponseError():
-        throw Exception('Failed to fetch partner schools');
+      default:
+        throw response;
     }
   }
 
@@ -42,8 +40,8 @@ class AuthDataSource {
     switch (response) {
       case ApiResponseData(:final data):
         return ServerStatus.fromJson(data);
-      case ApiResponseError():
-        throw Exception('Failed to fetch server status');
+      default:
+        throw response;
     }
   }
 
@@ -58,12 +56,21 @@ class AuthDataSource {
       cancelToken: cancelToken,
     );
 
-    switch (response) {
-      case ApiResponseData(:final data):
-        return User.fromJson(data);
-      case ApiResponseError():
-        throw Exception('Failed to fetch user data');
-    }
+    return response.handle<User>(
+      onData: (data) => User.fromJson(data),
+      errorMapper: (code) {
+        switch (code) {
+          case KnownErrorCode.INVALID_TOKEN:
+          case KnownErrorCode.ACCESS_REVOKED:
+          case KnownErrorCode.UNAUTHORIZED_DEVICE:
+            return InvalidCredentialException();
+          case KnownErrorCode.BANNED_USER:
+            return BannedLoginException();
+          default:
+            return null;
+        }
+      },
+    );
   }
 
   Future<AuthCredential> postRegisterMember(
@@ -84,18 +91,21 @@ class AuthDataSource {
       },
     );
 
-    switch (response) {
-      case ApiResponseData(:final data):
+    return response.handle<AuthCredential>(
+      onData: (data) {
         final accessToken = data['access_token'] as String;
         final refreshToken = data['refresh_token'] as String;
 
         return AuthCredential(
             accessToken: accessToken, refreshToken: refreshToken);
-      case ApiResponseError(:final data):
-        _logger.severe('Failed to register member: $data');
-        // TODO: handle various error cases
-        throw Exception('Failed to register member');
-    }
+      },
+      errorMapper: (code) {
+        if (code == KnownErrorCode.INVALID_FEDERATED_GRANT) {
+          return InvalidGrantException();
+        }
+        return null;
+      },
+    );
   }
 
   Future<AuthCredential> refreshToken({
@@ -118,8 +128,8 @@ class AuthDataSource {
           accessToken: accessToken,
           refreshToken: refreshToken,
         );
-      case ApiResponseError(:final data):
-        throw Exception('Failed to refresh token: $data');
+      default:
+        throw response;
     }
   }
 }

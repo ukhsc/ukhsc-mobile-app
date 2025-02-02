@@ -102,7 +102,9 @@ class FilledStyle extends ButtonStyle {
 }
 
 class OutlinedStyle extends ButtonStyle {
-  const OutlinedStyle({required super.foregroundColor});
+  final Color borderColor;
+  const OutlinedStyle(
+      {required super.foregroundColor, required this.borderColor});
 
   @override
   Widget build(Widget child, VoidCallback? onPressed) {
@@ -110,13 +112,25 @@ class OutlinedStyle extends ButtonStyle {
       onPressed: onPressed,
       style: md.OutlinedButton.styleFrom(
         foregroundColor: foregroundColor,
+        side: md.BorderSide(color: borderColor),
       ),
       child: child,
     );
   }
 
+  factory OutlinedStyle.normal() {
+    final theme = useTheme();
+
+    return OutlinedStyle(
+      foregroundColor: theme.colors.primary,
+      borderColor: theme.colors.tertiaryText.withValues(alpha: 0.3),
+    );
+  }
+
   @override
   TextStyle textStyle() {
-    throw UnimplementedError();
+    final theme = useTheme();
+
+    return theme.text.button.copyWith(color: foregroundColor);
   }
 }

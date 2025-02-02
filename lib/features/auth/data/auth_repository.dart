@@ -3,12 +3,13 @@ import 'dart:convert';
 import 'package:dio/dio.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:ukhsc_mobile_app/core/logger.dart';
-import 'package:ukhsc_mobile_app/core/storage_service.dart';
+import 'package:ukhsc_mobile_app/core/services/storage_service.dart';
 
 import 'package:ukhsc_mobile_app/features/auth/data/auth_data_source.dart';
 import 'package:ukhsc_mobile_app/features/auth/models/auth.dart';
 import 'package:ukhsc_mobile_app/features/auth/models/server_status.dart';
 
+import 'exception.dart';
 import '../models/school.dart';
 import '../models/user.dart';
 
@@ -39,7 +40,8 @@ class AuthCredential {
 
 abstract class AuthRepository {
   Future<ServiceStatus> getServiceStatus({CancelToken? cancelToken});
-  FutureOr<List<SchoolWithConfig>> getPartnerSchools({CancelToken? cancelToken});
+  FutureOr<List<SchoolWithConfig>> getPartnerSchools(
+      {CancelToken? cancelToken});
 
   Future<AuthCredential> registerMember({
     required int schoolAttendanceId,
@@ -67,7 +69,8 @@ class AuthRepositoryImpl implements AuthRepository {
   AuthRepositoryImpl({required this.dataSource, required this.storage});
 
   @override
-  FutureOr<List<SchoolWithConfig>> getPartnerSchools({CancelToken? cancelToken}) {
+  FutureOr<List<SchoolWithConfig>> getPartnerSchools(
+      {CancelToken? cancelToken}) {
     return dataSource.fetchPartnerSchools(cancelToken: cancelToken);
   }
 
@@ -118,7 +121,7 @@ class AuthRepositoryImpl implements AuthRepository {
 
     if (credentials.isExpired) {
       _logger.warning('Access token is expired');
-      throw UnimplementedError();
+      throw CredentialExpiredException();
     }
 
     if (!isOffline && credentials.isRefreshable) {
