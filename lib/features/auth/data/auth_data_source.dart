@@ -58,18 +58,6 @@ class AuthDataSource {
 
     return response.handle<User>(
       onData: (data) => User.fromJson(data),
-      errorMapper: (code) {
-        switch (code) {
-          case KnownErrorCode.INVALID_TOKEN:
-          case KnownErrorCode.ACCESS_REVOKED:
-          case KnownErrorCode.UNAUTHORIZED_DEVICE:
-            return InvalidCredentialException();
-          case KnownErrorCode.BANNED_USER:
-            return BannedLoginException();
-          default:
-            return null;
-        }
-      },
     );
   }
 
@@ -119,8 +107,8 @@ class AuthDataSource {
       cancelToken: cancelToken,
     );
 
-    switch (response) {
-      case ApiResponseData(:final data):
+    return response.handle<AuthCredential>(
+      onData: (data) {
         final accessToken = data['access_token'] as String;
         final refreshToken = data['refresh_token'] as String;
 
@@ -128,8 +116,19 @@ class AuthDataSource {
           accessToken: accessToken,
           refreshToken: refreshToken,
         );
-      default:
-        throw response;
-    }
+      },
+      errorMapper: (code) {
+        switch (code) {
+          case KnownErrorCode.INVALID_TOKEN:
+          case KnownErrorCode.ACCESS_REVOKED:
+          case KnownErrorCode.UNAUTHORIZED_DEVICE:
+            return InvalidCredentialException();
+          case KnownErrorCode.BANNED_USER:
+            return BannedLoginException();
+          default:
+            return null;
+        }
+      },
+    );
   }
 }

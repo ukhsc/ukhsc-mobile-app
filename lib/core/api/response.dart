@@ -44,7 +44,7 @@ sealed class ApiErrorData with _$ApiErrorData {
 extension ApiResponseExtension<D> on ApiResponse<D> {
   T handle<T>({
     required T Function(D data) onData,
-    required AppException? Function(KnownErrorCode code) errorMapper,
+    AppException? Function(KnownErrorCode code)? errorMapper,
   }) {
     switch (this) {
       case ApiResponseData(:final data):
@@ -53,7 +53,7 @@ extension ApiResponseExtension<D> on ApiResponse<D> {
         final AppException? exception;
 
         if (data is KnownApiError) {
-          exception = errorMapper(data.code);
+          exception = errorMapper?.call(data.code);
         } else {
           exception = null;
         }

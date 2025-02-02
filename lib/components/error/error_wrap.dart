@@ -24,10 +24,12 @@ class ErrorHandlerWrap extends HookConsumerWidget {
         if (dialogOpened.value) return;
         dialogOpened.value = true;
         _showDialog(
-          event,
-          onDismissed: () {
-            dialogOpened.value = false;
-          },
+          event.copyWith(
+            action: () {
+              dialogOpened.value = false;
+              event.action?.call();
+            },
+          ),
         );
       } else if (event.severity == ErrorSeverity.warning) {
         if (event.message != null) {
@@ -39,16 +41,10 @@ class ErrorHandlerWrap extends HookConsumerWidget {
     return child;
   }
 
-  void _showDialog(AppErrorEvent event,
-      {required final VoidCallback onDismissed}) async {
+  void _showDialog(AppErrorEvent event) async {
     bool canShow = navigatorKey.currentContext != null &&
         (navigatorKey.currentState?.mounted ?? false);
     if (!canShow) return;
-
-    event = event.copyWith(action: () {
-      event.action?.call();
-      onDismissed.call();
-    });
 
     showDialog(
       context: navigatorKey.currentContext!,
