@@ -30,30 +30,38 @@ class MembershipCardSheet extends HookConsumerWidget {
           topRight: theme.radii.large,
         ),
       ),
-      padding: EdgeInsets.symmetric(
-          horizontal: theme.spaces.lg, vertical: theme.spaces.md),
       child: Column(
         spacing: theme.spaces.lg,
         children: [
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              ComposableButton(
-                onPressed: () {
-                  context.pop();
-                },
-                style: PlainStyle(
-                  foregroundColor: theme.colors.primary,
-                  overlayColor: theme.colors.primary,
+          Padding(
+            padding: EdgeInsets.symmetric(
+                horizontal: theme.spaces.lg, vertical: theme.spaces.md),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                ComposableButton(
+                  onPressed: () {
+                    context.pop();
+                  },
+                  style: PlainStyle(
+                    foregroundColor: theme.colors.primary,
+                    overlayColor: theme.colors.primary,
+                  ),
+                  content: Text('關閉').asButtonContent,
                 ),
-                content: Text('關閉').asButtonContent,
-              ),
-              if (member != null) _buildBadge()
-            ],
+                if (member != null) _buildBadge()
+              ],
+            ),
           ),
           if (member != null)
-            SingleChildScrollView(
-              child: _buildContent(member),
+            Expanded(
+              child: SingleChildScrollView(
+                child: Padding(
+                  padding: EdgeInsets.symmetric(
+                      horizontal: theme.spaces.lg, vertical: theme.spaces.md),
+                  child: _buildContent(member),
+                ),
+              ),
             ),
           if (member == null)
             Flexible(
