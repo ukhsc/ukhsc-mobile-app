@@ -4,6 +4,7 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 import 'package:ukhsc_mobile_app/core/style/lib.dart';
 import 'package:ukhsc_mobile_app/components/lib.dart';
+import 'package:ukhsc_mobile_app/core/web.dart';
 import 'package:ukhsc_mobile_app/gen/assets.gen.dart';
 
 import 'data_view.dart';
@@ -22,7 +23,8 @@ class MembershipCardSheet extends HookConsumerWidget {
 
     return Container(
       constraints: BoxConstraints.expand(
-          height: MediaQuery.of(context).size.height * 0.85),
+          height: MediaQuery.of(context).size.height *
+              (WebDetector.isBrowser() ? 0.9 : 0.85)),
       decoration: BoxDecoration(
         color: theme.colors.secondaryBackground,
         borderRadius: BorderRadius.only(
