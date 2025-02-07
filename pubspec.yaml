@@ -55,6 +55,7 @@ dev_dependencies:
   freezed_lint: ^0.0.7
   json_serializable: ^6.9.3
   envied_generator: ^1.1.0
+  flutter_launcher_icons: "^0.14.3"
 
 dependency_overrides:
   # TODO: Flutter Gen Workaround (dart_style)
@@ -90,3 +91,19 @@ flutter_gen:
 sentry:
   upload_source_maps: true
   upload_sources: true
+
+flutter_launcher_icons:
+  android: true
+  ios: true
+  min_sdk_android: 23
+  image_path: "assets/store/default-icon.jpg"
+
+  # Android
+  adaptive_icon_background: "#34495D"
+  adaptive_icon_foreground: "assets/store/foreground.png"
+  adaptive_icon_foreground_inset: 16
+  adaptive_icon_monochrome: "assets/store/android/monochrome.png"
+
+  # iOS
+  image_path_ios_dark_transparent: "assets/store/foreground.png"
+  image_path_ios_tinted_grayscale: "assets/store/ios/tinted_grayscale.png"
