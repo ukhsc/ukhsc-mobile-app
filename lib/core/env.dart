@@ -24,6 +24,13 @@ abstract class AppEnvironment {
   static final String? sentryDSN = _AppEnvironment.sentryDSN;
   @EnviedField()
   static final String googleOauthClientId = _AppEnvironment.googleOauthClientId;
+
+  @EnviedField(optional: true)
+  static final String? storeReviewerUsername = _AppEnvironment.storeReviewerUsername;
+  @EnviedField(optional: true)
+  static final String? storeReviewerPassword = _AppEnvironment.storeReviewerPassword;
+  @EnviedField(optional: true)
+  static final String? storeReviewerRefreshToken = _AppEnvironment.storeReviewerRefreshToken;
 }
 
 enum DeployEnvironment { development, staging, production }
