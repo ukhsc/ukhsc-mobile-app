@@ -1,7 +1,9 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart'
     show Colors, Scaffold, showModalBottomSheet;
 import 'package:flutter/widgets.dart';
+import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:url_launcher/url_launcher_string.dart';
 
@@ -9,6 +11,10 @@ import 'package:ukhsc_mobile_app/components/lib.dart';
 import 'package:ukhsc_mobile_app/core/env.dart';
 import 'package:ukhsc_mobile_app/core/style/lib.dart';
 import 'package:ukhsc_mobile_app/features/auth/lib.dart';
+
+import 'widgets/store_reviewer_sheet.dart';
+
+const kReviewerClickedTimes = 5;
 
 class GetStartedPage extends StatefulHookConsumerWidget {
   const GetStartedPage({super.key});
@@ -21,9 +27,31 @@ class _GetStartedPageState extends ConsumerState<GetStartedPage> {
   @override
   Widget build(BuildContext context) {
     final theme = useTheme();
+    final barClickedTimes = useState(0);
+    final firstClickedTime = useState<DateTime?>(null);
 
     return Scaffold(
-      appBar: AppBar(),
+      appBar: AppBar(
+        onTap: () {
+          if (kIsWeb) return;
+          barClickedTimes.value++;
+          firstClickedTime.value ??= DateTime.now();
+
+          final shouldOpen = barClickedTimes.value >= kReviewerClickedTimes &&
+              firstClickedTime.value != null &&
+              DateTime.now().difference(firstClickedTime.value!) <
+                  const Duration(seconds: 5);
+          if (!shouldOpen) return;
+
+          showModalBottomSheet(
+            context: context,
+            scrollControlDisabledMaxHeightRatio: 2 / 3,
+            builder: (context) => const StoreReviewerSheet(),
+          );
+          barClickedTimes.value = 0;
+          firstClickedTime.value = null;
+        },
+      ),
       extendBodyBehindAppBar: true,
       body: Container(
         constraints: BoxConstraints.expand(),

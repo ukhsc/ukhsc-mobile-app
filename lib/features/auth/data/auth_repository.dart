@@ -120,7 +120,7 @@ class AuthRepositoryImpl implements AuthRepository {
     if (credentials == null) return null;
 
     if (credentials.isExpired) {
-      _logger.warning('Access token is expired');
+      _logger.warning('Access and refresh token is expired');
       throw CredentialExpiredException();
     }
 

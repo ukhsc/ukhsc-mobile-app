@@ -7,7 +7,8 @@ import 'package:ukhsc_mobile_app/core/style/lib.dart';
 import 'app_title.dart';
 
 class AppBar extends HookWidget implements PreferredSizeWidget {
-  const AppBar({super.key});
+  final VoidCallback? onTap;
+  const AppBar({super.key, this.onTap});
 
   @override
   Widget build(BuildContext context) {
@@ -22,7 +23,14 @@ class AppBar extends HookWidget implements PreferredSizeWidget {
         ),
         child: Row(
           children: [
-            AppTitle(),
+            MouseRegion(
+              hitTestBehavior: HitTestBehavior.translucent,
+              child: GestureDetector(
+                onTap: onTap,
+                behavior: HitTestBehavior.translucent,
+                child: AppTitle(),
+              ),
+            ),
             // TODO: Add offline indicator
           ],
         ),

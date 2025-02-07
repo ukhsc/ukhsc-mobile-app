@@ -35,8 +35,8 @@ class MembershipCardSheet extends HookConsumerWidget {
       child: Column(
         children: [
           Padding(
-            padding: EdgeInsets.symmetric(
-                horizontal: theme.spaces.lg, vertical: theme.spaces.md),
+            padding: EdgeInsets.symmetric(horizontal: theme.spaces.lg)
+                .add(EdgeInsets.only(top: theme.spaces.md)),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
@@ -58,9 +58,7 @@ class MembershipCardSheet extends HookConsumerWidget {
             Expanded(
               child: SingleChildScrollView(
                 child: Padding(
-                  padding: EdgeInsets.symmetric(
-                          horizontal: theme.spaces.lg,
-                          vertical: theme.spaces.md)
+                  padding: EdgeInsets.symmetric(horizontal: theme.spaces.lg)
                       .add(EdgeInsets.only(top: theme.spaces.lg)),
                   child: _buildContent(member),
                 ),
@@ -116,7 +114,7 @@ class MembershipCardSheet extends HookConsumerWidget {
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text('${member.schoolAttended.shortName}#${member.userId}',
+                  Text('成龔高中#${member.userId}',
                       style: theme.text.common.bodyMedium.copyWith(
                           color: theme.colors.primary,
                           fontVariations: AppFontWeight.semiBold.variations)),
