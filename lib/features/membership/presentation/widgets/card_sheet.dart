@@ -114,7 +114,7 @@ class MembershipCardSheet extends HookConsumerWidget {
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text('成龔高中#${member.userId}',
+                  Text('${member.schoolAttended.shortName}#${member.userId}',
                       style: theme.text.common.bodyMedium.copyWith(
                           color: theme.colors.primary,
                           fontVariations: AppFontWeight.semiBold.variations)),
