@@ -39,8 +39,10 @@ class ApiClient {
     dio.interceptors.add(InterceptorsWrapper(
       onRequest: (options, handler) async {
         if (!kIsWeb) {
-          options.headers
-              .addAll(uaHeaders ??= await userAgentClientHintsHeader());
+          uaHeaders ??= await userAgentClientHintsHeader();
+          uaHeaders = uaHeaders!.map((key, value) =>
+              MapEntry(key, value.replaceAll('高校特約', 'ukhsc-mobile-app')));
+          options.headers.addAll(uaHeaders!);
         }
 
         return handler.next(options);

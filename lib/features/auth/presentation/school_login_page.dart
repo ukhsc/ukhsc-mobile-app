@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart' show CircularProgressIndicator, Scaffold;
 import 'package:flutter/widgets.dart';
+import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 import 'package:ukhsc_mobile_app/components/lib.dart';
@@ -40,7 +41,7 @@ class _SchoolLoginPageState extends ConsumerState<SchoolLoginPage> {
                       padding: EdgeInsets.all(theme.spaces.lg),
                       child: SchoolGridView(schools: value),
                     ),
-                  AsyncError err => Builder(builder: (context) {
+                  AsyncError err => HookBuilder(builder: (context) {
                       err.handleError(ref);
                       return Center(
                           child: Column(
