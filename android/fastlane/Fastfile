@@ -18,7 +18,7 @@ default_platform(:android)
 FileNotFound = Class.new(StandardError)
 
 def fetch_version
-  path = "local.properties"
+  path = "../local.properties"
 
   if File.exist?(path)
     content = File.read(path)
@@ -33,10 +33,10 @@ def fetch_version
 end
 
 def populate_changelog
-  metadata_dir = "fastlane/metadata/android/zh-TW/changelogs"
+  metadata_dir = "./metadata/android/zh-TW/changelogs"
 
   version = fetch_version
-  changelog = read_changelog(changelog_path: '../CHANGELOG.md')
+  changelog = read_changelog(changelog_path: '../../CHANGELOG.md')
 
   destination = "#{metadata_dir}/#{version}.txt"
 
