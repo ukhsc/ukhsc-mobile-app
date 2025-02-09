@@ -39,6 +39,14 @@ Submit a new beta build to Google Play
 
 Promote beta track to production
 
+### android production
+
+```sh
+[bundle exec] fastlane android production
+```
+
+Submit a new production build to Google Play
+
 ----
 
 This README.md is auto-generated and will be re-generated every time [_fastlane_](https://fastlane.tools) is run.
