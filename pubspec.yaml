@@ -1,7 +1,7 @@
 name: ukhsc_mobile_app
 description: "高雄高校特約聯盟 行動會員 App"
 publish_to: "none"
-version: 0.1.0+2
+version: 0.1.1+3
 
 environment:
   sdk: ^3.6.0
