@@ -1,18 +1,26 @@
-name: Deploy Web
+name: Release to Play Store
 
 on:
-  push:
-    branches:
-      - main
+  workflow_dispatch:
+    inputs:
+      lane:
+        description: "Fastlane lane"
+        required: true
+        default: "beta"
+        type: choice
+        options:
+          - beta
+          - promote_to_production
+          - production
+
+permissions:
+  contents: read
+  deployments: write
 
 jobs:
-  deploy:
+  fastlane-deploy:
     runs-on: ubuntu-latest
-    name: Deploy Web
-    permissions:
-      contents: read
-      deployments: write
-
+    name: Deploy Android to Play Store
     steps:
       - name: Create GitHub Deployment
         uses: actions/github-script@v7
@@ -47,6 +55,12 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
+      - name: Set up JDK 21
+        uses: actions/setup-java@v4
+        with:
+          java-version: 21
+          distribution: temurin
+
       - name: Setup Flutter
         uses: subosito/flutter-action@v2
         with:
@@ -64,40 +78,45 @@ jobs:
         env:
           ENV_FILE_CONTENTS: ${{ secrets.ENV_FILE_CONTENTS }}
 
-      - name: Generate version
-        id: version
-        run: |
-          echo "BUILD_ID=$(date +%Y%m%d)-$(git rev-parse --short HEAD)" >> $GITHUB_OUTPUT
-
-      - name: Build Web
-        run: |
-          flutter build web --release
-
-          cd build/web
-          for file in *.js; do
-            if [ -f "$file" ]; then
-              mv "$file" "${file%.*}.v${{ steps.version.outputs.BUILD_ID }}.js"
-              find . -type f -name "*.html" -exec sed -i "s|$file|${file%.*}.v${{ steps.version.outputs.BUILD_ID }}.js|g" {} +
-              find . -type f -name "*.js" -exec sed -i "s|$file|${file%.*}.v${{ steps.version.outputs.BUILD_ID }}.js|g" {} +
-            fi
-          done
-
-      - name: Deploy to Cloudflare Pages
-        uses: cloudflare/wrangler-action@v3.13.0
+      - name: Setup Ruby environment for Fastlane
+        uses: ruby/setup-ruby@v1
         with:
-          apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
-          accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
-          gitHubToken: ${{ secrets.GITHUB_TOKEN }}
-          command: pages deploy --project-name=ukhsc-mobile-web build/web
+          ruby-version: "3.4.1"
+          bundler-cache: true
+          working-directory: android
 
-      - name: Upload Source Maps
+      - name: Configure Signing and Play Store
         run: |
-          flutter build web --source-maps
-          dart run sentry_dart_plugin
+          echo "$PLAY_STORE_UPLOAD_KEY" | base64 --decode > app/upload-keystore.jks
+          echo "storeFile=upload-keystore.jks" >> key.properties
+          echo "keyAlias=$KEYSTORE_KEY_ALIAS" >> key.properties
+          echo "storePassword=$KEYSTORE_STORE_PASSWORD" >> key.properties
+          echo "keyPassword=$KEYSTORE_KEY_PASSWORD" >> key.properties
+
+          echo "$PLAY_STORE_CONFIG_JSON" > fastlane/play_store_config.json
+        env:
+          PLAY_STORE_UPLOAD_KEY: ${{ secrets.PLAY_STORE_UPLOAD_KEY }}
+          KEYSTORE_KEY_ALIAS: ${{ secrets.KEYSTORE_KEY_ALIAS }}
+          KEYSTORE_KEY_PASSWORD: ${{ secrets.KEYSTORE_KEY_PASSWORD }}
+          KEYSTORE_STORE_PASSWORD: ${{ secrets.KEYSTORE_STORE_PASSWORD }}
+          PLAY_STORE_CONFIG_JSON: ${{ secrets.PLAY_STORE_CONFIG_JSON }}
+        working-directory: android
+
+      - name: Sentry Release
+        run: dart run sentry_dart_plugin
         env:
           SENTRY_AUTH_TOKEN: ${{ secrets.SENTRY_AUTH_TOKEN }}
           SENTRY_ORG: ${{ secrets.SENTRY_ORG }}
           SENTRY_PROJECT: ${{ secrets.SENTRY_PROJECT }}
+
+      - name: Deploy to Play Store
+        run: bundle exec fastlane ${{ github.event.inputs.lane || 'beta' }}
+        working-directory: android
+
+      - name: Generate ISO Timestamp
+        id: timestamp
+        run: |
+          echo "ISO_TIME=$(date -u -d @${{ github.event.repository.pushed_at }} +'%Y-%m-%dT%H:%M:%SZ')" >> $GITHUB_OUTPUT
 
       - name: Update Deployment Status
         if: always()
@@ -116,7 +135,7 @@ jobs:
                 state: success ? 'success' : 'failure',
                 description: success ? 'Deployment succeeded!' : 'Deployment failed',
                 log_url: `https://github.com/${owner}/${repo}/actions/runs/${context.runId}`,
-                environment_url: success ? 'https://web.ukhsc.org' : undefined,
+                environment_url: undefined,
                 auto_inactive: success
               };
 
@@ -131,32 +150,23 @@ jobs:
               core.setFailed(error.message);
             }
 
-      - name: Generate ISO Timestamp
-        id: timestamp
-        run: |
-          echo "ISO_TIME=$(date -u -d @${{ github.event.repository.pushed_at }} +'%Y-%m-%dT%H:%M:%SZ')" >> $GITHUB_OUTPUT
-
       - name: Send Discord Notification
         uses: tsickert/discord-webhook@v6.0.0
         if: always()
         with:
           webhook-url: ${{ secrets.DISCORD_WEBHOOK_URL }}
-          embed-title: 📱 UKHSC 系統前端部署通知
+          embed-title: 📱 UKHSC 系統 Android 部署通知
           embed-description: |
             ### 部署狀態：${{ job.status == 'success' && '✅ 成功' || '❌ 失敗' }}
 
-            **平台：** Web (Progressive Web App)
+            **平台：** Android
             **分支：** `${{ github.ref_name }}`
             **提交者：** ${{ github.actor }}
             **提交訊息：** ${{ github.event.head_commit.message }}
-            **部署環境：** Cloudflare Pages Production
+            **部署環境：** Google Play Store (${{ github.event.inputs.lane || 'beta' }})
             **部署時間：** <t:${{ github.event.repository.pushed_at }}:F>
-            **版本：** `${{ steps.version.outputs.BUILD_ID }}`
 
             [查看部署詳細資訊](https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }})
-            ${{
-              job.status == 'success' && '[開啟 PWA](https://web.ukhsc.org)' || ''
-            }}
           embed-color: ${{ job.status == 'success' && '65280' || '16711680' }}
-          embed-footer-text: "UKHSC System Frontend Deployment"
+          embed-footer-text: "UKHSC System Android Deployment"
           embed-timestamp: ${{ steps.timestamp.outputs.ISO_TIME }}
