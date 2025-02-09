@@ -113,11 +113,6 @@ jobs:
           SENTRY_ORG: ${{ secrets.SENTRY_ORG }}
           SENTRY_PROJECT: ${{ secrets.SENTRY_PROJECT }}
 
-      - name: Generate ISO Timestamp
-        id: timestamp
-        run: |
-          echo "ISO_TIME=$(date -u -d @${{ github.event.repository.pushed_at }} +'%Y-%m-%dT%H:%M:%SZ')" >> $GITHUB_OUTPUT
-
       - name: Update Deployment Status
         if: always()
         uses: actions/github-script@v7
@@ -150,6 +145,11 @@ jobs:
               core.setFailed(error.message);
             }
 
+      - name: Generate ISO Timestamp
+        id: timestamp
+        run: |
+          echo "ISO_TIME=$(date -u -d @${{ github.event.repository.pushed_at }} +'%Y-%m-%dT%H:%M:%SZ')" >> $GITHUB_OUTPUT
+
       - name: Send Discord Notification
         uses: tsickert/discord-webhook@v6.0.0
         if: always()
@@ -163,7 +163,7 @@ jobs:
             **分支：** `${{ github.ref_name }}`
             **提交者：** ${{ github.actor }}
             **部署環境：** Google Play Store (${{ github.event.inputs.lane || 'beta' }})
-            **部署時間：** <t:${{ github.event.repository.pushed_at }}:F>
+            **部署時間：** <t:${{ steps.timestamp.outputs.ISO_TIME }}:F>
 
             [查看部署詳細資訊](https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }})
           embed-color: ${{ job.status == 'success' && '65280' || '16711680' }}
