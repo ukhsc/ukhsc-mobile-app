@@ -162,7 +162,6 @@ jobs:
             **平台：** Android
             **分支：** `${{ github.ref_name }}`
             **提交者：** ${{ github.actor }}
-            **提交訊息：** ${{ github.event.head_commit.message }}
             **部署環境：** Google Play Store (${{ github.event.inputs.lane || 'beta' }})
             **部署時間：** <t:${{ github.event.repository.pushed_at }}:F>
 
