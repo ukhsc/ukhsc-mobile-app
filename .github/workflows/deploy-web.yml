@@ -4,6 +4,14 @@ on:
   push:
     branches:
       - main
+    paths:
+      - 'lib/**'
+      - 'web/**'
+      - 'assets/**'
+      - 'android/**'
+      - 'ios/**'
+      - '.github/workflows/deploy-web.yml'
+      - 'pubspec.yaml'
 
 jobs:
   deploy:
