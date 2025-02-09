@@ -33,7 +33,7 @@ def fetch_version
 end
 
 def populate_changelog
-  metadata_dir = "./metadata/android/zh-TW/changelogs"
+  metadata_dir = "fastlane/metadata/android/zh-TW/changelogs"
 
   version = fetch_version
   changelog = read_changelog(changelog_path: '../CHANGELOG.md')
