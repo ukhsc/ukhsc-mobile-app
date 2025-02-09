@@ -8,8 +8,6 @@ on:
       - 'lib/**'
       - 'web/**'
       - 'assets/**'
-      - 'android/**'
-      - 'ios/**'
       - '.github/workflows/deploy-web.yml'
       - 'pubspec.yaml'
 
