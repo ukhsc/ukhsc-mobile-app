@@ -20,7 +20,7 @@ FileNotFound = Class.new(StandardError)
 def fetch_version
   path = "local.properties"
 
-  if File.exists?(path)
+  if File.exist?(path)
     content = File.read(path)
 
     buildRegex = /(?<=flutter.versionCode=).+/
