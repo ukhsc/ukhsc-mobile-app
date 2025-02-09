@@ -15,6 +15,36 @@
 
 default_platform(:android)
 
+FileNotFound = Class.new(StandardError)
+
+def fetch_version
+  path = "local.properties"
+
+  if File.exists?(path)
+    content = File.read(path)
+
+    buildRegex = /(?<=flutter.versionCode=).+/
+
+    build = buildRegex.match(content)[0]
+    build
+  else
+    raise FileNotFound
+  end
+end
+
+def populate_changelog
+  metadata_dir = "./metadata/android/zh-TW/changelogs"
+
+  version = fetch_version
+  changelog = read_changelog(changelog_path: '../CHANGELOG.md')
+
+  destination = "#{metadata_dir}/#{version}.txt"
+
+  File.open(destination, 'w') do |f|
+    f << changelog
+  end
+end
+
 platform :android do
   desc "Runs all the tests"
   lane :test do
@@ -23,12 +53,8 @@ platform :android do
 
   desc "Submit a new beta build to Google Play"
   lane :beta do
-    sh "flutter build appbundle -v"
-
-    changelog = read_changelog(
-      changelog_path: '../CHANGELOG.md'
-    )
-
+    populate_changelog
+    sh "flutter build appbundle"
     upload_to_play_store(
       track: 'beta',
       aab: '../build/app/outputs/bundle/release/app-release.aab',
@@ -42,6 +68,21 @@ platform :android do
       track: 'beta',
       track_promote_to: 'production',
       skip_upload_changelogs: true,
+      json_key: 'play_store_config.json',
+      )
+  end
+
+  desc "Submit a new production build to Google Play"
+  lane :production do
+    sh "flutter build appbundle"
+
+    changelog = read_changelog(
+      changelog_path: '../CHANGELOG.md'
+    )
+
+    upload_to_play_store(
+      track: 'production',
+      aab: '../build/app/outputs/bundle/release/app-release.aab',
       json_key: 'play_store_config.json',
       )
   end

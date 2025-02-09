@@ -31,7 +31,7 @@ jobs:
               owner: context.repo.owner,
               repo: context.repo.repo,
               ref: context.sha,
-              environment: 'production',
+              environment: 'play-store',
               auto_merge: false,
               required_contexts: []
             });
