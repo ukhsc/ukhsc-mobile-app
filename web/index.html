@@ -1,91 +1,98 @@
-<!DOCTYPE html>
+<!doctype html>
 <html>
-  <head>
-    <base href="$FLUTTER_BASE_HREF" />
+    <head>
+        <base href="$FLUTTER_BASE_HREF" />
 
-    <meta charset="UTF-8" />
-    <meta content="IE=Edge" http-equiv="X-UA-Compatible" />
-    <meta name="description" content="高雄高校特約聯盟 第七屆 行動會員 App" />
-    <meta
-      name="viewport"
-      content="width=device-width, initial-scale=1, viewport-fit=cover"
-    />
-    <meta name="screen-orientation" content="portrait" />
-    <meta name="x5-orientation" content="portrait" />
-    <meta name="mobile-web-app-capable" content="yes" />
-    <meta
-      name="viewport"
-      content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover"
-    />
+        <meta charset="UTF-8" />
+        <meta content="IE=Edge" http-equiv="X-UA-Compatible" />
+        <meta
+            name="description"
+            content="高雄高校特約聯盟 第七屆 行動會員 App"
+        />
+        <meta
+            name="viewport"
+            content="width=device-width, initial-scale=1, viewport-fit=cover"
+        />
+        <meta name="screen-orientation" content="portrait" />
+        <meta name="x5-orientation" content="portrait" />
+        <meta name="mobile-web-app-capable" content="yes" />
+        <meta
+            name="viewport"
+            content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover"
+        />
 
-    <!-- iOS meta tags & icons -->
-    <meta name="apple-mobile-web-app-capable" content="yes" />
-    <meta name="apple-mobile-web-app-status-bar-style" content="default" />
-    <meta name="apple-mobile-web-app-title" content="高校特約" />
+        <!-- iOS meta tags & icons -->
+        <meta name="apple-mobile-web-app-capable" content="yes" />
+        <meta name="apple-mobile-web-app-status-bar-style" content="default" />
+        <meta name="apple-mobile-web-app-title" content="高校特約" />
 
-    <script>
-      fetch("apple-touch-startup-images.html")
-        .then((res) => res.text())
-        .then((links) => {
-          document.head.insertAdjacentHTML("beforeend", links);
-        });
-    </script>
+        <script>
+            fetch("apple-touch-startup-images.html")
+                .then((res) => res.text())
+                .then((links) => {
+                    document.head.insertAdjacentHTML("beforeend", links);
+                });
+        </script>
 
-    <!-- PWA Meta Tags -->
-    <meta name="mobile-web-app-capable" content="yes" />
-    <meta name="theme-color" content="#34495D" />
+        <!-- PWA Meta Tags -->
+        <meta name="mobile-web-app-capable" content="yes" />
+        <meta name="theme-color" content="#34495D" />
 
-    <!-- iOS icons -->
-    <link rel="apple-touch-icon" href="icons/icon-192.png" />
-    <link rel="apple-touch-icon" sizes="512x512" href="icons/icon-512.png" />
+        <!-- iOS icons -->
+        <link rel="apple-touch-icon" href="icons/icon-192.png" />
+        <link
+            rel="apple-touch-icon"
+            sizes="512x512"
+            href="icons/icon-512.png"
+        />
 
-    <!-- Favicon -->
-    <link rel="icon" type="image/png" sizes="192x192" href="favicon.png" />
-    <link rel="icon" href="favicon.svg" type="image/svg+xml" />
+        <!-- Favicon -->
+        <link rel="icon" type="image/png" sizes="192x192" href="favicon.png" />
+        <link rel="icon" href="favicon.svg" type="image/svg+xml" />
 
-    <title>UKHSC | 高校特約</title>
-    <link rel="manifest" href="manifest.json" />
-    <style>
-      body {
-        margin: 0;
-        padding: env(safe-area-inset-top) env(safe-area-inset-right)
-          env(safe-area-inset-bottom) env(safe-area-inset-left);
-        height: 100vh;
-        width: 100vw;
-        overflow: hidden;
-        -webkit-text-size-adjust: 100%;
-      }
-      #native-callback-view,
-      #splash-view,
-      #device-not-supported-view,
-      #webview-warning-view {
-        height: 100vh;
-        width: 100vw;
-        font-size: 16px;
-      }
-      @media (min-width: 881px) {
-        #native-callback-view,
-        #splash-view,
-        #webview-warning-view {
-          display: none;
-        }
-        #device-not-supported-view {
-          display: block;
-        }
-      }
-      @media (max-width: 880px) {
-        #device-not-supported-view {
-          display: none;
-        }
-      }
-    </style>
-  </head>
-  <body>
-    <div id="native-callback-view"></div>
-    <div id="splash-view"></div>
-    <div id="device-not-supported-view"></div>
-    <div id="webview-warning-view"></div>
-    <script src="https://unpkg.com/@tailwindcss/browser@4"></script>
-    <script type="module" src="flutter_bootstrap.js"></script>
-  </body>
+        <title>UKHSC | 高校特約</title>
+        <link rel="manifest" href="manifest.json" />
+        <style>
+            body {
+                margin: 0;
+                padding: env(safe-area-inset-top) env(safe-area-inset-right)
+                    env(safe-area-inset-bottom) env(safe-area-inset-left);
+                height: 100vh;
+                width: 100vw;
+                overflow: hidden;
+                -webkit-text-size-adjust: 100%;
+            }
+            #native-callback-view,
+            #splash-view,
+            #device-not-supported-view,
+            #webview-warning-view {
+                height: 100vh;
+                width: 100vw;
+                font-size: 16px;
+            }
+            @media (min-width: 881px) {
+                #native-callback-view,
+                #splash-view,
+                #webview-warning-view {
+                    display: none;
+                }
+                #device-not-supported-view {
+                    display: block;
+                }
+            }
+            @media (max-width: 880px) {
+                #device-not-supported-view {
+                    display: none;
+                }
+            }
+        </style>
+    </head>
+    <body>
+        <div id="native-callback-view"></div>
+        <div id="splash-view"></div>
+        <div id="device-not-supported-view"></div>
+        <div id="webview-warning-view"></div>
+        <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4.0.14/dist/index.global.min.js"></script>
+        <script type="module" src="flutter_bootstrap.js"></script>
+    </body>
 </html>
