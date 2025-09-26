@@ -2,7 +2,9 @@ import 'dart:convert';
 
 import 'package:dio/dio.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
+import 'package:ukhsc_mobile_app/core/env.dart';
 import 'package:ukhsc_mobile_app/core/logger.dart';
+import 'package:ukhsc_mobile_app/core/services/demo_data_service.dart';
 import 'package:ukhsc_mobile_app/core/services/storage_service.dart';
 
 import 'package:ukhsc_mobile_app/features/auth/data/auth_data_source.dart';
@@ -71,6 +73,12 @@ class AuthRepositoryImpl implements AuthRepository {
   @override
   FutureOr<List<SchoolWithConfig>> getPartnerSchools(
       {CancelToken? cancelToken}) {
+    // Return demo schools for store reviewers
+    if (AppEnvironment.isStoreReviewerMode) {
+      _logger.info('Store reviewer mode detected, returning demo schools');
+      return DemoDataService.getDemoSchools();
+    }
+    
     return dataSource.fetchPartnerSchools(cancelToken: cancelToken);
   }
 
@@ -101,9 +109,17 @@ class AuthRepositoryImpl implements AuthRepository {
     await storage.write(key: 'access_token', value: credential.accessToken);
     await storage.write(key: 'refresh_token', value: credential.refreshToken);
 
-    final user =
-        await dataSource.fetchUserData(accessToken: credential.accessToken);
-    await storage.write(key: 'user_cache', value: jsonEncode(user.toJson()));
+    // For store reviewers, save demo user data instead of fetching real data
+    if (_isStoreReviewerSession(credential)) {
+      _logger.info('Store reviewer session detected, saving demo user data');
+      final demoUser = DemoDataService.getDemoUser();
+      await storage.write(key: 'user_cache', value: jsonEncode(demoUser.toJson()));
+    } else {
+      final user =
+          await dataSource.fetchUserData(accessToken: credential.accessToken);
+      await storage.write(key: 'user_cache', value: jsonEncode(user.toJson()));
+    }
+    
     _logger.fine('Credential saved');
   }
 
@@ -118,6 +134,12 @@ class AuthRepositoryImpl implements AuthRepository {
       {required bool isOffline, CancelToken? cancelToken}) async {
     final credentials = await getCredential();
     if (credentials == null) return null;
+
+    // Check if this is a store reviewer session
+    if (_isStoreReviewerSession(credentials)) {
+      _logger.info('Store reviewer mode detected, returning demo user data');
+      return DemoDataService.getDemoUser();
+    }
 
     if (credentials.isExpired) {
       _logger.warning('Access and refresh token is expired');
@@ -136,6 +158,15 @@ class AuthRepositoryImpl implements AuthRepository {
     if (rawCache == null) return null;
 
     return User.fromJson(jsonDecode(rawCache));
+  }
+
+  /// Checks if the current session is a store reviewer session
+  /// by comparing the refresh token with the configured reviewer token
+  /// or checking for the fallback reviewer access token
+  bool _isStoreReviewerSession(AuthCredential credentials) {
+    return AppEnvironment.isStoreReviewerMode && 
+           (credentials.refreshToken == AppEnvironment.storeReviewerRefreshToken ||
+            credentials.accessToken == 'REVIEWER_ACCESS_TOKEN');
   }
 
   @override

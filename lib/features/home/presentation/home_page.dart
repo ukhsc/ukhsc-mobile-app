@@ -88,11 +88,16 @@ class _HomePageState extends ConsumerState<HomePage> {
                   children: [
                     // TODO: Replace with user's nickname and greeting message
                     Text(
-                      '${getGreetings()}，同學',
+                      AppEnvironment.isStoreReviewerMode 
+                          ? '${getGreetings()}，審查員' 
+                          : '${getGreetings()}，同學',
                       style: theme.text.common.headlineMedium
                           .copyWith(color: theme.colors.accentText),
                     ),
-                    Text('想來點什麼呢？',
+                    Text(
+                        AppEnvironment.isStoreReviewerMode
+                            ? '歡迎體驗應用程式功能'
+                            : '想來點什麼呢？',
                         style: theme.text.common.displaySmall
                             .copyWith(fontSize: 38)),
                   ],

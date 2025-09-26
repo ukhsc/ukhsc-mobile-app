@@ -31,6 +31,10 @@ abstract class AppEnvironment {
   static final String? storeReviewerPassword = _AppEnvironment.storeReviewerPassword;
   @EnviedField(optional: true)
   static final String? storeReviewerRefreshToken = _AppEnvironment.storeReviewerRefreshToken;
+
+  /// Indicates if the app is running in store reviewer mode (for Google Play/App Store reviewers)
+  /// When true, the app will show demo data instead of real user data
+  static bool get isStoreReviewerMode => storeReviewerRefreshToken != null;
 }
 
 enum DeployEnvironment { development, staging, production }
