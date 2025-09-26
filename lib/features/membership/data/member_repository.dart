@@ -32,7 +32,9 @@ class MemberRepositoryImpl implements MemberRepository {
     // Return demo member data for store reviewers
     if (AppEnvironment.isStoreReviewerMode) {
       _logger.info('Store reviewer mode detected, returning demo member data');
-      return DemoDataService.getDemoStudentMember();
+      final demoMember = DemoDataService.getDemoStudentMember();
+      DemoDataService.validateReviewerData(demoMember, 'getCacheData');
+      return demoMember;
     }
 
     await storage.migrateSchema();
@@ -50,7 +52,9 @@ class MemberRepositoryImpl implements MemberRepository {
     // Return demo member data for store reviewers
     if (AppEnvironment.isStoreReviewerMode) {
       _logger.info('Store reviewer mode detected, returning demo member data');
-      return DemoDataService.getDemoStudentMember();
+      final demoMember = DemoDataService.getDemoStudentMember();
+      DemoDataService.validateReviewerData(demoMember, 'updateCacheData');
+      return demoMember;
     }
 
     await storage.migrateSchema();

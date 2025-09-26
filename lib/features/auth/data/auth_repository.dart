@@ -76,7 +76,11 @@ class AuthRepositoryImpl implements AuthRepository {
     // Return demo schools for store reviewers
     if (AppEnvironment.isStoreReviewerMode) {
       _logger.info('Store reviewer mode detected, returning demo schools');
-      return DemoDataService.getDemoSchools();
+      final demoSchools = DemoDataService.getDemoSchools();
+      for (final school in demoSchools) {
+        DemoDataService.validateReviewerData(school, 'getPartnerSchools');
+      }
+      return demoSchools;
     }
     
     return dataSource.fetchPartnerSchools(cancelToken: cancelToken);
@@ -138,7 +142,9 @@ class AuthRepositoryImpl implements AuthRepository {
     // Check if this is a store reviewer session
     if (_isStoreReviewerSession(credentials)) {
       _logger.info('Store reviewer mode detected, returning demo user data');
-      return DemoDataService.getDemoUser();
+      final demoUser = DemoDataService.getDemoUser();
+      DemoDataService.validateReviewerData(demoUser, 'getCredentialUser');
+      return demoUser;
     }
 
     if (credentials.isExpired) {

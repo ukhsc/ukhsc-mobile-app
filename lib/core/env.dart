@@ -35,6 +35,13 @@ abstract class AppEnvironment {
   /// Indicates if the app is running in store reviewer mode (for Google Play/App Store reviewers)
   /// When true, the app will show demo data instead of real user data
   static bool get isStoreReviewerMode => storeReviewerRefreshToken != null;
+
+  /// Validates the store reviewer configuration
+  /// Returns true if all required reviewer credentials are properly configured
+  static bool get isStoreReviewerConfigured => 
+      storeReviewerUsername != null && 
+      storeReviewerPassword != null && 
+      storeReviewerRefreshToken != null;
 }
 
 enum DeployEnvironment { development, staging, production }

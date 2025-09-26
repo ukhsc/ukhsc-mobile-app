@@ -31,9 +31,7 @@ class _StoreReviewerSheetState extends ConsumerState<StoreReviewerSheet> {
   @override
   Widget build(BuildContext context) {
     final theme = useTheme();
-    final isConfigured = AppEnvironment.storeReviewerUsername != null &&
-        AppEnvironment.storeReviewerPassword != null &&
-        AppEnvironment.storeReviewerRefreshToken != null;
+    final isConfigured = AppEnvironment.isStoreReviewerConfigured;
 
     if (!isConfigured) {
       return Container(
