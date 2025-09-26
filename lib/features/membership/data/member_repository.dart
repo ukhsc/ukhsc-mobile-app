@@ -2,7 +2,9 @@ import 'dart:convert';
 
 import 'package:dio/dio.dart';
 
+import 'package:ukhsc_mobile_app/core/env.dart';
 import 'package:ukhsc_mobile_app/core/logger.dart';
+import 'package:ukhsc_mobile_app/core/services/demo_data_service.dart';
 import 'package:ukhsc_mobile_app/core/services/storage_service.dart';
 import 'package:ukhsc_mobile_app/features/lib.dart';
 
@@ -27,6 +29,14 @@ class MemberRepositoryImpl implements MemberRepository {
 
   @override
   Future<StudentMember?> getCacheData() async {
+    // Return demo member data for store reviewers
+    if (AppEnvironment.isStoreReviewerMode) {
+      _logger.info('Store reviewer mode detected, returning demo member data');
+      final demoMember = DemoDataService.getDemoStudentMember();
+      DemoDataService.validateReviewerData(demoMember, 'getCacheData');
+      return demoMember;
+    }
+
     await storage.migrateSchema();
     _logger.fine('Getting member data from cache...');
 
@@ -39,6 +49,14 @@ class MemberRepositoryImpl implements MemberRepository {
   @override
   Future<StudentMember> updateCacheData(String accessToken,
       {CancelToken? cancelToken}) async {
+    // Return demo member data for store reviewers
+    if (AppEnvironment.isStoreReviewerMode) {
+      _logger.info('Store reviewer mode detected, returning demo member data');
+      final demoMember = DemoDataService.getDemoStudentMember();
+      DemoDataService.validateReviewerData(demoMember, 'updateCacheData');
+      return demoMember;
+    }
+
     await storage.migrateSchema();
     _logger.fine('Fetching member data...');
 
