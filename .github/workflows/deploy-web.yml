@@ -1,15 +1,17 @@
 name: Deploy Web
 
 on:
-  push:
-    branches:
-      - main
-    paths:
-      - 'lib/**'
-      - 'web/**'
-      - 'assets/**'
-      - '.github/workflows/deploy-web.yml'
-      - 'pubspec.yaml'
+  workflow_dispatch:
+  # Disabled automatic deployment
+  # push:
+  #   branches:
+  #     - main
+  #   paths:
+  #     - 'lib/**'
+  #     - 'web/**'
+  #     - 'assets/**'
+  #     - '.github/workflows/deploy-web.yml'
+  #     - 'pubspec.yaml'
 
 jobs:
   deploy:

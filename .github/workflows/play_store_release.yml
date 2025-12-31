@@ -1,17 +1,19 @@
 name: Release to Play Store
 
+# Disabled deployment workflow
 on:
-  workflow_dispatch:
-    inputs:
-      lane:
-        description: "Fastlane lane"
-        required: true
-        default: "beta"
-        type: choice
-        options:
-          - beta
-          - promote_to_production
-          - production
+  workflow_call:
+  # workflow_dispatch:
+  #   inputs:
+  #     lane:
+  #       description: "Fastlane lane"
+  #       required: true
+  #       default: "beta"
+  #       type: choice
+  #       options:
+  #         - beta
+  #         - promote_to_production
+  #         - production
 
 permissions:
   contents: read
